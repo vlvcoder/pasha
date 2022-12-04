@@ -5,7 +5,7 @@ body {
   font-family: "Arial", sans-serif;
   color: #222222;
 
-  background: #ffffff url("img/bg-page.png") no-repeat top center;
+  background: #ffffff url("bg-page.png") no-repeat top center;
 }
 
 h1 {
