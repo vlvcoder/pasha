@@ -169,6 +169,7 @@ figcaption {
   border-radius: 0 0 8px 8px;
 }
 
+/*================================ city*/
 figure.city img {
   width: 280px;
   margin-right: 10px;
@@ -176,15 +177,36 @@ figure.city img {
 figure.city figcaption {
   width: 280px;
 }
-.pagination a {
-  display: inline-block;
-  margin-right: 30px;
-  margin-bottom: 15px;
-}
 
-.pagination {
-  text-align: center;
-  color: #888888;
+figure.city.minsk img {
+  border: 8px solid #99dd66;
+}
+figure.city.minsk figcaption {
+  background-color: #99dd66;
+}
+figure.city.nn img {
+  border: 8px solid #ff9966;
+}
+figure.city.nn figcaption {
+  background-color: #ff9966;
+}
+figure.city.ryazan img {
+  border: 8px solid gold;
+}
+figure.city.ryazan figcaption {
+  background-color: gold;
+}
+figure.city.samara img {
+  border: 8px solid darkturquoise;
+}
+figure.city.samara figcaption {
+  background-color: darkturquoise;
+}
+figure.city.sp img {
+  border: 8px solid #aa88ff;
+}
+figure.city.sp figcaption {
+  background-color: #aa88ff;
 }
 
 .danger-text {
