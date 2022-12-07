@@ -1,21 +1,43 @@
 body {
   padding: 0 30px;
-  font-size: 16px;
-  line-height: 26px;
-  font-family: "Arial", sans-serif;
+  /*font-size: 24px;*/
+  line-height: 36px;
+  font-family: "Arial", "sans-serif";
   color: #222222;
-
   background: #ffffff url("../img/bg-page.png") no-repeat top center;
+}
+
+.site-header {
+  text-align: center;
+}
+
+section {
+  font-size: 22px;
+  margin-top: 10px;
 }
 
 h1 {
   font-size: 36px;
+  font-family: "Comic Sans MS";
   line-height: normal;
+  color: #ff4400;
 }
 
 h2 {
-  font-size: 20px;
+  font-size: 32px;
+  font-family: "Comic Sans MS";
   line-height: normal;
+  color: #4470c4;
+}
+
+.myname {
+  font-family: "Comic Sans MS";
+  color: white;
+  background-color: #ff9966;
+}
+
+.inplaceicon {
+  width: 32px;
 }
 
 aside {
@@ -56,6 +78,7 @@ a[href] {
 .avatar {
   border-radius: 50%;
   border: 5px solid rgb(202, 224, 248);
+  width: 120px;
 }
 
 .blog-navigation {
@@ -158,4 +181,43 @@ figcaption {
 
 footer {
   margin-top: 30px;
+}
+
+.hobbies {
+}
+
+.hobbies-list {
+  /*padding: 0;*/
+  list-style: none;
+}
+
+.hobby-item {
+  font-style: italic;
+}
+
+.hobby-fencing {
+  color: #dd9966;
+}
+
+.hobby-music {
+  color: #99dd66;
+}
+
+.hobby-computer {
+  color: #9966ff;
+}
+
+.site-footer {
+  margin: 0;
+  padding: 0;
+  min-width: 550px;
+  background-color: #4470c4;
+  color: #ffffff;
+  text-align: center;
+}
+
+.site-footer p {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 16px;
 }
