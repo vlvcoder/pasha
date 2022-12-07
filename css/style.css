@@ -177,6 +177,11 @@ figure.city img {
 figure.city figcaption {
   width: 280px;
 }
+figure.city a[href] {
+  color: white;
+  text-decoration: underline;
+}
+
 
 figure.city.evpatoria img {
   border: 8px solid #ff9966;
@@ -184,17 +189,23 @@ figure.city.evpatoria img {
 figure.city.evpatoria figcaption {
   background-color: #ff9966;
 }
-figure.city.minsk img {
+figure.city.sovgavan img {
   border: 8px solid #99dd66;
 }
-figure.city.minsk figcaption {
+figure.city.sovgavan figcaption {
   background-color: #99dd66;
 }
+figure.city.minsk img {
+  border: 8px solid #4470c4;
+}
+figure.city.minsk figcaption {
+  background-color: #4470c4;
+}
 figure.city.nn img {
-  border: 8px solid #ffd0bf;
+  border: 8px solid burlywood;
 }
 figure.city.nn figcaption {
-  background-color: #ffd0bf;
+  background-color: burlywood;
 }
 figure.city.ryazan img {
   border: 8px solid gold;
