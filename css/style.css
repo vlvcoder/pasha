@@ -234,3 +234,17 @@ footer {
 .version-label {
   font-size: 8px;
 }
+
+.cell-number {
+  text-align: center;
+}
+
+.sport-table-section {
+  background-color: white;
+  margin-top: 180px;
+}
+
+thead.sport-table-header {
+  text-align: center;
+  vertical-align: middle;
+}

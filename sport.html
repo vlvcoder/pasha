@@ -1,21 +1,67 @@
+<!doctype html>
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="вёрстка, HTML, CSS, блог">
     <meta name="description" content="Пробная страница">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Спорт</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="img/avatar.png">
-    <link rel="stylesheet" href="../htmlacademy/project-gloevk/project-gloevk/style.css">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+            crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<html>
+<html lang="ru">
 <header class="site-header">
     <h2>Мои спортивные показатели</h2>
 </header>
 
 <main>
-    <section>
+    <section class="sport-table-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col">
+                    <table class="table table-hover table-bordered">
+                        <thead class="sport-table-header">
+                        <tr>
+                            <th scope="col" rowspan="2">№</th>
+                            <th scope="col" rowspan="2">Упражнение</th>
+                            <th scope="col" rowspan="2">Мой<br/>показатель</th>
+                            <th scope="col" colspan="3">Нормативы для 5 класса</th>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="table-danger">На оценку 3</th>
+                            <th scope="col" class="table-warning">На оценку 4</th>
+                            <th scope="col" class="table-success">На оценку 5</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Отжимание</td>
+                            <td class="cell-number table-success">10</td>
+                            <td class="cell-number">18</td>
+                            <td class="cell-number">20</td>
+                            <td class="cell-number">24</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Подтягивание</td>
+                            <td class="cell-number table-danger">1</td>
+                            <td class="cell-number">10</td>
+                            <td class="cell-number">15</td>
+                            <td class="cell-number">20</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-1"></div>
 
+            </div>
+        </div>
     </section>
 
     <section>
@@ -23,5 +69,7 @@
     </section>
 
 </main>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
 </html>
