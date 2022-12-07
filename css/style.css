@@ -210,7 +210,7 @@ footer {
 .site-footer {
   margin: 0;
   padding: 0;
-  min-width: 550px;
+  /*min-width: 550px;*/
   background-color: #4470c4;
   color: #ffffff;
   text-align: center;
