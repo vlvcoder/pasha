@@ -148,6 +148,7 @@ a[href] {
 figure {
   margin-left: 0;
   margin-right: 0;
+  display: inline-block;
 }
 
 figure img {
@@ -168,6 +169,13 @@ figcaption {
   border-radius: 0 0 8px 8px;
 }
 
+figure.city img {
+  width: 280px;
+  margin-right: 10px;
+}
+figure.city figcaption {
+  width: 280px;
+}
 .pagination a {
   display: inline-block;
   margin-right: 30px;
