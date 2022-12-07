@@ -49,6 +49,11 @@ h2 {
   width: 32px;
 }
 
+.cardicon {
+  width: 100px;
+  margin-bottom: 20px;
+}
+
 aside {
   margin: 20px 0;
   color: #c4c4c4;
