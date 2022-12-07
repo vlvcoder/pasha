@@ -248,3 +248,18 @@ thead.sport-table-header {
   text-align: center;
   vertical-align: middle;
 }
+
+thead.sport-table-header th {
+  padding: 0 10px;
+  color: #666666;
+  font-family: Calibri, serif;
+}
+
+tbody.sport-table-tbody {
+  vertical-align: middle;
+  color: gray;
+}
+
+.card-norma {
+  width: 500px;
+}
