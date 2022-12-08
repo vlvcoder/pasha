@@ -49,6 +49,12 @@ h2 {
   width: 32px;
 }
 
+.carousel {
+  width: 30%;
+  margin: 0 auto;
+}
+
+
 .cardicon {
   width: 100px;
   margin-bottom: 20px;
@@ -291,7 +297,7 @@ footer {
   text-align: center;
 }
 
-.sport-table-section {
+.top-section {
   background-color: white;
   margin-top: 180px;
 }
