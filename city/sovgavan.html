@@ -18,18 +18,40 @@
 </header>
 
 <main>
-    <section class="top-section">
+    <section>
         <div class="container">
             <div class="row">
-                <div class="col-1"></div>
+                <div class="col-2"></div>
                 <div class="col">
-
-                    content
-
+                    <form class="p-3 border" style="margin-top: 180px;">
+                        <label for="letter1" class="form-label">Образец слова</label>
+                        <div class="input-group mb-3" style="width: 210px;">
+                            <input id="letter1" type="text" maxlength="1" class="form-control" placeholder="."
+                                   style="text-transform: capitalize">
+                            <input type="text" maxlength="1" class="form-control" placeholder="."
+                                   style="text-transform: capitalize">
+                            <input type="text" maxlength="1" class="form-control" placeholder="."
+                                   style="text-transform: capitalize">
+                            <input type="text" maxlength="1" class="form-control" placeholder="."
+                                   style="text-transform: capitalize">
+                            <input type="text" maxlength="1" class="form-control" placeholder="."
+                                   style="text-transform: capitalize">
+                        </div>
+                        <div id="emailHelp" class="form-text">Введите буквы в образец. Незаполненные позиции
+                            предполагают любую
+                            букву
+                        </div>
+                        <p>
+                            <button type="submit" class="btn btn-outline-success" style="margin-top: 20px;">
+                                Вывести <span class="badge text-bg-success">385</span>
+                            </button>
+                        </p>
+                    </form>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-2"></div>
             </div>
         </div>
+
     </section>
 
     <section>
@@ -39,7 +61,7 @@
             <br/>
             <br/>
             <br/>
-    </section>
+        </section>
 
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
