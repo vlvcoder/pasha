@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "./static/css/main.df885401.css",
-    "main.js": "./static/js/main.d5c1da99.js",
+    "main.js": "./static/js/main.f78bc5a3.js",
     "static/js/787.307feac2.chunk.js": "./static/js/787.307feac2.chunk.js",
     "static/media/Kulibin_I_P.jpg": "./static/media/Kulibin_I_P.0fa8c591c332b75b2c3b.jpg",
     "static/media/back-paper-1.jpg": "./static/media/back-paper-1.09a56bf9de93a5f7d599.jpg",
     "static/media/back1.jpg": "./static/media/back1.deab245f92b421b97697.jpg",
     "index.html": "./index.html",
     "main.df885401.css.map": "./static/css/main.df885401.css.map",
-    "main.d5c1da99.js.map": "./static/js/main.d5c1da99.js.map",
+    "main.f78bc5a3.js.map": "./static/js/main.f78bc5a3.js.map",
     "787.307feac2.chunk.js.map": "./static/js/787.307feac2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.df885401.css",
-    "static/js/main.d5c1da99.js"
+    "static/js/main.f78bc5a3.js"
   ]
 }
