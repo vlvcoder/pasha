@@ -231,6 +231,18 @@ figure.city.sp img {
 figure.city.sp figcaption {
   background-color: #aa44dd;
 }
+figure.city.kazan img {
+  border: 8px solid olivedrab;
+}
+figure.city.kazan figcaption {
+  background-color: olivedrab;
+}
+figure.city.kg img {
+  border: 8px solid darkorange;
+}
+figure.city.kg figcaption {
+  background-color: darkorange;
+}
 
 .danger-text {
   color: #ff4400;
