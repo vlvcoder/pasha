@@ -243,6 +243,19 @@ figure.city.kg img {
 figure.city.kg figcaption {
   background-color: darkorange;
 }
+figure.city.sochi img {
+  border: 8px solid rgb(73, 150, 108);
+}
+figure.city.sochi figcaption {
+  background-color: rgb(73, 150, 108);
+}
+
+figure.city.novg img {
+  border: 8px solid rgb(53, 117, 140);
+}
+figure.city.novg figcaption {
+  background-color: rgb(53, 117, 140);
+}
 
 .danger-text {
   color: #ff4400;
