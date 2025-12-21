@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Самые длинные и полноводные реки России</title>
+    <!-- Material UI Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Material UI CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 0px;
+            padding-top: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            /* position: sticky;
+            top: 20px; */
+            z-index: 10;
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: flex;
+            gap: 40px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex-grow: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            color: #1976D2;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 24px;
+            overflow-x: auto;
+        }
+
+        .material-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .material-table thead {
+            background-color: #f1f8ff;
+        }
+
+        .material-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 500;
+            color: #1976D2;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .material-table tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.2s;
+        }
+
+        .material-table tbody tr:hover {
+            background-color: #f5f9ff;
+        }
+
+        .material-table td {
+            padding: 16px;
+            color: #333;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-pending {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .status-inactive {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .material-icon {
+            font-size: 1.2rem;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: white;
+            /* background-color: #f1f8ff; */
+                        background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+
+            font-size: 0.9rem;
+            padding: 20px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+        .material-table th {
+            text-align: center;
+        }
+
+        .material-table>tbody>tr>td:nth-child(odd),
+        .river-volume>tbody>tr>td:nth-child(4) {
+            text-align: right;
+        }
+
+        .river-volume>tbody>tr>td:nth-child(4) {
+            text-align: right;
+        }
+
+        .material-table>tbody>tr>td:nth-child(2) {
+            font-weight: 600;
+            color: #1976D2;
+        }
+
+        .river-len>tbody>tr>td:nth-child(2) {
+            background-color: #f9fae6;
+        }
+
+        .river-volume>tbody>tr>td:nth-child(2) {
+            background-color: #e6fae9;
+        }
+
+        .card-body>h2 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Самые длинные и полноводные реки России</h1>
+        </header>
+
+        <div class="content">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Самые длинные реки России</h2>
+                    <table class="material-table river-len">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Река</th>
+                                <th>Длина<br>(км)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Лена</td>
+                                <td>4294</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Обь</td>
+                                <td>3650</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Волга</td>
+                                <td>3530</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Енисей</td>
+                                <td>3487</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Амур</td>
+                                <td>2824</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Колыма</td>
+                                <td>2129</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Дон</td>
+                                <td>1870</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Индигирка</td>
+                                <td>1726</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Северная Двина</td>
+                                <td>744</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Хатанга</td>
+                                <td>227</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h2>Самые полноводные реки России</h2>
+                    <table class="material-table river-volume">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Река</th>
+                                <th>Средний расход воды<br>(м<sup>3</sup> / с)</th>
+                                <th>Годовой сток<br>(км<sup>3</sup> / год)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Енисей</td>
+                                <td>19,800</td>
+                                <td>624</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Лена</td>
+                                <td>16,350</td>
+                                <td>515</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Обь</td>
+                                <td>12,300</td>
+                                <td>394</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Амур</td>
+                                <td>11,400</td>
+                                <td>359</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Волга</td>
+                                <td>8,060</td>
+                                <td>254</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Печора</td>
+                                <td>4,100</td>
+                                <td>129</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Колыма</td>
+                                <td>3,800</td>
+                                <td>120</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Северная Двина</td>
+                                <td>3,490</td>
+                                <td>110</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Нева</td>
+                                <td>2,500</td>
+                                <td>79</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Индигирка</td>
+                                <td>1,570</td>
+                                <td>50</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+        <footer class="footer">
+            <p>Таблицы "Самые длинные реки России" и "Самые полноводные реки России"</p>
+            <p>Антонов Павел, 8`А` класс, МБОУ Бутовская СОШ № 1 &copy; 21-12-2025</p>
+        </footer>
+</body>
+
+</html>
