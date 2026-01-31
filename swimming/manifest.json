@@ -1,0 +1,20 @@
+{
+  "name": "Список для плавания",
+  "short_name": "Плавание",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#e0f7fa",
+  "theme_color": "#0097a7",
+  "icons": [
+    {
+      "src": "underwater2.jpg",
+      "sizes": "192x192",
+      "type": "image/jpg"
+    },
+    {
+      "src": "underwater2.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg"
+    }
+  ]
+}

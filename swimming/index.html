@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <!-- Создано с помощью deepseek -->
     <meta charset="UTF-8">
@@ -10,28 +11,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- Material Symbols -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap">
+    <link rel="manifest" href="manifest.json">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Roboto', sans-serif;
             /* background: linear-gradient(135deg, #e0f7fa 0%, #80deea 100%); */
             background-image: url("underwater2.jpg");
             background-size: 100%;
             background-position: cover;
-            
+
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-        
+
         .card-container {
             width: 100%;
             max-width: 700px;
@@ -40,7 +43,7 @@
             overflow: hidden;
             background-color: white;
         }
-        
+
         .card-header {
             background: linear-gradient(to right, #006978, #0097a7);
             color: white;
@@ -51,7 +54,7 @@
             flex-direction: column;
             align-items: center;
         }
-       
+
         /* Волнообразный бордер */
         .wave-border {
             position: absolute;
@@ -62,34 +65,37 @@
             overflow: hidden;
             line-height: 0;
         }
-        
+
         .wave-border svg {
             position: relative;
             display: block;
             width: calc(100% + 50px);
             height: 20px;
         }
-        
+
         .wave-border .shape-fill {
             fill: #FFFFFF;
         }
-        
+
         .header-icon {
             font-size: 48px;
             margin-bottom: 16px;
             opacity: 0.9;
             animation: float 3s ease-in-out infinite;
         }
-        
+
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0);
             }
+
             50% {
                 transform: translateY(-5px);
             }
         }
-        
+
         .card-title {
             font-size: 2.2rem;
             font-weight: 500;
@@ -98,12 +104,12 @@
             align-items: center;
             gap: 15px;
         }
-        
+
         .title-icon {
             font-size: 2.5rem;
             opacity: 0.9;
         }
-        
+
         .card-subtitle {
             font-size: 1.1rem;
             opacity: 0.9;
@@ -112,17 +118,17 @@
             margin: 0 auto;
             line-height: 1.5;
         }
-        
+
         .card-content {
             padding: 32px;
             background-color: white;
         }
-        
+
         .custom-list {
             list-style-type: none;
             padding: 0;
         }
-        
+
         .list-item {
             display: flex;
             align-items: center;
@@ -133,28 +139,28 @@
             margin-bottom: 8px;
             cursor: pointer;
         }
-        
+
         .list-item:hover {
             background-color: #f0fdff;
             padding-left: 24px;
             box-shadow: 0 4px 12px rgba(0, 151, 167, 0.1);
             transform: translateY(-2px);
         }
-        
+
         .list-item.checked {
             background-color: #f1f8e9;
             border-left: 4px solid #4caf50;
         }
-        
+
         .list-item.checked:hover {
             background-color: #e8f5e9;
         }
-        
+
         .list-item:last-child {
             border-bottom: none;
             margin-bottom: 0;
         }
-        
+
         .list-marker {
             width: 60px;
             height: 60px;
@@ -167,51 +173,51 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
         }
-        
+
         .list-item:hover .list-marker {
             transform: scale(1.1);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
         }
-        
+
         .list-item.checked .list-marker {
             opacity: 0.8;
             transform: scale(0.95);
         }
-        
+
         .marker-swimsuit {
             background: linear-gradient(135deg, #00bcd4, #4dd0e1);
         }
-        
+
         .marker-cap {
             background: linear-gradient(135deg, #ff9800, #ffb74d);
         }
-        
+
         .marker-slippers {
             background: linear-gradient(135deg, #8e24aa, #ba68c8);
         }
-        
+
         .marker-goggles {
             background: linear-gradient(135deg, #43a047, #66bb6a);
         }
-        
+
         .marker-towel {
             background: linear-gradient(135deg, #fb8c00, #ffa726);
         }
-        
+
         .marker-shampoo {
             background: linear-gradient(135deg, #5c6bc0, #7986cb);
         }
-        
+
         .marker-image {
             width: 36px;
             height: 36px;
             filter: brightness(0) invert(1);
         }
-        
+
         .list-item.checked .marker-image {
             filter: brightness(0) invert(1) opacity(0.7);
         }
-        
+
         .list-text {
             font-size: 1.3rem;
             color: #263238;
@@ -219,13 +225,13 @@
             flex-grow: 1;
             transition: all 0.3s ease;
         }
-        
+
         .list-item.checked .list-text {
             color: #2e7d32;
             text-decoration: line-through;
             text-decoration-thickness: 2px;
         }
-        
+
         .item-check {
             width: 28px;
             height: 28px;
@@ -237,20 +243,21 @@
             transition: all 0.2s ease;
             margin-left: 16px;
             flex-shrink: 0;
-            pointer-events: none; /* Отключаем события мыши для самого чекбокса */
+            pointer-events: none;
+            /* Отключаем события мыши для самого чекбокса */
         }
-        
+
         .item-check.checked {
             background-color: #4caf50;
         }
-        
+
         .item-check.checked::after {
             content: "✓";
             color: white;
             font-weight: bold;
             font-size: 16px;
         }
-        
+
         .card-footer {
             background-color: #f5fdff;
             padding: 24px 32px;
@@ -259,7 +266,7 @@
             align-items: center;
             border-top: 1px solid #e0f2f1;
         }
-        
+
         .items-count {
             font-size: 1.1rem;
             color: #546e7a;
@@ -267,12 +274,12 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .count-icon {
             font-size: 1.3rem;
             opacity: 0.7;
         }
-        
+
         .mui-button {
             background-color: #0097a7;
             color: white;
@@ -291,22 +298,22 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .mui-button:hover {
             background-color: #006978;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 151, 167, 0.4);
         }
-        
+
         .mui-button:active {
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 151, 167, 0.3);
         }
-        
+
         .button-icon {
             font-size: 1.2rem;
         }
-        
+
         .progress-container {
             width: 100%;
             background-color: #e0f2f1;
@@ -315,7 +322,7 @@
             margin-top: 16px;
             overflow: hidden;
         }
-        
+
         .progress-bar {
             height: 100%;
             background: linear-gradient(to right, #4dd0e1, #0097a7);
@@ -333,116 +340,124 @@
             color: #555;
             border-left: 4px solid #1976d2;
         }
+
         .bus-number {
             color: orangered;
         }
-       
+
         @media (max-width: 700px) {
             .card-container {
                 border-radius: 16px;
             }
-            
+
             .card-header {
                 padding: 24px 20px;
             }
-            
+
             .header-icon {
                 font-size: 40px;
                 margin-bottom: 12px;
             }
-            
+
             .card-title {
                 font-size: 1.8rem;
                 flex-direction: column;
                 gap: 8px;
             }
-            
+
             .title-icon {
                 font-size: 2rem;
             }
-            
+
             .card-subtitle {
                 font-size: 1rem;
                 max-width: 90%;
             }
-            
+
             .card-content {
                 padding: 24px 20px;
             }
-            
+
             .list-item {
                 padding: 16px 12px;
             }
-            
+
             .list-marker {
                 width: 50px;
                 height: 50px;
                 margin-right: 18px;
             }
-            
+
             .marker-image {
                 width: 28px;
                 height: 28px;
             }
-            
+
             .list-text {
                 font-size: 1.1rem;
             }
-            
+
             .card-footer {
                 flex-direction: column;
                 gap: 16px;
                 align-items: stretch;
             }
-            
+
             .mui-button {
                 width: 100%;
                 justify-content: center;
             }
         }
-        
+
         /* Стили для Material Symbols */
         .material-symbols-outlined {
             font-variation-settings:
-            'FILL' 0,
-            'wght' 400,
-            'GRAD' 0,
-            'opsz' 48
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 48
         }
     </style>
 </head>
+
 <body>
     <div class="card-container">
         <div class="card-header">
             <span class="material-symbols-outlined header-icon">
                 pool
             </span>
-            
+
             <h1 class="card-title">
                 <!-- <span class="material-symbols-outlined title-icon">
                     pool
                 </span> -->
                 Список для плавания
             </h1>
-            <p class="card-subtitle">Все необходимое для бассейна. <br /> Отметьте собранные вещи, кликая на пункты списка.</p>
+            <p class="card-subtitle">Все необходимое для бассейна. <br /> Отметьте собранные вещи, кликая на пункты
+                списка.</p>
 
             <!-- Волнообразный бордер -->
             <div class="wave-border">
-                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                    preserveAspectRatio="none">
+                    <path
+                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                        class="shape-fill"></path>
                 </svg>
             </div>
         </div>
-        
+
         <div class="card-content">
             <ul class="custom-list">
                 <li class="list-item" data-item="swimsuit">
                     <div class="list-marker marker-swimsuit">
                         <!-- Имитация изображения плавок -->
                         <svg class="marker-image" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7 7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7V17C17 19.7614 14.7614 22 12 22C9.23858 22 7 19.7614 7 17V7Z" stroke="white" stroke-width="1.5"/>
-                            <path d="M7 7H17M7 7V4M17 7V4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M10 12H14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <path
+                                d="M7 7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7V17C17 19.7614 14.7614 22 12 22C9.23858 22 7 19.7614 7 17V7Z"
+                                stroke="white" stroke-width="1.5" />
+                            <path d="M7 7H17M7 7V4M17 7V4" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M10 12H14" stroke="white" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
                     </div>
                     <span class="list-text">Плавки</span>
@@ -452,10 +467,12 @@
                     <div class="list-marker marker-cap">
                         <!-- Имитация изображения шапочки -->
                         <svg class="marker-image" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 5C7.58172 5 4 7.68629 4 11V12C4 15.3137 7.58172 18 12 18C16.4183 18 20 15.3137 20 12V11C20 7.68629 16.4183 5 12 5Z" stroke="white" stroke-width="1.5"/>
-                            <path d="M4 11C4 11 5.5 10 12 10C18.5 10 20 11 20 11" stroke="white" stroke-width="1.5"/>
-                            <path d="M8 14V16" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M16 14V16" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <path
+                                d="M12 5C7.58172 5 4 7.68629 4 11V12C4 15.3137 7.58172 18 12 18C16.4183 18 20 15.3137 20 12V11C20 7.68629 16.4183 5 12 5Z"
+                                stroke="white" stroke-width="1.5" />
+                            <path d="M4 11C4 11 5.5 10 12 10C18.5 10 20 11 20 11" stroke="white" stroke-width="1.5" />
+                            <path d="M8 14V16" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M16 14V16" stroke="white" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
                     </div>
                     <span class="list-text">Шапочка</span>
@@ -465,10 +482,12 @@
                     <div class="list-marker marker-slippers">
                         <!-- Имитация изображения тапок -->
                         <svg class="marker-image" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19 9V19C19 20.6569 17.6569 22 16 22H8C6.34315 22 5 20.6569 5 19V9" stroke="white" stroke-width="1.5"/>
-                            <path d="M5 9H19V7C19 5.34315 17.6569 4 16 4H8C6.34315 4 5 5.34315 5 7V9Z" stroke="white" stroke-width="1.5"/>
-                            <path d="M12 4V9" stroke="white" stroke-width="1.5"/>
-                            <path d="M9 13H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M19 9V19C19 20.6569 17.6569 22 16 22H8C6.34315 22 5 20.6569 5 19V9" stroke="white"
+                                stroke-width="1.5" />
+                            <path d="M5 9H19V7C19 5.34315 17.6569 4 16 4H8C6.34315 4 5 5.34315 5 7V9Z" stroke="white"
+                                stroke-width="1.5" />
+                            <path d="M12 4V9" stroke="white" stroke-width="1.5" />
+                            <path d="M9 13H15" stroke="white" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
                     </div>
                     <span class="list-text">Тапки</span>
@@ -478,11 +497,15 @@
                     <div class="list-marker marker-goggles">
                         <!-- Имитация изображения очков -->
                         <svg class="marker-image" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12C10 14.2091 8.20914 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C8.20914 8 10 9.79086 10 12Z" stroke="white" stroke-width="1.5"/>
-                            <path d="M22 12C22 14.2091 20.2091 16 18 16C15.7909 16 14 14.2091 14 12C14 9.79086 15.7909 8 18 8C20.2091 8 22 9.79086 22 12Z" stroke="white" stroke-width="1.5"/>
-                            <path d="M10 12H14" stroke="white" stroke-width="1.5"/>
-                            <path d="M6 16L5 20" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M18 16L19 20" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <path
+                                d="M10 12C10 14.2091 8.20914 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C8.20914 8 10 9.79086 10 12Z"
+                                stroke="white" stroke-width="1.5" />
+                            <path
+                                d="M22 12C22 14.2091 20.2091 16 18 16C15.7909 16 14 14.2091 14 12C14 9.79086 15.7909 8 18 8C20.2091 8 22 9.79086 22 12Z"
+                                stroke="white" stroke-width="1.5" />
+                            <path d="M10 12H14" stroke="white" stroke-width="1.5" />
+                            <path d="M6 16L5 20" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M18 16L19 20" stroke="white" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
                     </div>
                     <span class="list-text">Очки</span>
@@ -492,12 +515,14 @@
                     <div class="list-marker marker-towel">
                         <!-- Имитация изображения полотенца -->
                         <svg class="marker-image" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="white" stroke-width="1.5"/>
-                            <path d="M7 9L17 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M7 13L17 13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M7 17L13 17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M5 8V16" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M19 8V16" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <path
+                                d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z"
+                                stroke="white" stroke-width="1.5" />
+                            <path d="M7 9L17 9" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M7 13L17 13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M7 17L13 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M5 8V16" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M19 8V16" stroke="white" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
                     </div>
                     <span class="list-text">Полотенце</span>
@@ -507,20 +532,22 @@
                     <div class="list-marker marker-shampoo">
                         <!-- Имитация изображения шампуня -->
                         <svg class="marker-image" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 4H15V6C15 7.10457 14.1046 8 13 8H11C9.89543 8 9 7.10457 9 6V4Z" stroke="white" stroke-width="1.5"/>
-                            <path d="M8 4H16L17 20H7L8 4Z" stroke="white" stroke-width="1.5"/>
-                            <path d="M10 10V14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M14 10V14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M12 18V22" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M9 4H15V6C15 7.10457 14.1046 8 13 8H11C9.89543 8 9 7.10457 9 6V4Z" stroke="white"
+                                stroke-width="1.5" />
+                            <path d="M8 4H16L17 20H7L8 4Z" stroke="white" stroke-width="1.5" />
+                            <path d="M10 10V14" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M14 10V14" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M12 18V22" stroke="white" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
                     </div>
                     <span class="list-text">Шампунь</span>
                     <div class="item-check" data-item="shampoo"></div>
                 </li>
             </ul>
-            
+
             <div class="image-note">
-                <strong>Проверить: <br> </strong> карту <code>Тройка</code>; <code>Ключ</code>  от квартиры; наличие денег на карте / телефоне. <br>Номер автобуса <strong  class="bus-number">1202</strong>
+                <strong>Проверить: <br> </strong> карту <code>Тройка</code>; <code>Ключ</code> от квартиры; наличие
+                денег на карте / телефоне. <br>Номер автобуса <strong class="bus-number">1202</strong>
             </div>
 
             <div class="progress-container">
@@ -528,7 +555,7 @@
             </div>
 
         </div>
-        
+
         <div class="card-footer">
             <div class="items-count">
                 <span class="material-symbols-outlined count-icon">
@@ -544,38 +571,50 @@
             </button>
         </div>
     </div>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/swimming/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
             const listItems = document.querySelectorAll('.list-item');
             const checkedCountElement = document.getElementById('checkedCount');
             const progressBar = document.getElementById('progressBar');
             const actionButton = document.getElementById('actionButton');
-            
+
             let checkedCount = 0;
-            
+
             // Инициализация из localStorage
             listItems.forEach(item => {
                 const itemName = item.getAttribute('data-item');
                 const isChecked = localStorage.getItem(itemName) === 'true';
-                
+
                 if (isChecked) {
                     item.classList.add('checked');
                     const checkbox = item.querySelector('.item-check');
                     checkbox.classList.add('checked');
                     checkedCount++;
                 }
-                
+
                 // Обработчик клика на весь элемент списка
-                item.addEventListener('click', function(e) {
+                item.addEventListener('click', function (e) {
                     // Проверяем, не кликнули ли мы на кнопку "Собрать рюкзак" или другой интерактивный элемент
                     if (e.target.closest('.mui-button')) {
                         return;
                     }
-                    
+
                     const itemName = this.getAttribute('data-item');
                     const checkbox = this.querySelector('.item-check');
-                    
+
                     if (this.classList.contains('checked')) {
                         // Снимаем отметку
                         this.classList.remove('checked');
@@ -589,9 +628,9 @@
                         localStorage.setItem(itemName, 'true');
                         checkedCount++;
                     }
-                    
+
                     updateUI();
-                    
+
                     // Анимация нажатия
                     this.style.transform = "scale(0.98)";
                     setTimeout(() => {
@@ -599,15 +638,15 @@
                     }, 150);
                 });
             });
-            
+
             function updateUI() {
                 // Обновляем счетчик
                 checkedCountElement.textContent = checkedCount;
-                
+
                 // Обновляем прогресс-бар
                 const progressPercentage = (checkedCount / 6) * 100;
                 progressBar.style.width = `${progressPercentage}%`;
-                
+
                 // Обновляем текст кнопки
                 if (checkedCount === 6) {
                     actionButton.innerHTML = '<span class="material-symbols-outlined button-icon">check_circle</span>Всё собрано!';
@@ -621,9 +660,9 @@
                     actionButton.innerHTML = `<span class="material-symbols-outlined button-icon">checklist</span>Собрано ${checkedCount}/6`;
                 }
             }
-            
+
             // Обработка нажатия кнопки
-            actionButton.addEventListener('click', function() {
+            actionButton.addEventListener('click', function () {
                 if (checkedCount === 6) {
                     // Если все отмечено - сбросить все
                     listItems.forEach(item => {
@@ -633,18 +672,18 @@
                         const itemName = item.getAttribute('data-item');
                         localStorage.setItem(itemName, 'false');
                     });
-                    
+
                     checkedCount = 0;
                     actionButton.innerHTML = '<span class="material-symbols-outlined button-icon">beach_access</span>Собрать рюкзак';
                     actionButton.style.backgroundColor = "#0097a7";
                     actionButton.style.boxShadow = "0 4px 8px rgba(0, 151, 167, 0.3)";
-                    
+
                     // Анимация сброса
                     this.style.transform = "scale(0.95)";
                     setTimeout(() => {
                         this.style.transform = "scale(1)";
                     }, 150);
-                    
+
                     updateUI();
                 } else {
                     // Если не все отмечено - отметить все
@@ -657,28 +696,28 @@
                             localStorage.setItem(itemName, 'true');
                         }
                     });
-                    
+
                     checkedCount = 6;
-                    
+
                     // Анимация отметки
                     this.style.transform = "scale(1.05)";
                     setTimeout(() => {
                         this.style.transform = "scale(1)";
                     }, 150);
-                    
+
                     updateUI();
                 }
             });
-            
+
             // Инициализация UI
             updateUI();
-            
+
             // Добавляем анимацию при загрузке
             setTimeout(() => {
                 document.querySelector('.card-container').style.opacity = "1";
                 document.querySelector('.card-container').style.transform = "translateY(0)";
             }, 100);
-            
+
             // Изначальные стили для анимации появления
             document.querySelector('.card-container').style.opacity = "0";
             document.querySelector('.card-container').style.transform = "translateY(20px)";
@@ -701,4 +740,5 @@
         });
     </script>
 </body>
+
 </html>
