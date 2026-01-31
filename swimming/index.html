@@ -5,6 +5,17 @@
     <!-- Создано с помощью deepseek -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="underwater2.jpg">
+    <link rel="apple-touch-icon" sizes="152x152" href="underwater2.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="underwater2.jpg">
+    <link rel="apple-touch-icon" sizes="167x167" href="underwater2.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpg" sizes="32x32" href="underwater2.jpg">
+    <link rel="icon" type="image/jpg" sizes="16x16" href="underwater2.jpg">
+
     <title>Список вещей для плавания</title>
     <!-- Material-UI Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -406,6 +417,15 @@
             .mui-button {
                 width: 100%;
                 justify-content: center;
+            }
+        }
+
+        /* Скрыть стандартные элементы браузера */
+        @media (display-mode: standalone) {
+            body {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                user-select: none;
             }
         }
 
