@@ -71,7 +71,7 @@
             position: absolute;
             transform: rotate(180deg);
             bottom: 0;
-            width: 110%;
+            width: 100%;
             height: 40px;
             overflow: hidden;
             line-height: 0;
@@ -79,6 +79,7 @@
 
         .wave-border svg {
             position: relative;
+            animation: wavemove 4s ease-in-out infinite;
             display: block;
             width: calc(100% + 50px);
             height: 20px;
@@ -88,6 +89,24 @@
             fill: #FFFFFF;
         }
 
+        /* Анимация волны */
+        @keyframes wavemove {
+            0%,
+            100% {
+                transform: translateX(0px);
+            }
+            25% {
+                transform: translateX(-20px);
+            }
+            50% {
+                transform: translateX(0px);
+            }
+            75% {
+                transform: translateX(-40px);
+            }
+        }
+
+
         .header-icon {
             font-size: 48px;
             margin-bottom: 16px;
@@ -96,12 +115,10 @@
         }
 
         @keyframes float {
-
             0%,
             100% {
                 transform: translateY(0);
             }
-
             50% {
                 transform: translateY(-5px);
             }
@@ -749,21 +766,6 @@
             document.querySelector('.card-container').style.opacity = "0";
             document.querySelector('.card-container').style.transform = "translateY(20px)";
             document.querySelector('.card-container').style.transition = "opacity 0.5s ease, transform 0.5s ease";
-
-            // Анимация волны
-            const waveBorder = document.querySelector('.wave-border svg');
-            if (waveBorder) {
-                waveBorder.style.transition = "transform 1s ease";
-                setInterval(() => {
-                    waveBorder.style.transform = "translateX(-35px)";
-                    setTimeout(() => {
-                        waveBorder.style.transform = "translateX(35px)";
-                    }, 2000);
-                    setTimeout(() => {
-                        waveBorder.style.transform = "translateX(0)";
-                    }, 4000);
-                }, 3000);
-            }
         });
     </script>
 </body>
