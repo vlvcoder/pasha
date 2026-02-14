@@ -46,7 +46,13 @@ h2 {
 }
 
 .inplaceicon {
-  width: 32px;
+  height: 24px;
+}
+
+.image-classnumber {
+  height: 1.4em;
+  vertical-align: sub;
+  display: inline-block;
 }
 
 .carousel {
@@ -92,7 +98,7 @@ time {
 
 a[href] {
   color: #0099ef;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .avatar {
@@ -180,9 +186,11 @@ figure.city img {
   width: 280px;
   margin-right: 10px;
 }
+
 figure.city figcaption {
   width: 280px;
 }
+
 figure.city a[href] {
   color: white;
   text-decoration: underline;
@@ -192,60 +200,79 @@ figure.city a[href] {
 figure.city.evpatoria img {
   border: 8px solid #ff9966;
 }
+
 figure.city.evpatoria figcaption {
   background-color: #ff9966;
 }
+
 figure.city.sovgavan img {
   border: 8px solid #99dd66;
 }
+
 figure.city.sovgavan figcaption {
   background-color: #99dd66;
 }
+
 figure.city.minsk img {
   border: 8px solid #4470c4;
 }
+
 figure.city.minsk figcaption {
   background-color: #4470c4;
 }
+
 figure.city.nn img {
   border: 8px solid burlywood;
 }
+
 figure.city.nn figcaption {
   background-color: burlywood;
 }
+
 figure.city.ryazan img {
   border: 8px solid gold;
 }
+
 figure.city.ryazan figcaption {
   background-color: gold;
 }
+
 figure.city.samara img {
   border: 8px solid darkturquoise;
 }
+
 figure.city.samara figcaption {
   background-color: darkturquoise;
 }
+
 figure.city.sp img {
   border: 8px solid #aa44dd;
 }
+
 figure.city.sp figcaption {
   background-color: #aa44dd;
 }
+
 figure.city.kazan img {
   border: 8px solid olivedrab;
 }
+
 figure.city.kazan figcaption {
   background-color: olivedrab;
 }
+
 figure.city.kg img {
   border: 8px solid darkorange;
 }
+
 figure.city.kg figcaption {
   background-color: darkorange;
 }
+
 figure.city.sochi img {
   border: 8px solid rgb(73, 150, 108);
 }
+
 figure.city.sochi figcaption {
   background-color: rgb(73, 150, 108);
 }
@@ -253,6 +280,7 @@ figure.city.sochi figcaption {
 figure.city.novg img {
   border: 8px solid rgb(53, 117, 140);
 }
+
 figure.city.novg figcaption {
   background-color: rgb(53, 117, 140);
 }
@@ -275,10 +303,7 @@ footer {
   margin-top: 30px;
 }
 
-.hobbies {
-}
-
-.hobbies-list {
+ul {
   /*padding: 0;*/
   list-style: none;
 }
