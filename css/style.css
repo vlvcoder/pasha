@@ -70,7 +70,7 @@ header {
 @media (max-width: 768px) {
   header {
     justify-content: space-between;
-    border-bottom-right-radius: 0;
+    /* border-bottom-right-radius: 0; */
   }
 
   .page {
