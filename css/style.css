@@ -67,22 +67,6 @@ header {
   animation: fadeIn .5s ease-in-out;
 }
 
-@media (max-width: 768px) {
-  header {
-    justify-content: space-between;
-    /* border-bottom-right-radius: 0; */
-  }
-
-  .page {
-    background-image: none;
-  }
-
-  .page::before {
-    background: linear-gradient(to right, white, white, white, white, transparent, #D8E4FB);
-  }
-}
-
-
 main {
   padding: 24px 30px;
 }
@@ -109,6 +93,25 @@ h2 {
   font-family: "Comic Sans MS";
   line-height: normal;
   color: #4470c4;
+}
+
+@media (max-width: 768px) {
+  header {
+    justify-content: space-between;
+    /* border-bottom-right-radius: 0; */
+  }
+
+  hr {
+    width: 80%;
+  }
+
+  .page {
+    background-image: none;
+  }
+
+  .page::before {
+    background: linear-gradient(to right, white, white, white, white, transparent, #D8E4FB);
+  }
 }
 
 .myname {
