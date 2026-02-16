@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie characters · full featured</title>
+    <!-- Fonts & Icons (Roboto + Material Icons) -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- MUI core CSS (equivalent to @mui/material + styling) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/material@5.15.20/umd/material-ui.production.min.css">
+    <style>
+        * {
+            margin: 0;
+            box-sizing: border-box;
+            /* --primary-color: #b93404;
+            --primary-color-hover: #a02d03; */
+            --primary-color: #cb6104;
+            --primary-color-hover: #8d4405;
+        }
+
+        body {
+            background-color: #f5f5f7;
+            font-family: 'Roboto', sans-serif;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #blockMain {
+            display: none;
+        }
+
+        .mui-container {
+            max-width: 1400px;
+            width: 100%;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 32px 28px;
+        }
+
+        h2 {
+            font-weight: 400;
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 24px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #e9eef2;
+            padding-bottom: 18px;
+        }
+
+        h2 .material-icons {
+            font-size: 36px;
+            color: var(--primary-color);
+        }
+
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: center;
+            margin-bottom: 36px;
+            background: #f8fafd;
+            padding: 16px 24px;
+            border-radius: 48px;
+            border: 1px solid #dce3eb;
+        }
+
+        .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #335;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .filter-label .material-icons {
+            font-size: 22px;
+            color: #4263b5;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .mui-btn {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 40px;
+            padding: 8px 24px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-transform: none;
+            letter-spacing: 0.3px;
+            /* color: #1f2a3f; */
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+        }
+
+        .mui-btn.active {
+            background: var(--primary-color);
+            ;
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .mui-btn.active .material-icons {
+            color: white;
+        }
+
+        .mui-btn:hover {
+            background: #eef3fc;
+            border-color: #8fa8cf;
+        }
+
+        .mui-btn.active:hover {
+            /* background: #1a4faa; */
+            background: var(--primary-color-hover);
+        }
+
+        .search-field {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 40px;
+            border: 1px solid #cbd5e1;
+            padding: 4px 8px 4px 16px;
+            min-width: 260px;
+            flex: 1 1 auto;
+            flex-basis: calc(100% - 100px);
+        }
+
+        .search-field .material-icons {
+            color: #7e8b9f;
+            font-size: 22px;
+        }
+
+        .search-field input {
+            border: none;
+            padding: 12px 10px;
+            font-size: 1rem;
+            width: 100%;
+            background: transparent;
+            outline: none;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .search-field input::placeholder {
+            color: #9aa9bb;
+            font-weight: 300;
+        }
+
+        .search-field button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5f6f87;
+        }
+
+        .search-field button:hover {
+            background: #f0f3f8;
+        }
+
+        .mui-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            margin-top: 8px;
+        }
+
+        .mui-table thead th {
+            text-align: left;
+            padding: 16px 18px;
+            background: #f1f4f9;
+            color: #1f2a44;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            border-bottom: 2px solid #ccd9e8;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.1s;
+        }
+
+        .mui-table thead th:hover {
+            background: #e3e9f2;
+        }
+
+        .mui-table thead th:first-child {
+            border-radius: 20px 0 0 20px;
+        }
+
+        .mui-table thead th:last-child {
+            border-radius: 0 20px 20px 0;
+        }
+
+        .mui-table thead th .sort-icon {
+            font-size: 18px;
+            vertical-align: middle;
+            margin-left: 6px;
+            opacity: 0.7;
+        }
+
+        .mui-table tbody tr {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+            transition: 0.1s;
+        }
+
+        .mui-table tbody tr:hover {
+            background: rgb(251, 227, 183, .2);
+        }
+
+        .mui-table tbody tr .divorce,
+        .mui-table tbody tr .marry {
+            visibility: hidden;
+        }
+
+        .mui-table tbody tr:hover .divorce,
+        .mui-table tbody tr:hover .marry {
+            visibility: visible;
+        }
+
+        .mui-table tbody td {
+            padding: 18px 18px;
+            font-size: 1rem;
+            border-top: 1px solid #ecf1f6;
+            border-bottom: 1px solid #ecf1f6;
+            color: #1e2a3a;
+            vertical-align: middle;
+        }
+
+        .mui-table tbody td:first-child {
+            border-left: 1px solid #ecf1f6;
+            border-radius: 20px 0 0 20px;
+        }
+
+        .mui-table tbody td:last-child {
+            border-right: 1px solid #ecf1f6;
+            border-radius: 0 20px 20px 0;
+        }
+
+        .gender-icon {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: capitalize;
+        }
+
+        .material-icons.gender-male {
+            color: #2e6edf;
+        }
+
+        .material-icons.gender-female {
+            color: #d44e9c;
+        }
+
+        .married-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #edf3ed;
+            color: #1f5f2b;
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .married-badge .material-icons {
+            font-size: 18px;
+        }
+
+        .married-badge.false {
+            background: #f1f1f4;
+            color: #5e5f75;
+        }
+
+        .spouse-name {
+            font-weight: 500;
+            color: #0b3954;
+        }
+
+        .spouse-name::before {
+            content: "💍 ";
+            font-size: 1.1rem;
+            filter: grayscale(0.3);
+        }
+
+        .no-spouse {
+            color: #8a94a8;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .action-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: 0.15s;
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+
+        .action-btn.marry {
+            background: #f1d6e4;
+            color: #a1356b;
+            border-color: #d9a6c0;
+        }
+
+        .action-btn.marry:hover {
+            background: #e9c2d6;
+        }
+
+        .action-btn.divorce {
+            background: #fff0d9;
+            color: #aa5d2b;
+            border-color: #f3c9a0;
+        }
+
+        .action-btn.divorce:hover {
+            background: #fae4c5;
+        }
+
+        .action-btn .material-icons {
+            font-size: 18px;
+        }
+
+        .table-footer-note {
+            margin-top: 24px;
+            color: #576c85;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px dashed #cbd6e6;
+            padding-top: 16px;
+        }
+
+        /* Modal / Dialog styles (MUI-like) */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+        }
+
+        .dialog-paper {
+            background-color: #fff;
+            border-radius: 28px;
+            width: 520px;
+            max-width: 94%;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+            padding: 28px 32px;
+            font-family: 'Roboto', sans-serif;
+            animation: dialogFade 0.2s ease;
+        }
+
+        @keyframes dialogFade {
+            from {
+                opacity: 0.6;
+                transform: scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .dialog-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.7rem;
+            font-weight: 400;
+            color: #0b1e3c;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 12px;
+        }
+
+        .dialog-title .material-icons {
+            font-size: 32px;
+            color: var(--primary-color);
+        }
+
+        .dialog-field {
+            margin-bottom: 22px;
+        }
+
+        .dialog-field label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #3b4e6b;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .dialog-field input,
+        .dialog-field select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 1rem;
+            border: 1px solid #cad1dc;
+            border-radius: 20px;
+            background: #ffffff;
+            transition: 0.15s;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .dialog-field select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233b4e6b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+        }
+
+        .dialog-field input:focus,
+        .dialog-field select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(11, 87, 208, 0.2);
+        }
+
+        .dialog-field input:read-only,
+        .readonly-field {
+            background: #f4f7fb;
+            border: 1px solid #dbe1ea;
+            color: #27404f;
+            font-weight: 500;
+            cursor: default;
+        }
+
+        .readonly-field {
+            padding: 14px 16px;
+            border-radius: 20px;
+            background: #f4f7fb;
+            border: 1px solid #dbe1ea;
+            color: #1f3a57;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .readonly-field .material-icons {
+            font-size: 1.2rem;
+            color: #5f7d9c;
+        }
+
+        .dialog-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .dialog-btn {
+            border: none;
+            background: transparent;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .dialog-btn.cancel {
+            background: #f1f3f5;
+            color: #2c3e5c;
+        }
+
+        .dialog-btn.cancel:hover {
+            background: #e2e6ec;
+        }
+
+        .dialog-btn.save {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(11, 87, 208, 0.3);
+        }
+
+        .dialog-btn.save:hover {
+            background: #1a4faa;
+        }
+
+        .dialog-btn.danger {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .dialog-btn.danger:hover {
+            background: #b71c1c;
+        }
+
+        .inline-hint {
+            font-size: 0.8rem;
+            color: #6a7f9f;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .warning-text {
+            color: #b85c1a;
+            background: #fff5e6;
+            padding: 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .warning-text .material-icons {
+            font-size: 28px;
+            color: #e67e22;
+        }
+
+        .filter-stub {
+            flex-basis: 50px;
+            height: 0;
+        }
+
+        .source-list {
+            line-height: 2rem;
+            list-style-type: none;
+        }
+
+        .server-select {
+            display: flex;
+            gap: 80px;
+            align-items: baseline;
+        }
+
+        #selectServerDiv {
+            display: flex;
+            gap: 5px;
+            visibility: hidden;
+        }
+
+        #serverAddressInput {
+            width: 400px;
+        }
+
+        #serverSelectBtn {
+            height: 54px;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            color: #9aa9bb;
+            font-weight: 300;
+        }
+
+        .hasErrors {
+            color: #d62710;
+        }
+
+        @media (max-width: 768px) {
+            .filter-stub {
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mui-container">
+        <div class="app-header">
+            <h2>
+                <span class="material-icons">movie_filter</span>
+                Брачное агенство для киногероев
+            </h2>
+            <span id="sourceInfo"></span>
+        </div>
+
+        <div id="blockSourceSelect">
+            <h3>Select source:</h3>
+            <ul class="source-list">
+                <li>
+                    <a id="sourceStaticRef" href="">
+                        Local static
+                    </a>
+                </li>
+                <li>
+                    <div class="server-select">
+                        <a id="sourceServerRef" href="">
+                            Server
+                        </a>
+                        <div id="selectServerDiv">
+                            <div class="search-field">
+                                <input type="text" id="serverAddressInput" placeholder="input server address"
+                                    autocomplete="off">
+                            </div>
+                            <button id="serverSelectBtn" class="mui-btn">
+                                Go
+                                <span class="material-icons">arrow_forward_ios</span>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div id="blockMain">
+            <!-- FILTER SECTION with search -->
+            <div class="filter-section">
+                <span class="filter-label"><span class="material-icons">filter_alt</span>Filter:</span>
+
+                <!-- Text search input -->
+                <div class="search-field">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="searchInput" placeholder="Search by name or surname..." autocomplete="off">
+                    <button id="clearSearchBtn" title="Clear">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                <!-- <div style="flex-basis: 100%; height: 0;"></div> -->
+
+                <div class="btn-group" id="genderFilterGroup">
+                    <button class="mui-btn active" data-filter="gender-all"><span class="material-icons">public</span>
+                        All</button>
+                    <button class="mui-btn" data-filter="gender-male"><span class="material-icons">man</span>
+                        Male</button>
+                    <button class="mui-btn" data-filter="gender-female"><span class="material-icons">woman</span>
+                        Female</button>
+                </div>
+
+                <div class="filter-stub"></div>
+
+                <div class="btn-group" id="maritalFilterGroup">
+                    <button class="mui-btn active" data-filter="marital-all">
+                        <span class="material-icons">favorite</span>
+                        Any
+                    </button>
+                    <button class="mui-btn" data-filter="married-true"><span class="material-icons">check_circle</span>
+                        Married</button>
+                    <button class="mui-btn" data-filter="married-false"><span class="material-icons">block</span>
+                        Single</button>
+                </div>
+            </div>
+
+            <!-- DYNAMIC TABLE (filled via JS) with sortable headers + action column -->
+            <table class="mui-table" id="characterTable">
+                <thead>
+                    <tr>
+                        <th id="sort-name" data-sort="name">👤 Name & Surname <span class="material-icons sort-icon"
+                                id="icon-name">unfold_more</span></th>
+                        <th id="sort-age" data-sort="age">🎂 Age <span class="material-icons sort-icon"
+                                id="icon-age">unfold_more</span></th>
+                        <th id="sort-gender" data-sort="gender">⚥ Gender <span class="material-icons sort-icon"
+                                id="icon-gender">unfold_more</span></th>
+                        <th>💞 Married</th>
+                        <th>👥 Spouse</th>
+                        <th style="text-align: center;">⚡ Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- javascript will inject rows here -->
+                </tbody>
+            </table>
+
+            <div class="table-footer-note">
+                <span class="material-icons">info</span>
+                <span id="resultCount">29</span> characters — use search, filters, click row to edit, action buttons for
+                marriage/divorce
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT DIALOG -->
+    <div id="editDialog" class="dialog-overlay" style="display: none;">
+        <div class="dialog-paper">
+            <div class="dialog-title">
+                <span class="material-icons">edit_note</span> Edit character
+            </div>
+            <div id="dialogContent">
+                <!-- dynamic fields will be injected -->
+            </div>
+            <div class="dialog-actions">
+                <button class="dialog-btn cancel" id="cancelDialogBtn">CANCEL</button>
+                <button class="dialog-btn save" id="saveDialogBtn">SAVE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MARRY DIALOG (select spouse) -->
+    <div id="marryDialog" class="dialog-overlay" style="display: none;">
+        <div class="dialog-paper">
+            <div class="dialog-title">
+                <span class="material-icons">favorite</span> Choose spouse
+            </div>
+            <div id="marryDialogContent">
+                <!-- dynamic content -->
+            </div>
+            <div class="dialog-actions">
+                <button class="dialog-btn cancel" id="cancelMarryBtn">CANCEL</button>
+                <button class="dialog-btn save" id="confirmMarryBtn">MARRY</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIVORCE CONFIRM DIALOG -->
+    <div id="divorceDialog" class="dialog-overlay" style="display: none;">
+        <div class="dialog-paper">
+            <div class="dialog-title">
+                <span class="material-icons">warning</span> Confirm divorce
+            </div>
+            <div id="divorceDialogContent">
+                <!-- dynamic content -->
+            </div>
+            <div class="dialog-actions">
+                <button class="dialog-btn cancel" id="cancelDivorceBtn">CANCEL</button>
+                <button class="dialog-btn danger" id="confirmDivorceBtn">DIVORCE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // --------------------------------------------------------------
+            // FULL DATA ARRAY
+            // --------------------------------------------------------------
+            let characters = [];
+            const STATIC_CHARACTERS = [
+                {
+                    "id": 1,
+                    "name": "Harry",
+                    "surname": "Potter",
+                    "age": 38,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 2,
+                    "name": "Frodo",
+                    "surname": "Baggins",
+                    "age": 50,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 3,
+                    "name": "Leia",
+                    "surname": "Organa",
+                    "age": 53,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 4,
+                    "name": "Tony",
+                    "surname": "Stark",
+                    "age": 48,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 5,
+                    "name": "Ellen",
+                    "surname": "Ripley",
+                    "age": 37,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 6,
+                    "name": "John",
+                    "surname": "Wick",
+                    "age": 45,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 7,
+                    "name": "Hermione",
+                    "surname": "Granger",
+                    "age": 38,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 8,
+                    "name": "Indiana",
+                    "surname": "Jones",
+                    "age": 54,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 9,
+                    "name": "Katniss",
+                    "surname": "Everdeen",
+                    "age": 26,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 10,
+                    "name": "James",
+                    "surname": "Bond",
+                    "age": 45,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 11,
+                    "name": "Marty",
+                    "surname": "McFly",
+                    "age": 17,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 12,
+                    "name": "Clarice",
+                    "surname": "Starling",
+                    "age": 28,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 13,
+                    "name": "Gomez",
+                    "surname": "Addams",
+                    "age": 45,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 14,
+                    "name": "Sarah",
+                    "surname": "Connor",
+                    "age": 32,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 15,
+                    "name": "Willy",
+                    "surname": "Wonka",
+                    "age": 55,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 16,
+                    "name": "Mia",
+                    "surname": "Wallace",
+                    "age": 29,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 17,
+                    "name": "Rocky",
+                    "surname": "Balboa",
+                    "age": 40,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 18,
+                    "name": "Vito",
+                    "surname": "Corleone",
+                    "age": 63,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 19,
+                    "name": "Forrest",
+                    "surname": "Gump",
+                    "age": 45,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 20,
+                    "name": "Ethan",
+                    "surname": "Hunt",
+                    "age": 42,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 101,
+                    "name": "Ginny",
+                    "surname": "Weasley",
+                    "age": 37,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 102,
+                    "name": "Han",
+                    "surname": "Solo",
+                    "age": 55,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 103,
+                    "name": "Pepper",
+                    "surname": "Potts",
+                    "age": 45,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 104,
+                    "name": "Ron",
+                    "surname": "Weasley",
+                    "age": 38,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 105,
+                    "name": "Peeta",
+                    "surname": "Mellark",
+                    "age": 26,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 106,
+                    "name": "Morticia",
+                    "surname": "Addams",
+                    "age": 43,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 107,
+                    "name": "Marsellus",
+                    "surname": "Wallace",
+                    "age": 45,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 108,
+                    "name": "Adrian",
+                    "surname": "Pennino",
+                    "age": 38,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 109,
+                    "name": "Carmela",
+                    "surname": "Corleone",
+                    "age": 58,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 110,
+                    "name": "Rachel",
+                    "surname": "Greene",
+                    "age": 29,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 111,
+                    "name": "Monica",
+                    "surname": "Geller",
+                    "age": 29,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 112,
+                    "name": "Phoebe",
+                    "surname": "Buffay",
+                    "age": 27,
+                    "gender": "female",
+                    "married": false
+                },
+                {
+                    "id": 113,
+                    "name": "Joey",
+                    "surname": "Tribbiani",
+                    "age": 27,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 114,
+                    "name": "Chandler",
+                    "surname": "Bing",
+                    "age": 31,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 115,
+                    "name": "Ross",
+                    "surname": "Geller",
+                    "age": 31,
+                    "gender": "male",
+                    "married": false
+                },
+                {
+                    "id": 116,
+                    "name": "Mike",
+                    "surname": "Hunnigan",
+                    "age": 30,
+                    "gender": "male",
+                    "married": false
+                }
+            ];
+
+            // ----- Source state -----
+            const STATIC = 'STATIC';
+            let source = '';       // STATIC, '{serverAddress}'
+            const isStatic = () => source === STATIC;
+
+            // ----- Filter state -----
+            const ALL = 'all';
+            let genderFilter = ALL;       // 'all', 'male', 'female'
+            let maritalFilter = ALL;      // 'all', 'married-true', 'married-false'
+            let searchText = '';             // text filter
+
+            // ----- Sort state -----
+            let sortColumn = 'name';          // 'name', 'age', 'gender'
+            let sortDirection = 'asc';         // 'asc' or 'desc'
+
+            // ----- Dialog state -----
+            let currentEditChar = null;
+            let currentMarryChar = null;      // character who will marry
+            let currentDivorceChar = null;     // character who will divorce
+
+            // DOM elements
+            const tbody = document.getElementById('tableBody');
+
+            // Init block
+            const blockSourceSelect = document.getElementById('blockSourceSelect');
+            const blockMain = document.getElementById('blockMain');
+            const sourceInfo = document.getElementById('sourceInfo');
+            const sourceStaticRef = document.getElementById('sourceStaticRef');
+            const sourceServerRef = document.getElementById('sourceServerRef');
+            const selectServerDiv = document.getElementById('selectServerDiv');
+            const serverSelectBtn = document.getElementById('serverSelectBtn');
+            const serverAddressInput = document.getElementById('serverAddressInput');
+
+            const resultSpan = document.getElementById('resultCount');
+            const genderButtons = document.querySelectorAll('#genderFilterGroup .mui-btn');
+            const maritalButtons = document.querySelectorAll('#maritalFilterGroup .mui-btn');
+            const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+            // Icons for sort headers
+            const iconName = document.getElementById('icon-name');
+            const iconAge = document.getElementById('icon-age');
+            const iconGender = document.getElementById('icon-gender');
+
+            // Dialogs
+            const editDialog = document.getElementById('editDialog');
+            const editContent = document.getElementById('dialogContent');
+            const cancelEdit = document.getElementById('cancelDialogBtn');
+            const saveEdit = document.getElementById('saveDialogBtn');
+
+            const marryDialog = document.getElementById('marryDialog');
+            const marryContent = document.getElementById('marryDialogContent');
+            const cancelMarry = document.getElementById('cancelMarryBtn');
+            const confirmMarry = document.getElementById('confirmMarryBtn');
+
+            const divorceDialog = document.getElementById('divorceDialog');
+            const divorceContent = document.getElementById('divorceDialogContent');
+            const cancelDivorce = document.getElementById('cancelDivorceBtn');
+            const confirmDivorce = document.getElementById('confirmDivorceBtn');
+
+            // Helper: test if character matches marital filter
+            function matchesMarital(char, filter) {
+                if (filter === ALL) return true;
+                if (filter === 'married-true') return char.married === true;
+                if (filter === 'married-false') return char.married === false;
+                return true;
+            }
+
+            // Helper: test gender filter
+            function matchesGender(char, filter) {
+                if (filter === ALL) return true;
+                return char.gender === filter;
+            }
+
+            // Helper: test search filter (case insensitive, name or surname)
+            function matchesSearch(char, text) {
+                if (!text) return true;
+                const lowerText = text.toLowerCase();
+                return char.name.toLowerCase().includes(lowerText) ||
+                    char.surname.toLowerCase().includes(lowerText);
+            }
+
+            const loadList = async () => {
+                sourceInfo.classList.remove('hasErrors')
+                sourceInfo.textContent = source;
+                if (source === STATIC) {
+                    characters = [...STATIC_CHARACTERS]
+                        .filter(char =>
+                            matchesGender(char, genderFilter) &&
+                            matchesMarital(char, maritalFilter) &&
+                            matchesSearch(char, searchText)
+                        );
+                    return;
+                }
+
+                try {
+                    const filters = [];
+                    if (genderFilter !== ALL) filters.push(`gender=${genderFilter}`);
+                    if (maritalFilter === 'married-true') filters.push(`married=true`);
+                    if (maritalFilter === 'married-false') filters.push(`married=false`);
+                    if (searchText) filters.push(`surname=${searchText}`);
+
+                    const url = `${source}/users?${filters.join('&')}`;
+                    const response = await fetch(url);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    characters = [...data];
+                } catch (error) {
+                    characters = [];
+                    console.log(error);
+                    
+                    sourceInfo.classList.add('hasErrors');
+                    sourceInfo.textContent = `${source} (${error})`;
+                    console.error('Ошибка:', error);
+                }
+            };
+
+            // Sorting function (mutates array)
+            function sortData(data) {
+                const col = sortColumn;
+                const dir = sortDirection === 'asc' ? 1 : -1;
+
+                return data.sort((a, b) => {
+                    let valA, valB;
+
+                    if (col === 'name') {
+                        valA = `${a.surname} ${a.name}`.toLowerCase();
+                        valB = `${b.surname} ${b.name}`.toLowerCase();
+                    } else {
+                        valA = a[col];
+                        valB = b[col];
+                    }
+
+                    if (valA < valB) return -1 * dir;
+                    if (valA > valB) return 1 * dir;
+                    return 0;
+                });
+            }
+
+            // Update sort icons
+            function updateSortIcons() {
+                iconName.innerText = 'unfold_more';
+                iconAge.innerText = 'unfold_more';
+                iconGender.innerText = 'unfold_more';
+                if (sortColumn === 'name') {
+                    iconName.innerText = sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward';
+                } else if (sortColumn === 'age') {
+                    iconAge.innerText = sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward';
+                } else if (sortColumn === 'gender') {
+                    iconGender.innerText = sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward';
+                }
+            }
+
+            // Render table
+            async function renderTable() {
+                await loadList();
+                filtered = sortData(characters);
+                resultSpan.innerText = filtered.length;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:40px; color:#779;">No characters match filters 🎭</td></tr>`;
+                    return;
+                }
+
+                let html = '';
+                filtered.forEach(char => {
+                    const fullName = `${char.surname} ${char.name}`;
+                    const genderIcon = char.gender === 'male' ? 'male' : 'female';
+                    const genderClass = char.gender === 'male' ? 'gender-male' : 'gender-female';
+                    const marriedText = char.married ? 'Married' : 'Single';
+                    const badgeClass = char.married ? 'married-badge true' : 'married-badge false';
+
+                    let spouseCell = '';
+                    if (char.spouse && typeof char.spouse === 'object') {
+                        spouseCell = `<span class="spouse-name">${char.spouse.surname} ${char.spouse.name}</span>`;
+                    } else {
+                        spouseCell = `<span class="no-spouse">—</span>`;
+                    }
+
+                    const actionButton = char.married
+                        ? `<button class="action-btn divorce" data-id="${char.id}" data-action="divorce"><span class="material-icons">broken_image</span> Divorce</button>`
+                        : `<button class="action-btn marry" data-id="${char.id}" data-action="marry"><span class="material-icons">favorite</span> Get married</button>`;
+
+                    html += `<tr data-id="${char.id}">
+                        <td><span style="font-weight:500;">${fullName}</span></td>
+                        <td>${char.age}</td>
+                        <td><div class="gender-icon"><span class="material-icons ${genderClass}">${genderIcon}</span> ${char.gender}</div></td>
+                        <td><div class="${badgeClass}"><span class="material-icons">${char.married ? 'favorite' : 'block'}</span> ${marriedText}</div></td>
+                        <td>${spouseCell}</td>
+                        <td style="text-align: center;">${actionButton}</td>
+                    </tr>`;
+                });
+                tbody.innerHTML = html;
+
+                // Row click for editing
+                document.querySelectorAll('#tableBody tr').forEach(row => {
+                    row.addEventListener('click', (e) => {
+                        if (e.target.closest('.action-btn')) return;
+                        const id = parseInt(row.dataset.id);
+                        const character = characters.find(c => c.id === id);
+                        if (character) openEditDialog(character);
+                    });
+                });
+
+                // Action button listeners
+                document.querySelectorAll('.action-btn.marry').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = parseInt(btn.dataset.id);
+                        const character = characters.find(c => c.id === id);
+                        if (character) openMarryDialog(character);
+                    });
+                });
+
+                document.querySelectorAll('.action-btn.divorce').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = parseInt(btn.dataset.id);
+                        const character = characters.find(c => c.id === id);
+                        if (character) openDivorceDialog(character);
+                    });
+                });
+
+                updateSortIcons();
+            }
+
+            // ----- SEARCH HANDLERS -----
+            function handleSearchInput() {
+                searchText = searchInput.value.trim();
+                renderTable();
+            }
+
+            function clearSearch() {
+                searchInput.value = '';
+                searchText = '';
+                renderTable();
+            }
+
+            searchInput.addEventListener('input', handleSearchInput);
+            clearSearchBtn.addEventListener('click', clearSearch);
+
+            // ----- EDIT DIALOG -----
+            function openEditDialog(char) {
+                currentEditChar = char;
+                let spouseDisplay = '—';
+                if (char.spouse && typeof char.spouse === 'object') {
+                    spouseDisplay = `${char.spouse.surname} ${char.spouse.name}`;
+                }
+
+                editContent.innerHTML = `
+                    <div class="dialog-field">
+                        <label>ID (read only)</label>
+                        <div class="readonly-field"><span class="material-icons">fingerprint</span> ${char.id}</div>
+                    </div>
+                    <div class="dialog-field">
+                        <label>Last name</label>
+                        <input type="text" id="editSurname" value="${char.surname}" placeholder="e.g. Potter">
+                    </div>
+                    <div class="dialog-field">
+                        <label>First name</label>
+                        <input type="text" id="editName" value="${char.name}" placeholder="e.g. Harry">
+                    </div>
+                    <div class="dialog-field">
+                        <label>Age</label>
+                        <input type="number" id="editAge" value="${char.age}" min="0" max="150">
+                    </div>
+                    <div class="dialog-field">
+                        <label>Gender</label>
+                        <select id="editGender">
+                            <option value="male" ${char.gender === 'male' ? 'selected' : ''}>Male</option>
+                            <option value="female" ${char.gender === 'female' ? 'selected' : ''}>Female</option>
+                        </select>
+                    </div>
+                    <div class="dialog-field">
+                        <label>Married</label>
+                        <select id="editMarried">
+                            <option value="true" ${char.married === true ? 'selected' : ''}>Yes</option>
+                            <option value="false" ${char.married === false ? 'selected' : ''}>No</option>
+                        </select>
+                    </div>
+                    <div class="dialog-field">
+                        <label>Spouse (read only)</label>
+                        <div class="readonly-field"><span class="material-icons">favorite</span> ${spouseDisplay}</div>
+                    </div>
+                    <div class="inline-hint"><span class="material-icons" style="font-size:1rem;">info</span> Use action buttons to marry/divorce properly.</div>
+                `;
+                editDialog.style.display = 'flex';
+            }
+
+            function closeEditDialog() {
+                editDialog.style.display = 'none';
+                currentEditChar = null;
+            }
+
+            function saveEditChanges() {
+                if (!currentEditChar) return;
+
+                const newName = document.getElementById('editName')?.value.trim();
+                const newSurname = document.getElementById('editSurname')?.value.trim();
+                const newAge = parseInt(document.getElementById('editAge')?.value, 10);
+                const newGender = document.getElementById('editGender')?.value;
+                const newMarried = document.getElementById('editMarried')?.value === 'true';
+
+                if (!newName || !newSurname || isNaN(newAge) || newAge < 0) {
+                    alert('Please fill all fields correctly.');
+                    return;
+                }
+
+                currentEditChar.name = newName;
+                currentEditChar.surname = newSurname;
+                currentEditChar.age = newAge;
+                currentEditChar.gender = newGender;
+                currentEditChar.married = newMarried;
+
+                // Handle spouse consistency
+                if (newMarried && !currentEditChar.spouse) {
+                    currentEditChar.spouse = { id: 999, name: "???", surname: "???", age: 0, gender: "unknown", married: true };
+                } else if (!newMarried) {
+                    delete currentEditChar.spouse;
+                }
+
+                closeEditDialog();
+                renderTable();
+            }
+
+            // ----- MARRY DIALOG -----
+            function openMarryDialog(char) {
+                currentMarryChar = char;
+
+                // Find all unmarried characters (excluding self)
+                const available = characters
+                    .filter(c => c.gender !== char.gender)
+                    .filter(c => c.id !== char.id && !c.married);
+
+                if (available.length === 0) {
+                    alert('No unmarried characters available to marry.');
+                    return;
+                }
+
+                let options = '<option value="">-- Select spouse --</option>';
+                available.forEach(c => {
+                    options += `<option value="${c.id}">${c.surname} ${c.name} (${c.gender}, ${c.age})</option>`;
+                });
+
+                marryContent.innerHTML = `
+                    <div class="warning-text">
+                        <span class="material-icons">favorite</span>
+                        <span>Choose who will marry <strong>${char.name} ${char.surname}</strong></span>
+                    </div>
+                    <div class="dialog-field">
+                        <label>Select spouse</label>
+                        <select id="spouseSelect">
+                            ${options}
+                        </select>
+                    </div>
+                `;
+                marryDialog.style.display = 'flex';
+            }
+
+            function closeMarryDialog() {
+                marryDialog.style.display = 'none';
+                currentMarryChar = null;
+            }
+
+            function performMarriage() {
+                if (!currentMarryChar) return;
+
+                const spouseSelect = document.getElementById('spouseSelect');
+                const spouseId = parseInt(spouseSelect?.value);
+
+                if (!spouseId) {
+                    alert('Please select a spouse.');
+                    return;
+                }
+
+                const spouse = characters.find(c => c.id === spouseId);
+                if (!spouse) return;
+
+                // Update both characters
+                currentMarryChar.married = true;
+                currentMarryChar.spouse = {
+                    id: spouse.id,
+                    name: spouse.name,
+                    surname: spouse.surname,
+                    age: spouse.age,
+                    gender: spouse.gender,
+                    married: true
+                };
+
+                spouse.married = true;
+                spouse.spouse = {
+                    id: currentMarryChar.id,
+                    name: currentMarryChar.name,
+                    surname: currentMarryChar.surname,
+                    age: currentMarryChar.age,
+                    gender: currentMarryChar.gender,
+                    married: true
+                };
+
+                closeMarryDialog();
+                renderTable();
+            }
+
+            // ----- DIVORCE DIALOG -----
+            function openDivorceDialog(char) {
+                currentDivorceChar = char;
+
+                let spouseName = 'unknown';
+                if (char.spouse && typeof char.spouse === 'object') {
+                    spouseName = `${char.spouse.name} ${char.spouse.surname}`;
+                }
+
+                divorceContent.innerHTML = `
+                    <div class="warning-text">
+                        <span class="material-icons">warning</span>
+                        <div>
+                            <strong>Confirm divorce</strong><br>
+                            ${char.name} ${char.surname} will divorce ${spouseName}.<br>
+                            Both characters will become single.
+                        </div>
+                    </div>
+                `;
+                divorceDialog.style.display = 'flex';
+            }
+
+            function closeDivorceDialog() {
+                divorceDialog.style.display = 'none';
+                currentDivorceChar = null;
+            }
+
+            function performDivorce() {
+                if (!currentDivorceChar) return;
+
+                const spouse = currentDivorceChar.spouse ?
+                    characters.find(c => c.id === currentDivorceChar.spouse.id) : null;
+
+                // Update current character
+                currentDivorceChar.married = false;
+                delete currentDivorceChar.spouse;
+
+                // Update spouse if exists
+                if (spouse) {
+                    spouse.married = false;
+                    delete spouse.spouse;
+                }
+
+                closeDivorceDialog();
+                renderTable();
+            }
+
+            // ----- Event Listeners -----
+            cancelEdit.addEventListener('click', closeEditDialog);
+            saveEdit.addEventListener('click', saveEditChanges);
+
+            cancelMarry.addEventListener('click', closeMarryDialog);
+            confirmMarry.addEventListener('click', performMarriage);
+
+            cancelDivorce.addEventListener('click', closeDivorceDialog);
+            confirmDivorce.addEventListener('click', performDivorce);
+
+            // Close dialogs on overlay click
+            [editDialog, marryDialog, divorceDialog].forEach(dialog => {
+                dialog.addEventListener('click', (e) => {
+                    if (e.target === dialog) {
+                        if (dialog === editDialog) closeEditDialog();
+                        if (dialog === marryDialog) closeMarryDialog();
+                        if (dialog === divorceDialog) closeDivorceDialog();
+                    }
+                });
+            });
+
+            // Filter buttons
+            function setActiveButton(buttons, activeValue) {
+                buttons.forEach(btn => {
+                    const filterVal = btn.dataset.filter;
+                    btn.classList.toggle('active', filterVal === activeValue);
+                });
+            }
+
+            genderButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const filter = e.currentTarget.dataset.filter;
+                    let newGender = ALL;
+                    if (filter === 'gender-male') newGender = 'male';
+                    else if (filter === 'gender-female') newGender = 'female';
+                    genderFilter = newGender;
+                    setActiveButton(genderButtons, filter);
+                    renderTable();
+                });
+            });
+
+            maritalButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const filter = e.currentTarget.dataset.filter;
+                    let newMarital = ALL;
+                    if (filter === 'married-true') newMarital = 'married-true';
+                    else if (filter === 'married-false') newMarital = 'married-false';
+                    maritalFilter = newMarital;
+                    setActiveButton(maritalButtons, filter);
+                    renderTable();
+                });
+            });
+
+            // Sort handlers
+            document.getElementById('sort-name').addEventListener('click', () => {
+                if (sortColumn === 'name') sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                else { sortColumn = 'name'; sortDirection = 'asc'; }
+                renderTable();
+            });
+            document.getElementById('sort-age').addEventListener('click', () => {
+                if (sortColumn === 'age') sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                else { sortColumn = 'age'; sortDirection = 'asc'; }
+                renderTable();
+            });
+            document.getElementById('sort-gender').addEventListener('click', () => {
+                if (sortColumn === 'gender') sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                else { sortColumn = 'gender'; sortDirection = 'asc'; }
+                renderTable();
+            });
+
+
+            function removeLastIfNotAlphanumeric(str) {
+                if (!str) return str;
+                const lastChar = str[str.length - 1];
+                if (!/[a-zA-Z0-9]/.test(lastChar)) {
+                    return str.slice(0, -1);
+                }
+                return str;
+            }
+
+            function initBlockSourceSelect() {
+                const start = (val) => {
+                    source = val;
+                    blockSourceSelect.style.display = 'none';
+                    blockMain.style.display = 'block';
+                    sourceInfo.textContent = source;
+                    renderTable();
+                };
+
+                serverAddressInput.value = localStorage.getItem('serverAddress', '');
+
+                sourceStaticRef.addEventListener('click', (e) => {
+                    start(STATIC);
+                    e.preventDefault();
+                });
+
+                sourceServerRef.addEventListener('click', (e) => {
+                    selectServerDiv.style.visibility = 'visible';
+                    serverAddressInput.focus();
+                    e.preventDefault();
+                });
+
+                serverSelectBtn.addEventListener('click', (e) => {
+                    source = removeLastIfNotAlphanumeric(serverAddressInput.value);
+                    if (!source) {
+                        alert('input server address!');
+                        return;
+                    }
+                    localStorage.setItem('serverAddress', source);
+                    start(source);
+                });
+            }
+
+            initBlockSourceSelect();
+
+        })();
+    </script>
+</body>
+
+</html>

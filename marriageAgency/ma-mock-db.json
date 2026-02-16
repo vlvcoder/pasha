@@ -1,0 +1,399 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Harry",
+            "surname": "Potter",
+            "age": 38,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 2,
+            "name": "Frodo",
+            "surname": "Baggins",
+            "age": 50,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 3,
+            "name": "Leia",
+            "surname": "Organa",
+            "age": 53,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 4,
+            "name": "Tony",
+            "surname": "Stark",
+            "age": 48,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 5,
+            "name": "Ellen",
+            "surname": "Ripley",
+            "age": 37,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 6,
+            "name": "John",
+            "surname": "Wick",
+            "age": 45,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 7,
+            "name": "Hermione",
+            "surname": "Granger",
+            "age": 38,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 8,
+            "name": "Indiana",
+            "surname": "Jones",
+            "age": 54,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 9,
+            "name": "Katniss",
+            "surname": "Everdeen",
+            "age": 26,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 10,
+            "name": "James",
+            "surname": "Bond",
+            "age": 45,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 11,
+            "name": "Marty",
+            "surname": "McFly",
+            "age": 17,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 12,
+            "name": "Clarice",
+            "surname": "Starling",
+            "age": 28,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 13,
+            "name": "Gomez",
+            "surname": "Addams",
+            "age": 45,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 14,
+            "name": "Sarah",
+            "surname": "Connor",
+            "age": 32,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 15,
+            "name": "Willy",
+            "surname": "Wonka",
+            "age": 55,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 16,
+            "name": "Mia",
+            "surname": "Wallace",
+            "age": 29,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 17,
+            "name": "Rocky",
+            "surname": "Balboa",
+            "age": 40,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 18,
+            "name": "Vito",
+            "surname": "Corleone",
+            "age": 63,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 19,
+            "name": "Forrest",
+            "surname": "Gump",
+            "age": 45,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 20,
+            "name": "Ethan",
+            "surname": "Hunt",
+            "age": 42,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 101,
+            "name": "Ginny",
+            "surname": "Weasley",
+            "age": 37,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 102,
+            "name": "Han",
+            "surname": "Solo",
+            "age": 55,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 103,
+            "name": "Pepper",
+            "surname": "Potts",
+            "age": 45,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 104,
+            "name": "Ron",
+            "surname": "Weasley",
+            "age": 38,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 105,
+            "name": "Peeta",
+            "surname": "Mellark",
+            "age": 26,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 106,
+            "name": "Morticia",
+            "surname": "Addams",
+            "age": 43,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 107,
+            "name": "Marsellus",
+            "surname": "Wallace",
+            "age": 45,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 108,
+            "name": "Adrian",
+            "surname": "Pennino",
+            "age": 38,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 109,
+            "name": "Carmela",
+            "surname": "Corleone",
+            "age": 58,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 110,
+            "name": "Rachel",
+            "surname": "Greene",
+            "age": 29,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 111,
+            "name": "Monica",
+            "surname": "Geller",
+            "age": 29,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 112,
+            "name": "Phoebe",
+            "surname": "Buffay",
+            "age": 27,
+            "gender": "female",
+            "married": false
+        },
+        {
+            "id": 113,
+            "name": "Joey",
+            "surname": "Tribbiani",
+            "age": 27,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 114,
+            "name": "Chandler",
+            "surname": "Bing",
+            "age": 31,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 115,
+            "name": "Ross",
+            "surname": "Geller",
+            "age": 31,
+            "gender": "male",
+            "married": false
+        },
+        {
+            "id": 116,
+            "name": "Mike",
+            "surname": "Hunnigan",
+            "age": 30,
+            "gender": "male",
+            "married": false
+        }
+    ],
+    "weddings": [
+        {
+            "id": 7,
+            "groom": {
+                "id": 314,
+                "name": "Tom",
+                "surname": "Cruise",
+                "age": 70,
+                "gender": "male",
+                "postCount": 2,
+                "spouseId": 317,
+                "married": true
+            },
+            "bride": {
+                "id": 317,
+                "name": "Sarah Jessica",
+                "surname": "Parker",
+                "age": 57,
+                "gender": "female",
+                "postCount": 0,
+                "spouseId": 314,
+                "married": true
+            },
+            "town": {
+                "id": 523,
+                "title": "Khanty-Mansiysk"
+            },
+            "guestIds": [
+                315,
+                316
+            ]
+        }
+    ],
+    "weddingsFull": [
+        {
+            "id": 7,
+            "groom": {
+                "id": 314,
+                "name": "Tom",
+                "surname": "Cruise",
+                "age": 70,
+                "gender": "male",
+                "postCount": 2,
+                "spouseId": 317,
+                "married": true
+            },
+            "bride": {
+                "id": 317,
+                "name": "Sarah Jessica",
+                "surname": "Parker",
+                "age": 57,
+                "gender": "female",
+                "postCount": 0,
+                "spouseId": 314,
+                "married": true
+            },
+            "town": {
+                "id": 523,
+                "title": "Khanty-Mansiysk"
+            },
+            "guests": [
+                {
+                    "id": 315,
+                    "name": "Harry",
+                    "surname": "Potter",
+                    "age": 38,
+                    "gender": "male",
+                    "posts": [],
+                    "spouseId": 318,
+                    "married": true
+                },
+                {
+                    "id": 316,
+                    "name": "Sarah",
+                    "surname": "Connor",
+                    "age": 71,
+                    "gender": "female",
+                    "postCount": 0,
+                    "spouseId": 315,
+                    "married": true
+                }
+            ]
+        }
+    ],
+    "posts": [
+        {
+            "id": 1234,
+            "userId": 314,
+            "date": "2001-03-23",
+            "time": "15:55",
+            "text": "Hi all! I am fine"
+        },
+        {
+            "id": 1235,
+            "userId": 314,
+            "date": "2001-04-23",
+            "time": "03:00",
+            "text": "I want to get married!"
+        },
+        {
+            "id": 1236,
+            "userId": 315,
+            "date": "2001-03-23",
+            "time": "15:55",
+            "text": "Hi all! I am married!"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+Файлы API, моковых данных для презентации openAPI
+
+Запуск MOCK-сервера:
+npx json-server --watch ./ma-mock-db.json --port 3006 --routes ./ma-routes.json  -m ./ma-middlewares.js
+
+Генерация кода:
+npx @openapitools/openapi-generator-cli generate -i ./ma-openapi.json -g typescript-fetch -o ./ts/openApi --additional-properties=enumPropertyNaming=PascalCase
+
+Генерация доков:
+npx @openapitools/openapi-generator-cli generate -i ./ma-openapi.json -g html -o ./apidoc --additional-properties=enumPropertyNaming=PascalCase
