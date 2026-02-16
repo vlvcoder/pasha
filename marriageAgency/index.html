@@ -715,7 +715,7 @@
             <div class="dialog-title">
                 <span class="material-icons">edit_note</span> Edit character
             </div>
-            <div id="dialogContent">
+            <div id="editDialogContent">
                 <!-- dynamic fields will be injected -->
             </div>
             <div class="dialog-actions">
@@ -1100,7 +1100,7 @@
 
             // Dialogs
             const editDialog = document.getElementById('editDialog');
-            const editContent = document.getElementById('dialogContent');
+            const editContent = document.getElementById('editDialogContent');
             const cancelEdit = document.getElementById('cancelDialogBtn');
             const saveEdit = document.getElementById('saveDialogBtn');
 
@@ -1136,15 +1136,49 @@
                     char.surname.toLowerCase().includes(lowerText);
             }
 
+            const loadCandidates = async (gender) => {
+                clearError();
+                if (isStatic()) {
+                    return STATIC_CHARACTERS.filter(c => c.gender !== gender && !c.married);
+                }
+
+                try {
+                    const url = `${source}/users?married=false&gender=${gender === 'male' ? 'female' : 'male'}`;
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    setError(error);
+                }
+            };
+
+            const loadUser = async (char) => {
+                clearError();
+                if (isStatic()) {
+                    return char;
+                }
+
+                try {
+                    const url = `${source}/users/${char.id}`;
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    setError(error);
+                }
+            };
+
             const loadList = async () => {
-                sourceInfo.classList.remove('hasErrors')
-                sourceInfo.textContent = source;
-                if (source === STATIC) {
+                clearError();
+                if (isStatic()) {
                     characters = [...STATIC_CHARACTERS]
                         .filter(char =>
                             matchesGender(char, genderFilter) &&
-                            matchesMarital(char, maritalFilter) &&
-                            matchesSearch(char, searchText)
+                            matchesMarital(char, maritalFilter)
                         );
                     return;
                 }
@@ -1154,7 +1188,6 @@
                     if (genderFilter !== ALL) filters.push(`gender=${genderFilter}`);
                     if (maritalFilter === 'married-true') filters.push(`married=true`);
                     if (maritalFilter === 'married-false') filters.push(`married=false`);
-                    if (searchText) filters.push(`surname=${searchText}`);
 
                     const url = `${source}/users?${filters.join('&')}`;
                     const response = await fetch(url);
@@ -1166,13 +1199,20 @@
                     const data = await response.json();
                     characters = [...data];
                 } catch (error) {
-                    characters = [];
-                    console.log(error);
-                    
-                    sourceInfo.classList.add('hasErrors');
-                    sourceInfo.textContent = `${source} (${error})`;
-                    console.error('Ошибка:', error);
+                    setError(error);
                 }
+            };
+
+            const clearError = () => {
+                sourceInfo.classList.remove('hasErrors')
+                sourceInfo.textContent = source;
+            };
+
+            const setError = (error) => {
+                characters = [];
+                sourceInfo.classList.add('hasErrors');
+                sourceInfo.textContent = `${source} (${error})`;
+                console.error('Ошибка:', error);
             };
 
             // Sorting function (mutates array)
@@ -1212,9 +1252,11 @@
             }
 
             // Render table
-            async function renderTable() {
-                await loadList();
-                filtered = sortData(characters);
+            async function renderTable(skipLoading = false) {
+                if (!skipLoading) {
+                    await loadList();
+                }
+                const filtered = sortData(characters.filter(char => matchesSearch(char, searchText)));
                 resultSpan.innerText = filtered.length;
 
                 if (filtered.length === 0) {
@@ -1287,24 +1329,29 @@
             // ----- SEARCH HANDLERS -----
             function handleSearchInput() {
                 searchText = searchInput.value.trim();
-                renderTable();
+                renderTable(true);
             }
 
             function clearSearch() {
                 searchInput.value = '';
                 searchText = '';
-                renderTable();
+                renderTable(true);
             }
 
             searchInput.addEventListener('input', handleSearchInput);
             clearSearchBtn.addEventListener('click', clearSearch);
 
             // ----- EDIT DIALOG -----
-            function openEditDialog(char) {
-                currentEditChar = char;
-                let spouseDisplay = '—';
+            async function openEditDialog(char) {
+                currentEditChar = await loadUser(char);
+                let spouseDisplay = '';
                 if (char.spouse && typeof char.spouse === 'object') {
-                    spouseDisplay = `${char.spouse.surname} ${char.spouse.name}`;
+                    spouseDisplay = `
+                    <div class="dialog-field">
+                        <label>Spouse (read only)</label>
+                        <div class="readonly-field"><span class="material-icons">favorite</span> ${char.spouse.surname} ${char.spouse.name}</div>
+                    </div>
+                    `;
                 }
 
                 editContent.innerHTML = `
@@ -1332,16 +1379,10 @@
                         </select>
                     </div>
                     <div class="dialog-field">
-                        <label>Married</label>
-                        <select id="editMarried">
-                            <option value="true" ${char.married === true ? 'selected' : ''}>Yes</option>
-                            <option value="false" ${char.married === false ? 'selected' : ''}>No</option>
-                        </select>
+                        <label>Married (read only)</label>
+                        <div class="readonly-field"><span class="material-icons">${char.married ? 'check' : 'close'}</span>${char.married ? 'Yes' : 'No'}</div>
                     </div>
-                    <div class="dialog-field">
-                        <label>Spouse (read only)</label>
-                        <div class="readonly-field"><span class="material-icons">favorite</span> ${spouseDisplay}</div>
-                    </div>
+                    ${spouseDisplay}
                     <div class="inline-hint"><span class="material-icons" style="font-size:1rem;">info</span> Use action buttons to marry/divorce properly.</div>
                 `;
                 editDialog.style.display = 'flex';
@@ -1359,7 +1400,6 @@
                 const newSurname = document.getElementById('editSurname')?.value.trim();
                 const newAge = parseInt(document.getElementById('editAge')?.value, 10);
                 const newGender = document.getElementById('editGender')?.value;
-                const newMarried = document.getElementById('editMarried')?.value === 'true';
 
                 if (!newName || !newSurname || isNaN(newAge) || newAge < 0) {
                     alert('Please fill all fields correctly.');
@@ -1370,27 +1410,20 @@
                 currentEditChar.surname = newSurname;
                 currentEditChar.age = newAge;
                 currentEditChar.gender = newGender;
-                currentEditChar.married = newMarried;
-
-                // Handle spouse consistency
-                if (newMarried && !currentEditChar.spouse) {
-                    currentEditChar.spouse = { id: 999, name: "???", surname: "???", age: 0, gender: "unknown", married: true };
-                } else if (!newMarried) {
-                    delete currentEditChar.spouse;
-                }
 
                 closeEditDialog();
                 renderTable();
             }
 
             // ----- MARRY DIALOG -----
-            function openMarryDialog(char) {
+            async function openMarryDialog(char) {
                 currentMarryChar = char;
 
                 // Find all unmarried characters (excluding self)
-                const available = characters
-                    .filter(c => c.gender !== char.gender)
-                    .filter(c => c.id !== char.id && !c.married);
+                const candidates = await loadCandidates(char.gender);
+                const available = candidates
+                    .filter(c => c.id !== char.id)
+                    .sort((a, b) => a.surname.localeCompare(b.surname));
 
                 if (available.length === 0) {
                     alert('No unmarried characters available to marry.');
@@ -1399,7 +1432,7 @@
 
                 let options = '<option value="">-- Select spouse --</option>';
                 available.forEach(c => {
-                    options += `<option value="${c.id}">${c.surname} ${c.name} (${c.gender}, ${c.age})</option>`;
+                    options += `<option value="${c.id}">${c.surname} ${c.name} (${c.age})</option>`;
                 });
 
                 marryContent.innerHTML = `
@@ -1509,6 +1542,14 @@
             }
 
             // ----- Event Listeners -----
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeEditDialog();
+                    closeMarryDialog();
+                    closeDivorceDialog();
+                    event.preventDefault();
+                }
+            });
             cancelEdit.addEventListener('click', closeEditDialog);
             saveEdit.addEventListener('click', saveEditChanges);
 
