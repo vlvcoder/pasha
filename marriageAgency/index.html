@@ -1115,6 +1115,104 @@
             const cancelDivorce = document.getElementById('cancelDivorceBtn');
             const confirmDivorce = document.getElementById('confirmDivorceBtn');
 
+            // api of data
+            let api = null;
+
+            const apiStatic = {
+                loadUser: async (char) => {
+                    clearError();
+                    return char;
+                },
+
+                loadList: async () => {
+                    clearError();
+                    characters = [...STATIC_CHARACTERS]
+                        .filter(char =>
+                            matchesGender(char, genderFilter) &&
+                            matchesMarital(char, maritalFilter)
+                        );
+                },
+
+                loadCandidates: async (gender) => {
+                    clearError();
+                    return STATIC_CHARACTERS.filter(c => c.gender !== gender && !c.married);
+                },
+
+                saveUser: async (char) => { },
+            };
+
+            const apiServer = {
+                loadUser: async (char) => {
+                    clearError();
+                    try {
+                        const url = `${source}/users/${char.id}`;
+                        const response = await fetch(url);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return await response.json();
+                    } catch (error) {
+                        setError(error);
+                    }
+                },
+
+                loadList: async () => {
+                    clearError();
+                    try {
+                        const filters = [];
+                        if (genderFilter !== ALL) filters.push(`gender=${genderFilter}`);
+                        if (maritalFilter === 'married-true') filters.push(`married=true`);
+                        if (maritalFilter === 'married-false') filters.push(`married=false`);
+
+                        const url = `${source}/users?${filters.join('&')}`;
+                        const response = await fetch(url);
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const data = await response.json();
+                        characters = [...data];
+                    } catch (error) {
+                        setError(error);
+                    }
+                },
+
+                loadCandidates: async (gender) => {
+                    clearError();
+                    try {
+                        const url = `${source}/users?married=false&gender=${gender === 'male' ? 'female' : 'male'}`;
+                        const response = await fetch(url);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return await response.json();
+                    } catch (error) {
+                        setError(error);
+                    }
+                },
+
+                saveUser: async (char) => {
+                    clearError();
+                    try {
+                        const url = `${source}/users/${char.id}`;
+                        const response = await fetch(url, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(char),
+                        });
+                        console.log('PUT user.', response);
+                        // if (!response.ok) {
+                        //     throw new Error(`HTTP error! status: ${response.status}`);
+                        // }
+                    } catch (error) {
+                        setError(error);
+                    }
+                },
+            };
+
             // Helper: test if character matches marital filter
             function matchesMarital(char, filter) {
                 if (filter === ALL) return true;
@@ -1136,73 +1234,6 @@
                 return char.name.toLowerCase().includes(lowerText) ||
                     char.surname.toLowerCase().includes(lowerText);
             }
-
-            const loadCandidates = async (gender) => {
-                clearError();
-                if (isStatic()) {
-                    return STATIC_CHARACTERS.filter(c => c.gender !== gender && !c.married);
-                }
-
-                try {
-                    const url = `${source}/users?married=false&gender=${gender === 'male' ? 'female' : 'male'}`;
-                    const response = await fetch(url);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return await response.json();
-                } catch (error) {
-                    setError(error);
-                }
-            };
-
-            const loadUser = async (char) => {
-                clearError();
-                if (isStatic()) {
-                    return char;
-                }
-
-                try {
-                    const url = `${source}/users/${char.id}`;
-                    const response = await fetch(url);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return await response.json();
-                } catch (error) {
-                    setError(error);
-                }
-            };
-
-            const loadList = async () => {
-                clearError();
-                if (isStatic()) {
-                    characters = [...STATIC_CHARACTERS]
-                        .filter(char =>
-                            matchesGender(char, genderFilter) &&
-                            matchesMarital(char, maritalFilter)
-                        );
-                    return;
-                }
-
-                try {
-                    const filters = [];
-                    if (genderFilter !== ALL) filters.push(`gender=${genderFilter}`);
-                    if (maritalFilter === 'married-true') filters.push(`married=true`);
-                    if (maritalFilter === 'married-false') filters.push(`married=false`);
-
-                    const url = `${source}/users?${filters.join('&')}`;
-                    const response = await fetch(url);
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const data = await response.json();
-                    characters = [...data];
-                } catch (error) {
-                    setError(error);
-                }
-            };
 
             const clearError = () => {
                 sourceInfo.classList.remove('hasErrors')
@@ -1255,7 +1286,7 @@
             // Render table
             async function renderTable(skipLoading = false) {
                 if (!skipLoading) {
-                    await loadList();
+                    await api.loadList();
                 }
                 const filtered = sortData(characters.filter(char => matchesSearch(char, searchText)));
                 resultSpan.innerText = filtered.length;
@@ -1344,7 +1375,7 @@
 
             // ----- EDIT DIALOG -----
             async function openEditDialog(char) {
-                currentEditChar = await loadUser(char);
+                currentEditChar = await api.loadUser(char);
                 let spouseDisplay = '';
                 if (char.spouse && typeof char.spouse === 'object') {
                     spouseDisplay = `
@@ -1394,7 +1425,7 @@
                 currentEditChar = null;
             }
 
-            function saveEditChanges() {
+            function saveEditChanges(e) {
                 if (!currentEditChar) return;
 
                 const newName = document.getElementById('editName')?.value.trim();
@@ -1412,8 +1443,11 @@
                 currentEditChar.age = newAge;
                 currentEditChar.gender = newGender;
 
+                api.saveUser(currentEditChar);
+
                 closeEditDialog();
                 renderTable();
+                e.preventDefault();
             }
 
             // ----- MARRY DIALOG -----
@@ -1421,7 +1455,7 @@
                 currentMarryChar = char;
 
                 // Find all unmarried characters (excluding self)
-                const candidates = await loadCandidates(char.gender);
+                const candidates = await api.loadCandidates(char.gender);
                 const available = candidates
                     .filter(c => c.id !== char.id)
                     .sort((a, b) => a.surname.localeCompare(b.surname));
@@ -1642,6 +1676,7 @@
                 serverAddressInput.value = localStorage.getItem('serverAddress', '');
 
                 sourceStaticRef.addEventListener('click', (e) => {
+                    api = apiStatic;
                     start(STATIC);
                     e.preventDefault();
                 });
@@ -1659,6 +1694,7 @@
                         return;
                     }
                     localStorage.setItem('serverAddress', source);
+                    api = apiServer;
                     start(source);
                 });
             }
