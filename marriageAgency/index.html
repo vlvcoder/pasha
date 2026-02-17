@@ -131,6 +131,16 @@
             background: var(--primary-color-hover);
         }
 
+        .add-btn {
+            background-color: rgb(32, 148, 32);
+            border: 1px solid rgb(32, 148, 32);
+            color: white;
+        }
+
+        .add-btn:hover {
+            background-color: rgb(27, 118, 27);
+        }
+
         .search-field {
             display: flex;
             align-items: center;
@@ -680,6 +690,14 @@
                     <button class="mui-btn" data-filter="married-false"><span class="material-icons">block</span>
                         Single</button>
                 </div>
+
+                <div style="flex-grow: 1"></div>
+
+                <button id="createUserBtn" class="mui-btn add-btn" data-filter="gender-all">
+                    <span class="material-icons">add</span>
+                    New
+                </button>
+
             </div>
 
             <!-- DYNAMIC TABLE (filled via JS) with sortable headers + action column -->
@@ -1653,7 +1671,9 @@
                 else { sortColumn = 'gender'; sortDirection = 'asc'; }
                 renderTable();
             });
-
+            document.getElementById('createUserBtn').addEventListener('click', () => {
+                alert('create');
+            });
 
             function removeLastIfNotAlphanumeric(str) {
                 if (!str) return str;
