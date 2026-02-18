@@ -1443,7 +1443,7 @@
                 currentEditChar = null;
             }
 
-            function saveEditChanges(e) {
+            function saveEditChanges() {
                 if (!currentEditChar) return;
 
                 const newName = document.getElementById('editName')?.value.trim();
@@ -1522,8 +1522,13 @@
                 const spouse = characters.find(c => c.id === spouseId);
                 if (!spouse) return;
 
+                // Update surnames
+                updateWifesSurname(currentMarryChar, spouse, true);
+
                 // Update both characters
                 currentMarryChar.married = true;
+                spouse.married = true;
+
                 currentMarryChar.spouse = {
                     id: spouse.id,
                     name: spouse.name,
@@ -1533,19 +1538,27 @@
                     married: true
                 };
 
-                spouse.married = true;
-                spouse.spouse = {
-                    id: currentMarryChar.id,
-                    name: currentMarryChar.name,
-                    surname: currentMarryChar.surname,
-                    age: currentMarryChar.age,
-                    gender: currentMarryChar.gender,
-                    married: true
-                };
+                const sourceCharSnapshot = { ...currentMarryChar };
+                delete sourceCharSnapshot.spouse;
+                spouse.spouse = sourceCharSnapshot;
 
                 closeMarryDialog();
                 renderTable();
             }
+
+            const updateWifesSurname = (spouse1, spouse2, isGettingMarried) => {
+                if (isGettingMarried) {
+                    const wife = [spouse1, spouse2].find(s => s.gender === 'female');
+                    const husband = spouse1 === wife ? spouse2 : spouse1;
+                    wife.sourceSurname = wife.surname;
+                    wife.surname = `${wife.surname}-${husband.surname}`;
+                } else {
+                    spouse1.surname = spouse1.sourceSurname ?? spouse1.surname;
+                    spouse2.surname = spouse2.sourceSurname ?? spouse2.surname;
+                    delete spouse1.sourceSurname;
+                    delete spouse2.sourceSurname;
+                }
+            };
 
             // ----- DIVORCE DIALOG -----
             function openDivorceDialog(char) {
@@ -1580,6 +1593,9 @@
                 const spouse = currentDivorceChar.spouse ?
                     characters.find(c => c.id === currentDivorceChar.spouse.id) : null;
 
+                // Update surnames
+                updateWifesSurname(currentDivorceChar, spouse, false);
+                    
                 // Update current character
                 currentDivorceChar.married = false;
                 delete currentDivorceChar.spouse;
