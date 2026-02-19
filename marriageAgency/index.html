@@ -8,8 +8,6 @@
     <!-- Fonts & Icons (Roboto + Material Icons) -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- MUI core CSS (equivalent to @mui/material + styling) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/material@5.15.20/umd/material-ui.production.min.css">
     <style>
         * {
             margin: 0;
@@ -1073,6 +1071,9 @@
                 }
             ];
 
+            // ----- HTTP error -----
+            const ERROR_MESSAGE_HEADER  = 'HTTP error! status:';
+            
             // ----- Source state -----
             const STATIC = 'STATIC';
             let source = '';       // STATIC, '{serverAddress}'
@@ -1089,9 +1090,10 @@
             let sortDirection = 'asc';         // 'asc' or 'desc'
 
             // ----- Dialog state -----
+            let userDialogMode = null;          // 'add', 'edit'
             let currentEditChar = null;
-            let currentMarryChar = null;      // character who will marry
-            let currentDivorceChar = null;     // character who will divorce
+            let currentMarryChar = null;        // character who will marry
+            let currentDivorceChar = null;      // character who will divorce
 
             // DOM elements
             const tbody = document.getElementById('tableBody');
@@ -1157,6 +1159,10 @@
                 },
 
                 saveUser: async (char) => { },
+
+                addUser: async (char) => {
+                    STATIC_CHARACTERS.push(char);
+                },
             };
 
             const apiServer = {
@@ -1166,7 +1172,7 @@
                         const url = `${source}/users/${char.id}`;
                         const response = await fetch(url);
                         if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
+                            throw new Error(`${ERROR_MESSAGE_HEADER} ${response.status}`);
                         }
                         return await response.json();
                     } catch (error) {
@@ -1186,7 +1192,7 @@
                         const response = await fetch(url);
 
                         if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
+                            throw new Error(`${ERROR_MESSAGE_HEADER} ${response.status}`);
                         }
 
                         const data = await response.json();
@@ -1202,7 +1208,7 @@
                         const url = `${source}/users?married=false&gender=${gender === 'male' ? 'female' : 'male'}`;
                         const response = await fetch(url);
                         if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
+                            throw new Error(`${ERROR_MESSAGE_HEADER} ${response.status}`);
                         }
                         return await response.json();
                     } catch (error) {
@@ -1222,13 +1228,35 @@
                             body: JSON.stringify(char),
                         });
                         console.log('PUT user.', response);
-                        // if (!response.ok) {
-                        //     throw new Error(`HTTP error! status: ${response.status}`);
-                        // }
+                        if (!response.ok) {
+                            throw new Error(`${ERROR_MESSAGE_HEADER} ${response.status}`);
+                        }
                     } catch (error) {
                         setError(error);
                     }
                 },
+
+                addUser: async (char) => {
+                    delete char.id;
+                    clearError();
+                    try {
+                        const url = `${source}/users`;
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(char),
+                        });
+                        console.log('POST user.', response);
+                        if (!response.ok) {
+                            throw new Error(`${ERROR_MESSAGE_HEADER} ${response.status}`);
+                        }
+                    } catch (error) {
+                        setError(error);
+                    }
+                },
+
             };
 
             // Helper: test if character matches marital filter
@@ -1350,7 +1378,7 @@
                         if (e.target.closest('.action-btn')) return;
                         const id = parseInt(row.dataset.id);
                         const character = characters.find(c => c.id === id);
-                        if (character) openEditDialog(character);
+                        if (character) openUserDialog(character);
                     });
                 });
 
@@ -1391,24 +1419,43 @@
             searchInput.addEventListener('input', handleSearchInput);
             clearSearchBtn.addEventListener('click', clearSearch);
 
-            // ----- EDIT DIALOG -----
-            async function openEditDialog(char) {
-                currentEditChar = await api.loadUser(char);
+            // ----- ADD DIALOG -----
+            async function addUserStart() {
+                const char = {
+                    name: '',
+                    surname: '',
+                    age: '',
+                    male: null,
+                };
+                openUserDialog(char, 'new');
+            }
+
+            // ----- ADD / EDIT DIALOG -----
+            async function openUserDialog(char, mode = 'edit') {
                 let spouseDisplay = '';
-                if (char.spouse && typeof char.spouse === 'object') {
-                    spouseDisplay = `
+                let idDisplay = '';
+                userDialogMode = mode;
+
+                if (mode === 'edit') {
+                    currentEditChar = await api.loadUser(char);
+                    if (char.spouse && typeof char.spouse === 'object') {
+                        spouseDisplay = `
                     <div class="dialog-field">
                         <label>Spouse (read only)</label>
                         <div class="readonly-field"><span class="material-icons">favorite</span> ${char.spouse.surname} ${char.spouse.name}</div>
                     </div>
                     `;
-                }
-
-                editContent.innerHTML = `
+                    }
+                    idDisplay = `
                     <div class="dialog-field">
                         <label>ID (read only)</label>
                         <div class="readonly-field"><span class="material-icons">fingerprint</span> ${char.id}</div>
                     </div>
+                    `;
+                }
+
+                editContent.innerHTML = `
+                    ${idDisplay}
                     <div class="dialog-field">
                         <label>Last name</label>
                         <input type="text" id="editSurname" value="${char.surname}" placeholder="e.g. Potter">
@@ -1441,10 +1488,15 @@
             function closeEditDialog() {
                 editDialog.style.display = 'none';
                 currentEditChar = null;
+                userDialogMode = null;
             }
 
-            function saveEditChanges() {
-                if (!currentEditChar) return;
+            async function saveEditChanges() {
+                if (userDialogMode === 'new') {
+                    currentEditChar = {
+                        id: Math.max(...characters.map(char => Number(char.id))) + 1
+                    };
+                } else if (!currentEditChar) return;
 
                 const newName = document.getElementById('editName')?.value.trim();
                 const newSurname = document.getElementById('editSurname')?.value.trim();
@@ -1456,16 +1508,19 @@
                     return;
                 }
 
-                currentEditChar.name = newName;
-                currentEditChar.surname = newSurname;
+                currentEditChar.name = newName.charAt(0).toUpperCase() + newName.slice(1);
+                currentEditChar.surname = newSurname.charAt(0).toUpperCase() + newSurname.slice(1);
                 currentEditChar.age = newAge;
                 currentEditChar.gender = newGender;
 
-                api.saveUser(currentEditChar);
+                if (userDialogMode === 'new') {
+                    await api.addUser(currentEditChar);
+                } else {
+                    await api.saveUser(currentEditChar);
+                }
 
                 closeEditDialog();
                 renderTable();
-                e.preventDefault();
             }
 
             // ----- MARRY DIALOG -----
@@ -1551,7 +1606,7 @@
                     const wife = [spouse1, spouse2].find(s => s.gender === 'female');
                     const husband = spouse1 === wife ? spouse2 : spouse1;
                     wife.sourceSurname = wife.surname;
-                    wife.surname = `${wife.surname}-${husband.surname}`;
+                    wife.surname = `${husband.surname}-${wife.surname}`;
                 } else {
                     spouse1.surname = spouse1.sourceSurname ?? spouse1.surname;
                     spouse2.surname = spouse2.sourceSurname ?? spouse2.surname;
@@ -1595,7 +1650,7 @@
 
                 // Update surnames
                 updateWifesSurname(currentDivorceChar, spouse, false);
-                    
+
                 // Update current character
                 currentDivorceChar.married = false;
                 delete currentDivorceChar.spouse;
@@ -1687,9 +1742,7 @@
                 else { sortColumn = 'gender'; sortDirection = 'asc'; }
                 renderTable();
             });
-            document.getElementById('createUserBtn').addEventListener('click', () => {
-                alert('create');
-            });
+            document.getElementById('createUserBtn').addEventListener('click', addUserStart);
 
             function removeLastIfNotAlphanumeric(str) {
                 if (!str) return str;
