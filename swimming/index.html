@@ -25,6 +25,14 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap">
     <link rel="manifest" href="manifest.json">
+
+    <!-- Стандартный тег для включения полноэкранного режима на iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Тег, который делает фон статус-бара прозрачным,
+       позволяя контенту располагаться под ним. 
+       Это создает эффект "полного экрана". -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
         * {
             margin: 0;
@@ -91,16 +99,20 @@
 
         /* Анимация волны */
         @keyframes wavemove {
+
             0%,
             100% {
                 transform: translateX(0px);
             }
+
             25% {
                 transform: translateX(-20px);
             }
+
             50% {
                 transform: translateX(0px);
             }
+
             75% {
                 transform: translateX(-40px);
             }
@@ -115,10 +127,12 @@
         }
 
         @keyframes float {
+
             0%,
             100% {
                 transform: translateY(0);
             }
+
             50% {
                 transform: translateY(-5px);
             }
@@ -590,7 +604,8 @@
 
             <div class="image-note">
                 <strong>Проверить: </strong> <br><br> карту <code class="text-accent">тройка</code>; наличие
-                <code class="text-accent">денег</code> на карте / телефоне; <code class="text-accent">ключ</code> от квартиры.
+                <code class="text-accent">денег</code> на карте / телефоне; <code class="text-accent">ключ</code> от
+                квартиры.
                 <br><br>Номер автобуса <strong class="bus-number text-accent">1202</strong>
             </div>
 
