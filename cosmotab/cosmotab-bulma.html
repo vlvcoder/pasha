@@ -35,35 +35,41 @@
         }
 
 
-        @keyframes background-position-animation {
+        @keyframes back-pos-animation {
             0% {
                 background-position: 0 0;
             }
-            25% {
-                background-position: 50% 50%;
-            }
+
             50% {
                 background-position: 100% 100%;
             }
-            75% {
-                background-position: 50% 50%;
-            }
+
             100% {
                 background-position: 0 0;
             }
         }
 
-        /* @keyframes background-position-animation {
+        @keyframes back-pos-animation-small {
             0% {
-                background-size: 100%;
+                background-position: 50% 50%;
             }
+
+            25% {
+                background-position: 40% 40%;
+            }
+
             50% {
-                background-size: 120%;
+                background-position: 50% 50%;
             }
+
+            75% {
+                background-position: 60% 60%;
+            }
+
             100% {
-                background-size: 100%;
+                background-position: 50% 50%;
             }
-        } */
+        }
 
         .hero.is-gradient {
             /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
@@ -72,7 +78,7 @@
             background-size: auto;
             background-repeat: no-repeat;
             color: white;
-            animation: background-position-animation 30s linear infinite;
+            animation: back-pos-animation 30s linear infinite;
         }
 
         .hero-body h1 {
@@ -336,8 +342,14 @@
             .hero .title {
                 font-size: 2.5rem;
             }
+
             .hero-body {
                 margin-top: 95px;
+            }
+
+            .hero.is-gradient {
+                background-position: 50% 50%;
+                animation: back-pos-animation-small 30s linear infinite;
             }
 
             .order-form-section {
