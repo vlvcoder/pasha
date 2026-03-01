@@ -21,6 +21,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none;
         }
 
         body {
@@ -808,6 +809,47 @@
             gap: 16px;
         }
 
+        .promo-container {
+            position: relative;
+        }
+
+        .promo-image {
+            width: 600px;
+            height: 400px;
+            object-fit: fill;
+            border-radius: 4px;
+            -webkit-box-shadow: 0px -1px 10px 5px rgba(34, 60, 80, 0.38) !important;
+            -moz-box-shadow: 0px -1px 10px 5px rgba(34, 60, 80, 0.38) !important;
+            box-shadow: 0px -1px 10px 5px rgba(34, 60, 80, 0.38) !important;
+            transition: all 3s ease;
+        }
+
+        .promo-container:hover .promo-image {
+            transform: scale(0.95);
+        }
+
+        .promo-container:hover .promo-text {
+            transform: scale(1.25);
+        }
+
+        .promo-text {
+            transition: all 3s ease;
+            position: absolute;
+            font-size: 40px;
+            font-weight: 700;
+            color: white;
+            text-shadow: #ffcc00 2px 2px 4px;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+
         /* Адаптивность */
         @media screen and (max-width: 960px) {
 
@@ -1037,10 +1079,21 @@
                     </div>
                 </div>
 
-                <div class="mui-description-image">
+                <div class="promo-container">
+                    <figure class="image">
+                        <img
+                            src="https://images.wallpaperscraft.com/image/single/honeycomb_cell_structure_142762_1280x960.jpg"
+                            alt="CosmoTab устройство"
+                            class="promo-image"
+                        >
+                    </figure>
+                    <div class="promo-text">CosmoTab в действии</div>
+                </div>
+
+                <!-- <div class="mui-description-image">
                     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23333'/%3E%3Ctext x='300' y='200' font-size='40' text-anchor='middle' fill='white' font-family='Roboto'%3ECosmoTab в действии%3C/text%3E%3C/svg%3E"
                         alt="CosmoTab устройство">
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
@@ -1313,6 +1366,13 @@
                 rating: 4,
                 text: 'Очень круто, но немного страшно менять прошлое. Безопасность на высоте! Использую только для наблюдения.',
                 color: 'orange'
+            },
+            {
+                initials: 'ГИ',
+                name: 'Гость из будущего',
+                rating: 1,
+                text: 'Вы офигели!!! Эта ваша хрень не работает на возврат! Верните меня обратно! Я тут застрял!',
+                color: 'red'
             }
         ];
 
