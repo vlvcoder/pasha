@@ -35,7 +35,7 @@
         }
 
 
-        /* @keyframes background-position-animation {
+        @keyframes background-position-animation {
             0% {
                 background-position: 0 0;
             }
@@ -51,9 +51,9 @@
             100% {
                 background-position: 0 0;
             }
-        } */
+        }
 
-        @keyframes background-position-animation {
+        /* @keyframes background-position-animation {
             0% {
                 background-size: 100%;
             }
@@ -63,15 +63,15 @@
             100% {
                 background-size: 100%;
             }
-        }
+        } */
 
         .hero.is-gradient {
             /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
             background-image: url(./images/back-road.jpg);
             background-position: center;
-            color: white;
-            background-size: 100%;
+            background-size: auto;
             background-repeat: no-repeat;
+            color: white;
             animation: background-position-animation 30s linear infinite;
         }
 
@@ -335,6 +335,9 @@
         @media screen and (max-width: 768px) {
             .hero .title {
                 font-size: 2.5rem;
+            }
+            .hero-body {
+                margin-top: 95px;
             }
 
             .order-form-section {
