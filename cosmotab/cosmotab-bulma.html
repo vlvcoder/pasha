@@ -21,6 +21,7 @@
             --bulma-link-h: 175;
             --bulma-link-s: 70%;
             --bulma-link-l: 55%;
+            user-select: none;
         }
 
         /* Кастомные стили поверх Bulma */
@@ -89,6 +90,16 @@
         .hero.is-gradient .title,
         .hero.is-gradient .subtitle {
             color: white;
+        }
+
+        .title-flex {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .title-flex img {
+            height: 80px;
         }
 
         .hero.is-gradient .dark {
@@ -399,7 +410,11 @@
         <div class="hero-body">
             <div class="container has-text-centered">
                 <h1 class="title is-1 is-size-1-mobile has-text-weight-bold mb-4">
-                    ⏰ <span class="slogan-gradient">CosmoTab</span>
+                    <!-- ⏰ <span class="slogan-gradient">CosmoTab</span> -->
+                    <div class="title-flex">
+                        <img src="./images/hero-bulma.png" alt="">
+                        <span class="slogan-gradient" style="padding-top: 10px;">CosmoTab</span>
+                    </div>
                 </h1>
                 <p class="subtitle is-4 mb-5 dark">
                     Первый в мире планшет для путешествий во времени
