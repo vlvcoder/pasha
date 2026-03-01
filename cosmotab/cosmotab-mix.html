@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CosmoTab — планшет для путешествий во времени</title>
+
+    <!-- Bootstrap 5 (самый популярный компонентный) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Tailwind CSS (utility-first) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Bulma (Flexbox-ориентированный) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+
+    <!-- Foundation (для сложных enterprise-решений) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.8.1/dist/css/foundation.min.css">
+
+    <!-- Materialize CSS (Material Design) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Дополнительные стили для совместимости и красоты -->
+    <style>
+        /* Базовые сбросы и общие стили */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Фикс для Materialize (он любит всё ломать) */
+        .materialize-section .row .col {
+            float: left;
+            margin-left: auto;
+            left: auto;
+            right: auto;
+        }
+
+        /* Анимации для мотивирующего слогана */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .slogan-text {
+            animation: pulse 3s infinite;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        /* Разделители секций */
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            margin: 2rem 0;
+        }
+
+        /* Стили для карточек отзывов */
+        .testimonial-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- НАВИГАЦИЯ: Верхняя панель с логотипом (будет видна во всех фреймворках) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="z-index: 1000;">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%234ecdc4'/%3E%3Ctext x='50' y='70' font-size='50' text-anchor='middle' fill='white' font-family='Arial'%3E⏳%3C/text%3E%3C/svg%3E"
+                    alt="Логотип CosmoTab" width="40" height="40" class="d-inline-block align-text-top me-2">
+                CosmoTab
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#gallery">Галерея</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#description">Описание</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#advantages">Преимущества</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimonials">Отзывы</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-outline-light" href="#order">Заказать</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контент с отступом сверху под фиксированную навигацию -->
+    <main style="margin-top: 80px;">
+
+        <!-- ==================== СЕКЦИЯ 1: Bootstrap ==================== -->
+        <section id="bootstrap-section" class="container my-5 py-5">
+            <h2 class="text-center mb-5 display-4 fw-bold text-primary">🚀 Bootstrap 5: Классика и надёжность</h2>
+
+            <!-- Галерея товаров Bootstrap -->
+            <div id="gallery" class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%234ecdc4'/%3E%3Ctext x='150' y='120' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3E⏳ CosmoTab Pro%3C/text%3E%3C/svg%3E"
+                            class="card-img-top" alt="CosmoTab Pro">
+                        <div class="card-body">
+                            <h5 class="card-title">CosmoTab Pro</h5>
+                            <p class="card-text">Путешествуйте на 100 лет вперёд с максимальным комфортом.</p>
+                            <p class="fw-bold text-success">$999</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23ff6b6b'/%3E%3Ctext x='150' y='120' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3E⌛ CosmoTab Lite%3C/text%3E%3C/svg%3E"
+                            class="card-img-top" alt="CosmoTab Lite">
+                        <div class="card-body">
+                            <h5 class="card-title">CosmoTab Lite</h5>
+                            <p class="card-text">Базовые путешествия до 10 лет. Идеально для начинающих.</p>
+                            <p class="fw-bold text-success">$499</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%2396ceb4'/%3E%3Ctext x='150' y='120' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3E⏲ CosmoTab Infinity%3C/text%3E%3C/svg%3E"
+                            class="card-img-top" alt="CosmoTab Infinity">
+                        <div class="card-body">
+                            <h5 class="card-title">CosmoTab Infinity</h5>
+                            <p class="card-text">Неограниченные путешествия во времени. Для истинных исследователей.</p>
+                            <p class="fw-bold text-success">$1999</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Блок описания товара Bootstrap -->
+            <div id="description" class="row align-items-center mb-5">
+                <div class="col-md-6">
+                    <h3 class="fw-bold mb-3">Что такое CosmoTab?</h3>
+                    <p class="lead">Первый в мире планшет, позволяющий перемещаться во времени. Основан на квантовой
+                        запутанности и временных парадоксах.</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">✨ Квантовый процессор ChronoCore X1</li>
+                        <li class="list-group-item">⚡ До 100 лет путешествий без подзарядки</li>
+                        <li class="list-group-item">🌍 Работает в любой точке пространственно-временного континуума</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='300' viewBox='0 0 500 300'%3E%3Crect width='500' height='300' fill='%23333'/%3E%3Ctext x='250' y='150' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab в действии%3C/text%3E%3C/svg%3E"
+                        class="img-fluid rounded shadow" alt="CosmoTab устройство">
+                </div>
+            </div>
+
+            <!-- Мотивирующий слоган Bootstrap -->
+            <div class="text-center my-5 py-4 bg-light rounded">
+                <h2 class="slogan-text display-4">⏰ Время ждёт только тех, у кого нет CosmoTab!</h2>
+                <p class="mt-3">Начните путешествовать уже сегодня</p>
+            </div>
+
+            <!-- Преимущества товара Bootstrap -->
+            <div id="advantages" class="row text-center g-4">
+                <div class="col-md-3">
+                    <div class="p-3 border rounded bg-white">
+                        <h1 class="text-primary">⚡</h1>
+                        <h5>Молниеносно</h5>
+                        <p>Перемещение за 0.0001 секунды</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded bg-white">
+                        <h1 class="text-primary">🔋</h1>
+                        <h5>Вечная батарея</h5>
+                        <p>Работает от временного поля</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded bg-white">
+                        <h1 class="text-primary">🛡️</h1>
+                        <h5>Безопасность</h5>
+                        <p>Не меняет прошлое (патент pending)</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded bg-white">
+                        <h1 class="text-primary">🌐</h1>
+                        <h5>Мультивселенная</h5>
+                        <p>Посещайте альтернативные реальности</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- ==================== СЕКЦИЯ 2: Tailwind CSS ==================== -->
+        <section class="py-5 px-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl font-bold text-center text-white mb-12">🎨 Tailwind CSS: Полная свобода дизайна</h2>
+
+                <!-- Отзывы покупателей с Tailwind -->
+                <div id="testimonials" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Отзыв 1 -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition duration-300">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                АН</div>
+                            <div class="ml-4">
+                                <h4 class="font-bold text-gray-800">Анна Н.</h4>
+                                <p class="text-yellow-500">★★★★★</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">"Побывала в 1985 году на концерте Queen! CosmoTab изменил мою жизнь!"
+                        </p>
+                    </div>
+                    <!-- Отзыв 2 -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition duration-300">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                ИП</div>
+                            <div class="ml-4">
+                                <h4 class="font-bold text-gray-800">Иван П.</h4>
+                                <p class="text-yellow-500">★★★★★</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">"Проверил теорию относительности на практике. Работает! Спасибо
+                            создателям."</p>
+                    </div>
+                    <!-- Отзыв 3 -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition duration-300">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                МК</div>
+                            <div class="ml-4">
+                                <h4 class="font-bold text-gray-800">Мария К.</h4>
+                                <p class="text-yellow-500">★★★★☆</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">"Очень круто, но немного страшно менять прошлое. Безопасность на
+                            высоте!"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- ==================== СЕКЦИЯ 3: Bulma ==================== -->
+        <section class="section">
+            <div class="container">
+                <h2 class="title is-1 has-text-centered has-text-info mb-6">💧 Bulma: Чистота и простота Flexbox</h2>
+
+                <!-- Снова галерея, но в стиле Bulma -->
+                <div class="columns is-multiline">
+                    <div class="column is-one-third">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23327dc1'/%3E%3Ctext x='200' y='150' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Air%3C/text%3E%3C/svg%3E"
+                                        alt="CosmoTab Air">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-4">CosmoTab Air</p>
+                                <p class="subtitle is-6">Ультратонкий</p>
+                                <p>Толщина всего 2мм, вес 150г. Путешествуйте с комфортом.</p>
+                                <p class="has-text-weight-bold has-text-success mt-2">$1299</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-one-third">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%239b4d96'/%3E%3Ctext x='200' y='150' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Max%3C/text%3E%3C/svg%3E"
+                                        alt="CosmoTab Max">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-4">CosmoTab Max</p>
+                                <p class="subtitle is-6">Максимальная мощность</p>
+                                <p>Для профессионалов: перемещайтесь на 1000 лет за раз.</p>
+                                <p class="has-text-weight-bold has-text-success mt-2">$2499</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-one-third">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%232aa198'/%3E%3Ctext x='200' y='150' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Mini%3C/text%3E%3C/svg%3E"
+                                        alt="CosmoTab Mini">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-4">CosmoTab Mini</p>
+                                <p class="subtitle is-6">Карманный помощник</p>
+                                <p>Помещается в карман, перемещает на 5 лет.</p>
+                                <p class="has-text-weight-bold has-text-success mt-2">$299</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- ==================== СЕКЦИЯ 4: Foundation ==================== -->
+        <section class="grid-container fluid bg-light py-5">
+            <div class="grid-container">
+                <h2 class="text-center h1 mb-5">🏛️ Foundation: Enterprise-решения</h2>
+
+                <!-- Блок преимуществ в стиле Foundation -->
+                <div class="grid-x grid-margin-x medium-up-3">
+                    <div class="cell">
+                        <div class="callout secondary text-center">
+                            <h3>🔬 Научный подход</h3>
+                            <p>Разработано в ЦЕРН с использованием Большого адронного коллайдера.</p>
+                        </div>
+                    </div>
+                    <div class="cell">
+                        <div class="callout secondary text-center">
+                            <h3>📦 Корпоративная защита</h3>
+                            <p>Для компаний из списка Fortune 500. Надёжность и безопасность.</p>
+                        </div>
+                    </div>
+                    <div class="cell">
+                        <div class="callout secondary text-center">
+                            <h3>⚙️ Масштабируемость</h3>
+                            <p>Подключайте модули и расширяйте возможности временных перемещений.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- ==================== СЕКЦИЯ 5: Materialize ==================== -->
+        <section class="section" style="background: #f5f5f5;">
+            <div class="container">
+                <h2 class="center-align" style="font-size: 3rem; font-weight: 300; color: #26a69a;">🎯 Materialize CSS:
+                    Material Design</h2>
+
+                <!-- Форма заказа в стиле Materialize -->
+                <div id="order" class="row">
+                    <div class="col s12 m8 offset-m2">
+                        <div class="card-panel white">
+                            <h4 class="center-align">Оформите заказ на CosmoTab</h4>
+
+                            <form>
+                                <div class="input-field">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    <input id="name" type="text" class="validate" placeholder=" ">
+                                    <label for="name">Ваше имя</label>
+                                </div>
+
+                                <div class="input-field">
+                                    <i class="material-icons prefix">email</i>
+                                    <input id="email" type="email" class="validate" placeholder=" ">
+                                    <label for="email">Email</label>
+                                </div>
+
+                                <div class="input-field">
+                                    <i class="material-icons prefix">phone</i>
+                                    <input id="phone" type="tel" class="validate" placeholder=" ">
+                                    <label for="phone">Телефон</label>
+                                </div>
+
+                                <div class="input-field">
+                                    <select>
+                                        <option value="" disabled selected>Выберите модель</option>
+                                        <option value="1">CosmoTab Pro</option>
+                                        <option value="2">CosmoTab Lite</option>
+                                        <option value="3">CosmoTab Infinity</option>
+                                        <option value="4">CosmoTab Air</option>
+                                        <option value="5">CosmoTab Max</option>
+                                        <option value="6">CosmoTab Mini</option>
+                                    </select>
+                                    <label>Модель</label>
+                                </div>
+
+                                <div class="center-align">
+                                    <button class="btn waves-effect waves-light red lighten-1" type="submit">
+                                        Заказать сейчас
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer с логотипом компании -->
+        <footer class="bg-dark text-white py-4 mt-5">
+            <div class="container text-center">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%234ecdc4'/%3E%3Ctext x='50' y='70' font-size='50' text-anchor='middle' fill='white' font-family='Arial'%3E⏳%3C/text%3E%3C/svg%3E"
+                    alt="Логотип CosmoTab" width="60" height="60" class="mb-3">
+                <p class="mb-1">© 2026 CosmoTab Corp. Все права защищены.</p>
+                <p>Время — это деньги. Инвестируйте с умом.</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Скрипты для работы фреймворков -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.8.1/js/foundation.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        // Инициализация компонентов Materialize
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        });
+    </script>
+
+    <!-- Дополнительный стиль для иконок Materialize (нужен для корректного отображения) -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</body>
+
+</html>

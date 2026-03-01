@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmoTab — планшет для путешествий во времени</title>
+
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Дополнительные стили -->
+    <style>
+        :root {
+            --primary-color: #26a69a;
+            --primary-dark: #00897b;
+            --secondary-color: #ff6b6b;
+        }
+
+        /* Кастомные стили поверх Materialize */
+        nav {
+            background-color: #1e1e1e !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background-color: rgba(30, 30, 30, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-logo {
+            display: flex !important;
+            align-items: center;
+        }
+
+        .brand-logo i {
+            font-size: 2.5rem;
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6rem 0;
+            margin-top: 64px;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section .slogan-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% 300%;
+            animation: gradient 8s ease infinite;
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 2rem 0;
+            text-shadow: none;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 3s infinite;
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .product-card .card-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card .card-action {
+            margin-top: auto;
+        }
+
+        .feature-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .advantage-box {
+            padding: 2rem;
+            border-radius: 1rem;
+            background: #f5f5f5;
+            transition: all 0.3s ease;
+            text-align: center;
+            height: 100%;
+        }
+
+        .advantage-box:hover {
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .advantage-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-card {
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+            height: 100%;
+            background: white;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-item {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            background: #f5f5f5;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .feature-item:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .rating-star {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.5rem;
+            color: #ffd700;
+        }
+
+        .rating-star:hover {
+            transform: scale(1.2);
+        }
+
+        .order-form-section {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            border-radius: 2rem;
+            padding: 3rem;
+        }
+
+        .avatar-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.2);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .avatar-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .page-footer {
+            background-color: #1e1e1e !important;
+            padding: 2rem 0;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            color: white;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--primary-color);
+        }
+
+        /* Materialize overrides */
+        .btn-large {
+            border-radius: 2rem;
+        }
+
+        .btn-floating {
+            background-color: var(--primary-color);
+        }
+
+        .card {
+            border-radius: 1rem;
+        }
+
+        .card-image img {
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .input-field .prefix {
+            color: var(--primary-color);
+        }
+
+        .input-field input:focus+label,
+        .input-field textarea:focus+label {
+            color: var(--primary-color !important);
+        }
+
+        .input-field input:focus,
+        .input-field textarea:focus {
+            border-bottom-color: var(--primary-color) !important;
+            box-shadow: 0 1px 0 0 var(--primary-color) !important;
+        }
+
+        .dropdown-content li>a,
+        .dropdown-content li>span {
+            color: var(--primary-color);
+        }
+
+        .modal {
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .modal .modal-header {
+            background: linear-gradient(135deg, #26a69a, #00897b);
+            color: white;
+            padding: 1.5rem;
+            margin: -24px -24px 0 -24px;
+        }
+
+        .modal .modal-header h4 {
+            color: white;
+            margin: 0;
+        }
+
+        /* Адаптивность */
+        @media screen and (max-width: 600px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-section .slogan-text {
+                font-size: 2rem;
+            }
+
+            .order-form-section {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Вспомогательные классы */
+        .flex {
+            display: flex;
+        }
+
+        .align-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .mt-auto {
+            margin-top: auto;
+        }
+
+        .text-warning {
+            color: #ffd700;
+        }
+
+        .text-grey {
+            color: #9e9e9e;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Навигация -->
+    <nav class="nav-extended">
+        <div class="nav-wrapper container">
+            <a href="#" class="brand-logo">
+                <i class="material-icons">schedule</i>
+                <span>CosmoTab</span>
+            </a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#gallery">Галерея</a></li>
+                <li><a href="#description">Описание</a></li>
+                <li><a href="#advantages">Преимущества</a></li>
+                <li><a href="#testimonials">Отзывы</a></li>
+                <li><a href="#order" class="btn waves-effect waves-light"
+                        style="background-color: var(--primary-color); margin-left: 1rem;">Заказать</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Мобильное меню -->
+    <ul class="sidenav" id="mobile-demo">
+        <li><a href="#gallery">Галерея</a></li>
+        <li><a href="#description">Описание</a></li>
+        <li><a href="#advantages">Преимущества</a></li>
+        <li><a href="#testimonials">Отзывы</a></li>
+        <li><a href="#order" class="btn waves-effect waves-light"
+                style="background-color: var(--primary-color); width: 90%; margin: 0 auto;">Заказать</a></li>
+    </ul>
+
+    <!-- Hero Section / Мотивирующий слоган -->
+    <section class="hero-section">
+        <div class="container center-align">
+            <h1>⏰ CosmoTab</h1>
+            <p class="flow-text" style="color: rgba(255,255,255,0.9); margin-bottom: 2rem;">
+                Первый в мире планшет для путешествий во времени
+            </p>
+            <h2 class="slogan-text pulse-animation">
+                Время ждёт только тех,<br>у кого нет CosmoTab!
+            </h2>
+            <p class="flow-text" style="color: rgba(255,255,255,0.9); margin: 2rem 0;">
+                Начните путешествовать уже сегодня
+            </p>
+            <a href="#order" class="btn-large waves-effect waves-light" style="background-color: #ff6b6b;">
+                Заказать сейчас
+                <i class="material-icons right">arrow_forward</i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Галерея товаров -->
+    <section id="gallery" class="section" style="padding: 4rem 0;">
+        <div class="container">
+            <h2 class="center-align" style="font-size: 3rem; font-weight: 300; margin-bottom: 3rem;">Наши модели</h2>
+
+            <div class="row">
+                <!-- Модель 1 -->
+                <div class="col s12 m6 l4">
+                    <div class="card product-card">
+                        <div class="card-image" style="position: relative;">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%2326a69a'/%3E%3Ctext x='200' y='160' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Pro%3C/text%3E%3C/svg%3E"
+                                alt="CosmoTab Pro">
+                            <span class="feature-tag">Хит</span>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">CosmoTab Pro</span>
+                            <p class="grey-text">Путешествуйте на 100 лет вперёд с максимальным комфортом.</p>
+
+                            <ul class="collection" style="margin: 1rem 0; border: none;">
+                                <li class="collection-item" style="padding-left: 0;"><i class="material-icons tiny"
+                                        style="color: var(--primary-color);">check_circle</i> Квантовый процессор X1
+                                </li>
+                                <li class="collection-item" style="padding-left: 0;"><i class="material-icons tiny"
+                                        style="color: var(--primary-color);">check_circle</i> 100 лет полёта</li>
+                                <li class="collection-item" style="padding-left: 0;"><i class="material-icons tiny"
+                                        style="color: var(--primary-color);">check_circle</i> Голографический дисплей
+                                </li>
+                            </ul>
+
+                            <div class="row" style="margin-bottom: 0;">
+                                <div class="col s6">
+                                    <span
+                                        style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">$999</span>
+                                </div>
+                                <div class="col s6 right-align">
+                                    <a class="btn-floating waves-effect waves-light"
+                                        style="background-color: var(--primary-color);"><i
+                                            class="material-icons">info</i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модель 2 -->
+                <div class="col s12 m6 l4">
+                    <div class="card product-card">
+                        <div class="card-image">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23ff6b6b'/%3E%3Ctext x='200' y='160' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Lite%3C/text%3E%3C/svg%3E"
+                                alt="CosmoTab Lite">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">CosmoTab Lite</span>
+                            <p class="grey-text">Базовые путешествия до 10 лет. Идеально для начинающих.</p>
+
+                            <ul class="collection" style="margin: 1rem 0; border: none;">
+                                <li class="collection-item" style="padding-left: 0;"><i class="material-icons tiny"
+                                        style="color: var(--primary-color);">check_circle</i> Базовый процессор</li>
+                                <li class="collection-item" style="padding-left: 0;"><i class="material-icons tiny"
+                                        style="color: var(--primary-color);">check_circle</i> 10 лет полёта</li>
+                                <li class="collection-item" style="padding-left: 0;"><i class="material-icons tiny"
+                                        style="color: var(--primary-color);">check_circle</i> LCD дисплей</li>
+                            </ul>
+
+                            <div class="row" style="margin-bottom: 0;">
+                                <div class="col s6">
+                                    <span
+                                        style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">$499</span>
+                                </div>
+                                <div class="col s6 right-align">
+                                    <a class="btn-floating waves-effect waves-light"
+                                        style="background-color: var(--primary-color);"><i
+                                            class="material-icons">info</i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модель 3 -->
+                <div class="col s12 m6 l4">
+                    <div class="card product-card">
+                        <div class="card-image">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%2396ceb4'/%3E%3Ctext x='200' y='160' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Infinity%3C/text%3E%3C/svg%3E"
+                                alt="CosmoTab Infinity">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">CosmoTab Infinity</span>
+                            <p class="grey-text">Неограниченные путешествия во времени. Для истинных исследователей.</p>
+
+                            <ul class="collection" style="margin: 1rem 0; border: none;">
+                                <li class="collection-item" style="padding-left: 0;"><i class="material-icons tiny"
+                                        style="color: var(--primary-color);">check_circle</i> Квантовый процессор X9
+                                </li>
+                                <li class="collection-item" style="padding-left: 0;"><i class="material-icons tiny"
+                                        style="color: var(--primary-color);">check_circle</i> ∞ лет полёта</li>
+                                <li class="collection-item" style="padding-left: 0;"><i class="material-icons tiny"
+                                        style="color: var(--primary-color);">check_circle</i> 8K голографический дисплей
+                                </li>
+                            </ul>
+
+                            <div class="row" style="margin-bottom: 0;">
+                                <div class="col s6">
+                                    <span
+                                        style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">$1999</span>
+                                </div>
+                                <div class="col s6 right-align">
+                                    <a class="btn-floating waves-effect waves-light"
+                                        style="background-color: var(--primary-color);"><i
+                                            class="material-icons">info</i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок описания товара -->
+    <section id="description" class="section grey lighten-4" style="padding: 4rem 0;">
+        <div class="container">
+            <div class="row valign-wrapper">
+                <div class="col s12 l6">
+                    <h2 style="font-size: 3rem; font-weight: 300; margin-bottom: 1.5rem;">Что такое CosmoTab?</h2>
+                    <p class="flow-text" style="margin-bottom: 2rem;">
+                        Первый в мире планшет, позволяющий перемещаться во времени. Основан на квантовой запутанности и
+                        теории струн.
+                    </p>
+
+                    <div class="feature-item">
+                        <div class="row valign-wrapper" style="margin-bottom: 0;">
+                            <div class="col s2">
+                                <i class="material-icons medium" style="color: var(--primary-color);">science</i>
+                            </div>
+                            <div class="col s10">
+                                <h5 style="font-weight: bold;">Технология</h5>
+                                <p>Использует квантовую запутанность для создания временных петель. Процессор ChronoCore
+                                    X1 обрабатывает миллиарды временных линий в секунду.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="row valign-wrapper" style="margin-bottom: 0;">
+                            <div class="col s2">
+                                <i class="material-icons medium" style="color: var(--primary-color);">bolt</i>
+                            </div>
+                            <div class="col s10">
+                                <h5 style="font-weight: bold;">Энергия</h5>
+                                <p>Работает от временного поля, создаваемого при перемещении. Не требует подзарядки в
+                                    течение всего срока службы.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="row valign-wrapper" style="margin-bottom: 0;">
+                            <div class="col s2">
+                                <i class="material-icons medium" style="color: var(--primary-color);">public</i>
+                            </div>
+                            <div class="col s10">
+                                <h5 style="font-weight: bold;">Доступность</h5>
+                                <p>Работает в любой точке пространственно-временного континуума. Даже в параллельных
+                                    вселенных!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col s12 l6">
+                    <div class="card" style="border-radius: 2rem; overflow: hidden;">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23333'/%3E%3Ctext x='300' y='200' font-size='40' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab в действии%3C/text%3E%3C/svg%3E"
+                            alt="CosmoTab устройство" style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества товара -->
+    <section id="advantages" class="section" style="padding: 4rem 0;">
+        <div class="container">
+            <h2 class="center-align" style="font-size: 3rem; font-weight: 300; margin-bottom: 3rem;">Почему выбирают
+                CosmoTab?</h2>
+
+            <div class="row">
+                <div class="col s12 m6 l3">
+                    <div class="advantage-box">
+                        <i class="material-icons advantage-icon">bolt</i>
+                        <h5 style="font-weight: bold;">Молниеносно</h5>
+                        <p>Перемещение за 0.0001 секунды. Мгновенный прыжок во времени.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m6 l3">
+                    <div class="advantage-box">
+                        <i class="material-icons advantage-icon">battery_charging_full</i>
+                        <h5 style="font-weight: bold;">Вечная батарея</h5>
+                        <p>Работает от временного поля. Никогда не разряжается.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m6 l3">
+                    <div class="advantage-box">
+                        <i class="material-icons advantage-icon">security</i>
+                        <h5 style="font-weight: bold;">Безопасность</h5>
+                        <p>Не меняет прошлое. Защита от парадоксов.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m6 l3">
+                    <div class="advantage-box">
+                        <i class="material-icons advantage-icon">all_inclusive</i>
+                        <h5 style="font-weight: bold;">Мультивселенная</h5>
+                        <p>Посещайте альтернативные реальности.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Отзывы покупателей -->
+    <section id="testimonials" class="section grey lighten-4" style="padding: 4rem 0;">
+        <div class="container">
+            <div class="row" style="margin-bottom: 2rem;">
+                <div class="col s8">
+                    <h2 style="font-size: 3rem; font-weight: 300;">Что говорят наши клиенты</h2>
+                </div>
+                <div class="col s4 right-align">
+                    <a class="btn-large waves-effect waves-light modal-trigger"
+                        style="background-color: var(--primary-color);" href="#reviewModal">
+                        <i class="material-icons left">add</i>Оставить отзыв
+                    </a>
+                </div>
+            </div>
+
+            <div class="row" id="reviewsContainer">
+                <!-- Отзывы будут добавляться сюда динамически -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма заказа -->
+    <section id="order" class="section" style="padding: 4rem 0;">
+        <div class="container">
+            <div class="order-form-section">
+                <h2 class="center-align" style="font-size: 3rem; font-weight: 300; margin-bottom: 1rem;">Оформить заказ
+                </h2>
+                <p class="flow-text center-align" style="margin-bottom: 2rem;">Оставьте заявку, и наш хроноконсультант
+                    свяжется с вами</p>
+
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">person</i>
+                                <input id="name" type="text" class="validate" placeholder=" ">
+                                <label for="name">Ваше имя</label>
+                            </div>
+
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">email</i>
+                                <input id="email" type="email" class="validate" placeholder=" ">
+                                <label for="email">Email</label>
+                            </div>
+
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">phone</i>
+                                <input id="phone" type="tel" class="validate" placeholder=" ">
+                                <label for="phone">Телефон</label>
+                            </div>
+
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">shopping_bag</i>
+                                <select>
+                                    <option value="" disabled selected>Выберите модель</option>
+                                    <option value="1">CosmoTab Pro - $999</option>
+                                    <option value="2">CosmoTab Lite - $499</option>
+                                    <option value="3">CosmoTab Infinity - $1999</option>
+                                </select>
+                                <label>Модель</label>
+                            </div>
+
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">edit</i>
+                                <textarea id="message" class="materialize-textarea" placeholder=" "></textarea>
+                                <label for="message">Дополнительные пожелания</label>
+                            </div>
+
+                            <div class="col s12 center-align">
+                                <button class="btn-large waves-effect waves-light"
+                                    style="background-color: var(--primary-color);" type="submit">
+                                    Отправить заявку
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col l4 s12">
+                    <div class="flex align-center" style="margin-bottom: 1rem;">
+                        <i class="material-icons"
+                            style="font-size: 2.5rem; color: var(--primary-color); margin-right: 0.5rem;">schedule</i>
+                        <h5 style="color: white; margin: 0;">CosmoTab</h5>
+                    </div>
+                    <p class="grey-text text-lighten-4">Первый в мире планшет для путешествий во времени. Основан в 2026
+                        году.</p>
+                    <p class="grey-text">© 2026 CosmoTab Corp. Все права защищены.</p>
+                </div>
+
+                <div class="col l4 s12">
+                    <h5 style="color: white;">Навигация</h5>
+                    <ul>
+                        <li><a href="#gallery" class="grey-text text-lighten-4">Галерея</a></li>
+                        <li><a href="#description" class="grey-text text-lighten-4">Описание</a></li>
+                        <li><a href="#advantages" class="grey-text text-lighten-4">Преимущества</a></li>
+                        <li><a href="#testimonials" class="grey-text text-lighten-4">Отзывы</a></li>
+                    </ul>
+                </div>
+
+                <div class="col l4 s12">
+                    <h5 style="color: white;">Контакты</h5>
+                    <p class="grey-text text-lighten-4">
+                        <i class="material-icons tiny"
+                            style="vertical-align: middle; margin-right: 0.5rem;">email</i>info@cosmotab.com
+                    </p>
+                    <p class="grey-text text-lighten-4">
+                        <i class="material-icons tiny" style="vertical-align: middle; margin-right: 0.5rem;">phone</i>+7
+                        (999) 123-45-67
+                    </p>
+                    <div style="margin-top: 1rem;">
+                        <a href="#" class="social-icon"><i class="material-icons">telegram</i></a>
+                        <a href="#" class="social-icon"><i class="material-icons">whatsapp</i></a>
+                        <a href="#" class="social-icon"><i class="material-icons">smart_display</i></a>
+                        <a href="#" class="social-icon"><i class="material-icons">camera_alt</i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container center-align">
+                <p class="grey-text">Время — это деньги. Инвестируйте с умом. ⏳</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для добавления отзыва -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4><i class="material-icons left">star</i>Оставить отзыв</h4>
+            </div>
+
+            <div class="row" style="margin-top: 2rem;">
+                <form id="reviewForm" class="col s12">
+                    <!-- Имя -->
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">person</i>
+                        <input id="reviewerName" type="text" class="validate" required>
+                        <label for="reviewerName">Ваше имя *</label>
+                    </div>
+
+                    <!-- Рейтинг -->
+                    <div class="input-field col s12">
+                        <label style="position: relative; font-size: 1rem; color: #9e9e9e;">Оценка</label>
+                        <div class="flex align-center" style="margin-top: 2rem;">
+                            <div id="ratingStars" style="margin-right: 1rem;">
+                                <i class="material-icons rating-star" data-rating="1" style="color: #ffd700;">star</i>
+                                <i class="material-icons rating-star" data-rating="2" style="color: #ffd700;">star</i>
+                                <i class="material-icons rating-star" data-rating="3" style="color: #ffd700;">star</i>
+                                <i class="material-icons rating-star" data-rating="4" style="color: #ffd700;">star</i>
+                                <i class="material-icons rating-star" data-rating="5" style="color: #ffd700;">star</i>
+                            </div>
+                            <span class="grey-text" id="ratingValue">5 из 5</span>
+                        </div>
+                    </div>
+
+                    <!-- Текст отзыва -->
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">chat</i>
+                        <textarea id="reviewText" class="materialize-textarea validate" required></textarea>
+                        <label for="reviewText">Ваш отзыв *</label>
+                    </div>
+
+                    <!-- Цвет аватара -->
+                    <div class="col s12">
+                        <label style="font-size: 1rem; color: #9e9e9e;">Цвет аватара</label>
+                        <div class="flex" style="margin-top: 0.5rem;">
+                            <div class="avatar-option selected" data-color="primary"
+                                style="background: linear-gradient(135deg, #26a69a, #00897b);"></div>
+                            <div class="avatar-option" data-color="purple"
+                                style="background: linear-gradient(135deg, #9b59b6, #8e44ad);"></div>
+                            <div class="avatar-option" data-color="orange"
+                                style="background: linear-gradient(135deg, #f39c12, #e67e22);"></div>
+                            <div class="avatar-option" data-color="green"
+                                style="background: linear-gradient(135deg, #2ecc71, #27ae60);"></div>
+                            <div class="avatar-option" data-color="red"
+                                style="background: linear-gradient(135deg, #e74c3c, #c0392b);"></div>
+                        </div>
+                    </div>
+
+                    <!-- Предпросмотр -->
+                    <div class="col s12" style="margin-top: 1.5rem;">
+                        <label style="font-size: 1rem; color: #9e9e9e;">Предпросмотр:</label>
+                        <div class="card" style="padding: 1rem;">
+                            <div class="flex align-center">
+                                <div class="avatar-preview" id="avatarPreview"
+                                    style="background: linear-gradient(135deg, #26a69a, #00897b); margin-right: 1rem;">
+                                    <span id="avatarInitials">??</span>
+                                </div>
+                                <div>
+                                    <p style="font-weight: bold; margin-bottom: 0.25rem;" id="previewName">Ваше имя</p>
+                                    <div id="previewRating">
+                                        <i class="material-icons" style="color: #ffd700;">star</i>
+                                        <i class="material-icons" style="color: #ffd700;">star</i>
+                                        <i class="material-icons" style="color: #ffd700;">star</i>
+                                        <i class="material-icons" style="color: #ffd700;">star</i>
+                                        <i class="material-icons" style="color: #ffd700;">star</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <a href="#!" class="modal-close btn-flat">Отмена</a>
+            <a href="#!" class="btn waves-effect waves-light" style="background-color: var(--primary-color);"
+                id="submitReviewBtn">Опубликовать отзыв</a>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        // Инициализация Materialize компонентов
+        document.addEventListener('DOMContentLoaded', function () {
+            // Навбар
+            var elems = document.querySelectorAll('.sidenav');
+            M.Sidenav.init(elems);
+
+            // Модальное окно
+            var modals = document.querySelectorAll('.modal');
+            M.Modal.init(modals);
+
+            // Выпадающие списки
+            var selects = document.querySelectorAll('select');
+            M.FormSelect.init(selects);
+        });
+
+        // Переменные для хранения отзывов
+        let reviews = [
+            {
+                initials: 'АН',
+                name: 'Анна Н.',
+                rating: 5,
+                text: 'Побывала в 1985 году на концерте Queen! CosmoTab изменил мою жизнь! Теперь я могу увидеть любимых исполнителей в любую эпоху.',
+                color: 'primary'
+            },
+            {
+                initials: 'ИП',
+                name: 'Иван П.',
+                rating: 5,
+                text: 'Проверил теорию относительности на практике. Работает! Теперь я понимаю, почему Эйнштейн был гением.',
+                color: 'purple'
+            },
+            {
+                initials: 'МК',
+                name: 'Мария К.',
+                rating: 4,
+                text: 'Очень круто, но немного страшно менять прошлое. Безопасность на высоте! Использую только для наблюдения.',
+                color: 'orange'
+            }
+        ];
+
+        let currentRating = 5;
+        let currentColor = 'primary';
+        let colorGradients = {
+            'primary': 'linear-gradient(135deg, #26a69a, #00897b)',
+            'purple': 'linear-gradient(135deg, #9b59b6, #8e44ad)',
+            'orange': 'linear-gradient(135deg, #f39c12, #e67e22)',
+            'green': 'linear-gradient(135deg, #2ecc71, #27ae60)',
+            'red': 'linear-gradient(135deg, #e74c3c, #c0392b)'
+        };
+
+        // Функция для отображения отзывов
+        function displayReviews() {
+            const container = document.getElementById('reviewsContainer');
+            container.innerHTML = '';
+
+            reviews.forEach(review => {
+                const stars = [];
+                for (let i = 1; i <= 5; i++) {
+                    stars.push(`<i class="material-icons" style="color: ${i <= review.rating ? '#ffd700' : '#9e9e9e'};">star</i>`);
+                }
+
+                const reviewHtml = `
+                <div class="col s12 m6 l4">
+                    <div class="testimonial-card">
+                        <div class="flex align-center" style="margin-bottom: 1rem;">
+                            <div class="avatar-preview" style="background: ${colorGradients[review.color]}; margin-right: 1rem;">
+                                ${review.initials}
+                            </div>
+                            <div>
+                                <h5 style="font-weight: bold; margin: 0;">${review.name}</h5>
+                                <div>
+                                    ${stars.join('')}
+                                </div>
+                            </div>
+                        </div>
+                        <p style="font-style: italic;">"${review.text}"</p>
+                    </div>
+                </div>
+            `;
+
+                container.innerHTML += reviewHtml;
+            });
+        }
+
+        // Звезды рейтинга
+        document.querySelectorAll('.rating-star').forEach(star => {
+            star.addEventListener('mouseover', function () {
+                const rating = parseInt(this.dataset.rating);
+                updateStars(rating);
+            });
+
+            star.addEventListener('mouseout', function () {
+                updateStars(currentRating);
+            });
+
+            star.addEventListener('click', function () {
+                currentRating = parseInt(this.dataset.rating);
+                updateStars(currentRating);
+                document.getElementById('ratingValue').textContent = currentRating + ' из 5';
+                updatePreview();
+            });
+        });
+
+        function updateStars(rating) {
+            document.querySelectorAll('.rating-star').forEach((star, index) => {
+                const starRating = index + 1;
+                if (starRating <= rating) {
+                    star.style.color = '#ffd700';
+                } else {
+                    star.style.color = '#9e9e9e';
+                }
+            });
+        }
+
+        // Выбор цвета аватара
+        document.querySelectorAll('.avatar-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                currentColor = this.dataset.color;
+                document.getElementById('avatarPreview').style.background = colorGradients[currentColor];
+                updatePreview();
+            });
+        });
+
+        // Обновление предпросмотра
+        function updatePreview() {
+            const name = document.getElementById('reviewerName').value;
+            const initials = name ? name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : '??';
+            document.getElementById('avatarInitials').textContent = initials;
+            document.getElementById('previewName').textContent = name || 'Ваше имя';
+
+            const previewStars = document.getElementById('previewRating');
+            previewStars.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                previewStars.innerHTML += `<i class="material-icons" style="color: ${i <= currentRating ? '#ffd700' : '#9e9e9e'};">star</i>`;
+            }
+        }
+
+        document.getElementById('reviewerName').addEventListener('input', updatePreview);
+
+        // Отправка отзыва
+        document.getElementById('submitReviewBtn').addEventListener('click', function () {
+            const name = document.getElementById('reviewerName').value;
+            const text = document.getElementById('reviewText').value;
+
+            if (!name || !text) {
+                M.toast({ html: 'Пожалуйста, заполните все обязательные поля', classes: 'red' });
+                return;
+            }
+
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+
+            reviews.push({
+                initials: initials,
+                name: name,
+                rating: currentRating,
+                text: text,
+                color: currentColor
+            });
+
+            displayReviews();
+
+            // Закрыть модалку
+            const modal = M.Modal.getInstance(document.getElementById('reviewModal'));
+            modal.close();
+
+            // Сброс формы
+            document.getElementById('reviewForm').reset();
+            currentRating = 5;
+            currentColor = 'primary';
+            updateStars(5);
+            document.getElementById('avatarPreview').style.background = colorGradients.primary;
+            document.getElementById('avatarInitials').textContent = '??';
+            document.getElementById('previewName').textContent = 'Ваше имя';
+            document.getElementById('ratingValue').textContent = '5 из 5';
+
+            M.toast({ html: 'Отзыв успешно добавлен!', classes: 'green' });
+        });
+
+        // Изменение навбара при скролле
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Инициализация
+        displayReviews();
+        updateStars(5);
+        document.getElementById('ratingValue').textContent = '5 из 5';
+    </script>
+
+</body>
+
+</html>

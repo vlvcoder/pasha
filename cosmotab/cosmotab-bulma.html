@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmoTab — планшет для путешествий во времени</title>
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+
+    <!-- Font Awesome 6 (для иконок) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Дополнительные стили -->
+    <style>
+        :root {
+            --bulma-primary-h: 175;
+            --bulma-primary-s: 70%;
+            --bulma-primary-l: 55%;
+            --bulma-link-h: 175;
+            --bulma-link-s: 70%;
+            --bulma-link-l: 55%;
+        }
+
+        /* Кастомные стили поверх Bulma */
+        .navbar {
+            transition: all 0.3s ease;
+            background-color: #0a0a0a !important;
+        }
+
+        .navbar-scrolled {
+            background-color: rgba(10, 10, 10, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+
+        /* @keyframes background-position-animation {
+            0% {
+                background-position: 0 0;
+            }
+            25% {
+                background-position: 50% 50%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            75% {
+                background-position: 50% 50%;
+            }
+            100% {
+                background-position: 0 0;
+            }
+        } */
+
+        @keyframes background-position-animation {
+            0% {
+                background-size: 100%;
+            }
+            50% {
+                background-size: 120%;
+            }
+            100% {
+                background-size: 100%;
+            }
+        }
+
+        .hero.is-gradient {
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+            background-image: url(./images/back-road.jpg);
+            background-position: center;
+            color: white;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            animation: background-position-animation 30s linear infinite;
+        }
+
+        .hero-body h1 {
+            text-shadow: #ffcc00 1px 0 10px;
+        }
+
+        .hero.is-gradient .title,
+        .hero.is-gradient .subtitle {
+            color: white;
+        }
+
+        .hero.is-gradient .dark {
+            color: gray;
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .product-card .card-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card .card-content .content {
+            flex-grow: 1;
+        }
+
+        .feature-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+        }
+
+        .feature-list {
+            list-style-type: none !important;
+        }
+
+        .advantage-box {
+            padding: 2rem 1.5rem;
+            border-radius: 1rem;
+            background-color: #f5f5f5;
+            transition: all 0.3s ease;
+            text-align: center;
+            height: 100%;
+        }
+
+        .advantage-box:hover {
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .advantage-icon {
+            font-size: 3rem;
+            color: #00d1b2;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-card {
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+            height: 100%;
+        }
+
+        .testimonial-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .slogan-gradient {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% 300%;
+            animation: gradient 8s ease infinite;
+        }
+
+        .promo-image {
+            -webkit-box-shadow: 0px -1px 10px 5px rgba(34, 60, 80, 0.38) !important;
+            -moz-box-shadow: 0px -1px 10px 5px rgba(34, 60, 80, 0.38) !important;
+            box-shadow: 0px -1px 10px 5px rgba(34, 60, 80, 0.38) !important;
+        }
+
+        .promo-text {
+            position: absolute;
+            font-size: 40px;
+            color: white;
+            text-shadow: #ffcc00 1px 0 10px;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 3s infinite;
+        }
+
+        .feature-item {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            background: #f5f5f5;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .rating-star {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.5rem;
+            color: #ffd700;
+        }
+
+        .rating-star:hover {
+            transform: scale(1.2);
+        }
+
+        .order-form-section {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
+            border-radius: 2rem;
+            padding: 3rem;
+        }
+
+        .avatar-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.2);
+        }
+
+        .avatar-option.selected {
+            border-color: #00d1b2;
+            transform: scale(1.1);
+        }
+
+        .avatar-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            color: white;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: #00d1b2;
+        }
+
+        .footer {
+            background-color: #0a0a0a;
+            color: white;
+            padding: 3rem 1.5rem;
+        }
+
+        .modal-card {
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .modal-card-head {
+            background: linear-gradient(135deg, #00d1b2, #00b89c);
+            color: white;
+        }
+
+        .modal-card-title {
+            color: white;
+        }
+
+        /* Bulma overrides */
+        .card {
+            border-radius: 1rem;
+        }
+
+        .button.is-primary {
+            background: linear-gradient(135deg, #00d1b2, #00b89c);
+            /* color: white; */
+        }
+
+        .button.is-outlined {
+            color: white;
+        }
+
+        .button.is-primary:hover {
+            background: linear-gradient(135deg, #00b89c, #009e86);
+        }
+
+        .input:focus,
+        .textarea:focus,
+        .select select:focus {
+            border-color: #00d1b2;
+            box-shadow: 0 0 0 0.125em rgba(0, 209, 178, 0.25);
+        }
+
+        /* Адаптивность */
+        @media screen and (max-width: 768px) {
+            .hero .title {
+                font-size: 2.5rem;
+            }
+
+            .order-form-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Навигация -->
+    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="#">
+                    <span class="icon is-large">
+                        <i class="fas fa-clock fa-2x has-text-primary"></i>
+                    </span>
+                    <span class="has-text-white is-size-4 has-text-weight-bold">CosmoTab</span>
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <a href="#gallery" class="navbar-item has-text-white">Галерея</a>
+                    <a href="#description" class="navbar-item has-text-white">Описание</a>
+                    <a href="#advantages" class="navbar-item has-text-white">Преимущества</a>
+                    <a href="#testimonials" class="navbar-item has-text-white">Отзывы</a>
+                    <a href="#order" class="navbar-item">
+                        <span class="button is-primary">Заказать</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section / Мотивирующий слоган -->
+    <section class="hero is-gradient is-medium">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title is-1 is-size-1-mobile has-text-weight-bold mb-4">
+                    ⏰ <span class="slogan-gradient">CosmoTab</span>
+                </h1>
+                <p class="subtitle is-4 mb-5 dark">
+                    Первый в мире планшет для путешествий во времени
+                </p>
+                <h2 class="title is-2 is-size-3-mobile slogan-gradient pulse-animation mb-5">
+                    Время ждёт только тех,<br>у кого нет CosmoTab!
+                </h2>
+                <p class="subtitle is-5 mb-6">
+                    Начните путешествовать уже сегодня
+                </p>
+                <a href="#order" class="button is-primary is-large">
+                    <span>Заказать сейчас</span>
+                    <span class="icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Галерея товаров -->
+    <section id="gallery" class="section">
+        <div class="container">
+            <h2 class="title is-2 has-text-centered mb-6">Наши модели</h2>
+
+            <div class="columns is-multiline">
+                <!-- Модель 1 -->
+                <div class="column is-one-third">
+                    <div class="card product-card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="./images/model-bulma-1.jpg" alt="CosmoTab Pro">
+                                <!-- <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23ff6b6b'/%3E%3Ctext x='200' y='160' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Lite%3C/text%3E%3C/svg%3E"
+                                    alt="CosmoTab Lite"> -->
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="content">
+                                <h3 class="title is-4">CosmoTab Lite</h3>
+                                <p class="has-text-grey">Базовые путешествия до 10 лет. Идеально для начинающих.</p>
+
+                                <ul class="feature-list mt-4">
+                                    <li>
+                                        <span class="icon has-text-primary">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span>Базовый процессор</span>
+                                    </li>
+                                    <li>
+                                        <span class="icon has-text-primary">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span>10 лет полёта</span>
+                                    </li>
+                                    <li>
+                                        <span class="icon has-text-primary">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span>LCD дисплей</span>
+                                    </li>
+                                </ul>
+
+                                <div class="is-flex is-justify-content-space-between mt-5">
+                                    <span class="title is-3 has-text-primary">$499</span>
+                                    <button class="button is-outlined is-primary">Подробнее</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модель 2 -->
+                <div class="column is-one-third">
+                    <div class="card product-card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="./images/model-bulma-2.jpg" alt="CosmoTab Pro">
+                            </figure>
+                            <span class="tag is-primary feature-tag">Хит</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="content">
+                                <h3 class="title is-4">CosmoTab Pro</h3>
+                                <p class="has-text-grey">Путешествуйте на 100 лет вперёд с максимальным комфортом.</p>
+
+                                <ul class="feature-list mt-4">
+                                    <li>
+                                        <span class="icon has-text-primary">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span>Квантовый процессор X1</span>
+                                    </li>
+                                    <li>
+                                        <span class="icon has-text-primary">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span>100 лет полёта</span>
+                                    </li>
+                                    <li>
+                                        <span class="icon has-text-primary">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span>Голографический дисплей</span>
+                                    </li>
+                                </ul>
+
+                                <div class="is-flex is-justify-content-space-between mt-5">
+                                    <span class="title is-3 has-text-primary">$999</span>
+                                    <button class="button is-outlined is-primary">Подробнее</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модель 3 -->
+                <div class="column is-one-third">
+                    <div class="card product-card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="./images/model-bulma-3.jpg" alt="CosmoTab Pro">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="content">
+                                <h3 class="title is-4">CosmoTab Infinity</h3>
+                                <p class="has-text-grey">Неограниченные путешествия во времени. Для истинных
+                                    исследователей.</p>
+
+                                <ul class="feature-list mt-4">
+                                    <li>
+                                        <span class="icon has-text-primary">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span>Квантовый процессор X9</span>
+                                    </li>
+                                    <li>
+                                        <span class="icon has-text-primary">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span>∞ лет полёта</span>
+                                    </li>
+                                    <li>
+                                        <span class="icon has-text-primary">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                        <span>8K голографический дисплей</span>
+                                    </li>
+                                </ul>
+
+                                <div class="is-flex is-justify-content-space-between mt-5">
+                                    <span class="title is-3 has-text-primary">$1999</span>
+                                    <button class="button is-outlined is-primary">Подробнее</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок описания товара -->
+    <section id="description" class="section has-background-light">
+        <div class="container">
+            <div class="columns is-vcentered">
+                <div class="column is-half">
+                    <h2 class="title is-2 mb-4">Что такое CosmoTab?</h2>
+                    <p class="subtitle is-5 mb-5">
+                        Первый в мире планшет, позволяющий перемещаться во времени. Основан на квантовой запутанности и
+                        теории струн.
+                    </p>
+
+                    <div class="content">
+                        <div class="box mb-3 feature-item">
+                            <article class="media">
+                                <div class="media-left">
+                                    <span class="icon is-large has-text-primary">
+                                        <i class="fas fa-microscope fa-2x"></i>
+                                    </span>
+                                </div>
+                                <div class="media-content">
+                                    <h4 class="title is-5 mb-2">Технология</h4>
+                                    <p>Использует квантовую запутанность для создания временных петель. Процессор
+                                        ChronoCore X1 обрабатывает миллиарды временных линий в секунду.</p>
+                                </div>
+                            </article>
+                        </div>
+
+                        <div class="box mb-3 feature-item">
+                            <article class="media">
+                                <div class="media-left">
+                                    <span class="icon is-large has-text-primary">
+                                        <i class="fas fa-bolt fa-2x"></i>
+                                    </span>
+                                </div>
+                                <div class="media-content">
+                                    <h4 class="title is-5 mb-2">Энергия</h4>
+                                    <p>Работает от временного поля, создаваемого при перемещении. Не требует подзарядки
+                                        в течение всего срока службы.</p>
+                                </div>
+                            </article>
+                        </div>
+
+                        <div class="box feature-item">
+                            <article class="media">
+                                <div class="media-left">
+                                    <span class="icon is-large has-text-primary">
+                                        <i class="fas fa-globe fa-2x"></i>
+                                    </span>
+                                </div>
+                                <div class="media-content">
+                                    <h4 class="title is-5 mb-2">Доступность</h4>
+                                    <p>Работает в любой точке пространственно-временного континуума. Даже в параллельных
+                                        вселенных!</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-half">
+                    <div style="position: relative;">
+                        <figure class="image">
+                            <img src="./images/promo-bulma.jpg" alt="CosmoTab устройство"
+                                class="promo-image is-rounded">
+                        </figure>
+                        <div class="promo-text">CosmoTab в действии</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества товара -->
+    <section id="advantages" class="section">
+        <div class="container">
+            <h2 class="title is-2 has-text-centered mb-6">Почему выбирают CosmoTab?</h2>
+
+            <div class="columns is-multiline">
+                <div class="column is-one-quarter">
+                    <div class="advantage-box">
+                        <span class="icon advantage-icon">
+                            <i class="fas fa-bolt"></i>
+                        </span>
+                        <h3 class="title is-5">Молниеносно</h3>
+                        <p class="has-text-grey">Перемещение за 0.0001 секунды. Мгновенный прыжок во времени.</p>
+                    </div>
+                </div>
+
+                <div class="column is-one-quarter">
+                    <div class="advantage-box">
+                        <span class="icon advantage-icon">
+                            <i class="fas fa-battery-full"></i>
+                        </span>
+                        <h3 class="title is-5">Вечная батарея</h3>
+                        <p class="has-text-grey">Работает от временного поля. Никогда не разряжается.</p>
+                    </div>
+                </div>
+
+                <div class="column is-one-quarter">
+                    <div class="advantage-box">
+                        <span class="icon advantage-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </span>
+                        <h3 class="title is-5">Безопасность</h3>
+                        <p class="has-text-grey">Не меняет прошлое. Защита от парадоксов.</p>
+                    </div>
+                </div>
+
+                <div class="column is-one-quarter">
+                    <div class="advantage-box">
+                        <span class="icon advantage-icon">
+                            <i class="fas fa-infinity"></i>
+                        </span>
+                        <h3 class="title is-5">Мультивселенная</h3>
+                        <p class="has-text-grey">Посещайте альтернативные реальности.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Отзывы покупателей -->
+    <section id="testimonials" class="section has-background-light">
+        <div class="container">
+            <div class="level mb-6">
+                <div class="level-left">
+                    <h2 class="title is-2 mb-0">Что говорят наши клиенты</h2>
+                </div>
+                <div class="level-right">
+                    <button class="button is-primary is-medium" id="openReviewModal">
+                        <span class="icon">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span>Оставить отзыв</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="columns is-multiline" id="reviewsContainer">
+                <!-- Отзывы будут добавляться сюда динамически -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма заказа -->
+    <section id="order" class="section">
+        <div class="container">
+            <div class="order-form-section">
+                <h2 class="title is-2 has-text-centered mb-3">Оформить заказ</h2>
+                <p class="subtitle is-5 has-text-centered mb-6">Оставьте заявку, и наш хроноконсультант свяжется с вами
+                </p>
+
+                <form>
+                    <div class="columns is-multiline">
+                        <div class="column is-half">
+                            <div class="field">
+                                <label class="label">Ваше имя</label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium" type="text" placeholder="Иван Петров">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-half">
+                            <div class="field">
+                                <label class="label">Email</label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium" type="email" placeholder="ivan@example.com">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-half">
+                            <div class="field">
+                                <label class="label">Телефон</label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium" type="tel" placeholder="+7 (999) 123-45-67">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-half">
+                            <div class="field">
+                                <label class="label">Выберите модель</label>
+                                <div class="control has-icons-left">
+                                    <div class="select is-medium is-fullwidth">
+                                        <select>
+                                            <option selected disabled>— Выберите модель —</option>
+                                            <option>CosmoTab Lite - $499</option>
+                                            <option>CosmoTab Pro - $999</option>
+                                            <option>CosmoTab Infinity - $1999</option>
+                                        </select>
+                                    </div>
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-box"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-full">
+                            <div class="field">
+                                <label class="label">Дополнительные пожелания</label>
+                                <div class="control">
+                                    <textarea class="textarea" rows="4"
+                                        placeholder="Хочу отправиться в 3023 год..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-full has-text-centered">
+                            <div class="field">
+                                <div class="control">
+                                    <button type="submit" class="button is-primary is-large">
+                                        <span class="icon">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </span>
+                                        <span>Отправить заявку</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-4">
+                    <div class="is-flex is-align-items-center mb-4">
+                        <span class="icon is-large has-text-primary mr-3">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </span>
+                        <h3 class="title is-4 has-text-white">CosmoTab</h3>
+                    </div>
+                    <p class="has-text-grey-light">Первый в мире планшет для путешествий во времени. Основан в 2026
+                        году.</p>
+                    <p class="has-text-grey mt-3">© 2026 CosmoTab Corp. Все права защищены.</p>
+                </div>
+
+                <div class="column is-4">
+                    <h5 class="title is-6 has-text-white mb-4">Навигация</h5>
+                    <ul class="has-text-grey-light">
+                        <li class="mb-2"><a href="#gallery" class="has-text-grey-light">Галерея</a></li>
+                        <li class="mb-2"><a href="#description" class="has-text-grey-light">Описание</a></li>
+                        <li class="mb-2"><a href="#advantages" class="has-text-grey-light">Преимущества</a></li>
+                        <li class="mb-2"><a href="#testimonials" class="has-text-grey-light">Отзывы</a></li>
+                    </ul>
+                </div>
+
+                <div class="column is-4">
+                    <h5 class="title is-6 has-text-white mb-4">Контакты</h5>
+                    <p class="has-text-grey-light mb-2">
+                        <span class="icon mr-2">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        info@cosmotab.com
+                    </p>
+                    <p class="has-text-grey-light mb-4">
+                        <span class="icon mr-2">
+                            <i class="fas fa-phone"></i>
+                        </span>
+                        +7 (999) 123-45-67
+                    </p>
+                    <div>
+                        <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="has-background-grey-darker my-5">
+
+            <div class="has-text-centered has-text-grey">
+                <p>Время — это деньги. Инвестируйте с умом. ⏳</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для добавления отзыва -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">
+                    <span class="icon mr-2">
+                        <i class="fas fa-star"></i>
+                    </span>
+                    Оставить отзыв
+                </p>
+                <button class="delete" aria-label="close" id="closeReviewModal"></button>
+            </header>
+
+            <section class="modal-card-body">
+                <form id="reviewForm">
+                    <!-- Имя -->
+                    <div class="field">
+                        <label class="label">Ваше имя <span class="has-text-danger">*</span></label>
+                        <div class="control">
+                            <input class="input" type="text" id="reviewerName" placeholder="Иван Петров" required>
+                        </div>
+                    </div>
+
+                    <!-- Рейтинг -->
+                    <div class="field">
+                        <label class="label">Оценка</label>
+                        <div class="control">
+                            <div class="is-flex is-align-items-center">
+                                <div class="rating mr-4" id="ratingStars">
+                                    <i class="fas fa-star rating-star" data-rating="1"></i>
+                                    <i class="fas fa-star rating-star" data-rating="2"></i>
+                                    <i class="fas fa-star rating-star" data-rating="3"></i>
+                                    <i class="fas fa-star rating-star" data-rating="4"></i>
+                                    <i class="fas fa-star rating-star" data-rating="5"></i>
+                                </div>
+                                <span class="has-text-grey" id="ratingValue">5 из 5</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Текст отзыва -->
+                    <div class="field">
+                        <label class="label">Ваш отзыв <span class="has-text-danger">*</span></label>
+                        <div class="control">
+                            <textarea class="textarea" id="reviewText" rows="4"
+                                placeholder="Поделитесь своими впечатлениями..." required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Цвет аватара -->
+                    <div class="field">
+                        <label class="label">Цвет аватара</label>
+                        <div class="control">
+                            <div class="is-flex gap-2">
+                                <div class="avatar-option selected" data-color="primary"
+                                    style="background: linear-gradient(135deg, #00d1b2, #00b89c);"></div>
+                                <div class="avatar-option" data-color="purple"
+                                    style="background: linear-gradient(135deg, #9b59b6, #8e44ad);"></div>
+                                <div class="avatar-option" data-color="orange"
+                                    style="background: linear-gradient(135deg, #f39c12, #e67e22);"></div>
+                                <div class="avatar-option" data-color="green"
+                                    style="background: linear-gradient(135deg, #2ecc71, #27ae60);"></div>
+                                <div class="avatar-option" data-color="red"
+                                    style="background: linear-gradient(135deg, #e74c3c, #c0392b);"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Предпросмотр -->
+                    <div class="field">
+                        <label class="label">Предпросмотр:</label>
+                        <div class="box">
+                            <div class="is-flex is-align-items-center">
+                                <div class="avatar-preview mr-4" id="avatarPreview"
+                                    style="background: linear-gradient(135deg, #00d1b2, #00b89c);">
+                                    <span id="avatarInitials">??</span>
+                                </div>
+                                <div>
+                                    <p class="has-text-weight-bold mb-1" id="previewName">Ваше имя</p>
+                                    <div class="rating" id="previewRating">
+                                        <i class="fas fa-star has-text-warning"></i>
+                                        <i class="fas fa-star has-text-warning"></i>
+                                        <i class="fas fa-star has-text-warning"></i>
+                                        <i class="fas fa-star has-text-warning"></i>
+                                        <i class="fas fa-star has-text-warning"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <footer class="modal-card-foot">
+                <button class="button is-primary" id="submitReviewBtn">Опубликовать отзыв</button>
+                <button class="button" id="cancelReviewBtn">Отмена</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script>
+        // Переменные для хранения отзывов
+        let reviews = [
+            {
+                initials: 'АН',
+                name: 'Анна Н.',
+                rating: 5,
+                text: 'Побывала в 1985 году на концерте Queen! CosmoTab изменил мою жизнь! Теперь я могу увидеть любимых исполнителей в любую эпоху.',
+                color: 'red'
+            },
+            {
+                initials: 'ИП',
+                name: 'Иван П.',
+                rating: 5,
+                text: 'Проверил теорию относительности на практике. Работает! Теперь я понимаю, почему Эйнштейн был гением.',
+                color: 'purple'
+            },
+            {
+                initials: 'МК',
+                name: 'Мария К.',
+                rating: 4,
+                text: 'Очень круто, но немного страшно менять прошлое. Безопасность на высоте! Использую только для наблюдения.',
+                color: 'orange'
+            }
+        ];
+
+        let currentRating = 5;
+        let currentColor = 'primary';
+        let colorGradients = {
+            'primary': 'linear-gradient(135deg, #00d1b2, #00b89c)',
+            'purple': 'linear-gradient(135deg, #9b59b6, #8e44ad)',
+            'orange': 'linear-gradient(135deg, #f39c12, #e67e22)',
+            'green': 'linear-gradient(135deg, #2ecc71, #27ae60)',
+            'red': 'linear-gradient(135deg, #e74c3c, #c0392b)'
+        };
+
+        // Функция для отображения отзывов
+        function displayReviews() {
+            const container = document.getElementById('reviewsContainer');
+            container.innerHTML = '';
+
+            reviews.forEach(review => {
+                const stars = [];
+                for (let i = 1; i <= 5; i++) {
+                    stars.push(`<i class="fas fa-star ${i <= review.rating ? 'has-text-warning' : 'has-text-grey-light'}"></i>`);
+                }
+
+                const reviewHtml = `
+                <div class="column is-one-third">
+                    <div class="card testimonial-card">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <div class="avatar-preview" style="background: ${colorGradients[review.color]}">
+                                        ${review.initials}
+                                    </div>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-5">${review.name}</p>
+                                    <div class="rating">
+                                        ${stars.join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content mt-4">
+                                <p>"${review.text}"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                container.innerHTML += reviewHtml;
+            });
+        }
+
+        // Модальное окно
+        const modal = document.getElementById('reviewModal');
+        const openBtn = document.getElementById('openReviewModal');
+        const closeBtn = document.getElementById('closeReviewModal');
+        const cancelBtn = document.getElementById('cancelReviewBtn');
+
+        openBtn.addEventListener('click', () => {
+            modal.classList.add('is-active');
+        });
+
+        function closeModal() {
+            modal.classList.remove('is-active');
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Звезды рейтинга
+        document.querySelectorAll('.rating-star').forEach(star => {
+            star.addEventListener('mouseover', function () {
+                const rating = parseInt(this.dataset.rating);
+                updateStars(rating, true);
+            });
+
+            star.addEventListener('mouseout', function () {
+                updateStars(currentRating, false);
+            });
+
+            star.addEventListener('click', function () {
+                currentRating = parseInt(this.dataset.rating);
+                updateStars(currentRating, false);
+                document.getElementById('ratingValue').textContent = currentRating + ' из 5';
+                updatePreview();
+            });
+        });
+
+        function updateStars(rating, isHover) {
+            document.querySelectorAll('.rating-star').forEach((star, index) => {
+                const starRating = index + 1;
+                if (starRating <= rating) {
+                    star.classList.add('has-text-warning');
+                    star.classList.remove('has-text-grey-light');
+                } else {
+                    star.classList.remove('has-text-warning');
+                    star.classList.add('has-text-grey-light');
+                }
+            });
+        }
+
+        // Выбор цвета аватара
+        document.querySelectorAll('.avatar-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                currentColor = this.dataset.color;
+                document.getElementById('avatarPreview').style.background = colorGradients[currentColor];
+                updatePreview();
+            });
+        });
+
+        // Обновление предпросмотра
+        function updatePreview() {
+            const name = document.getElementById('reviewerName').value;
+            const initials = name ? name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : '??';
+            document.getElementById('avatarInitials').textContent = initials;
+            document.getElementById('previewName').textContent = name || 'Ваше имя';
+
+            const previewStars = document.getElementById('previewRating');
+            previewStars.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                previewStars.innerHTML += `<i class="fas fa-star ${i <= currentRating ? 'has-text-warning' : 'has-text-grey-light'}"></i>`;
+            }
+        }
+
+        document.getElementById('reviewerName').addEventListener('input', updatePreview);
+
+        // Отправка отзыва
+        document.getElementById('submitReviewBtn').addEventListener('click', function () {
+            const name = document.getElementById('reviewerName').value;
+            const text = document.getElementById('reviewText').value;
+
+            if (!name || !text) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+
+            reviews.push({
+                initials: initials,
+                name: name,
+                rating: currentRating,
+                text: text,
+                color: currentColor
+            });
+
+            displayReviews();
+            closeModal();
+
+            // Сброс формы
+            document.getElementById('reviewForm').reset();
+            currentRating = 5;
+            currentColor = 'primary';
+            updateStars(5, false);
+            document.getElementById('avatarPreview').style.background = colorGradients.primary;
+            document.getElementById('avatarInitials').textContent = '??';
+            document.getElementById('previewName').textContent = 'Ваше имя';
+            document.getElementById('ratingValue').textContent = '5 из 5';
+        });
+
+        // Навбар бургер
+        document.addEventListener('DOMContentLoaded', () => {
+            const burger = document.querySelector('.navbar-burger');
+            const menu = document.querySelector('.navbar-menu');
+
+            burger.addEventListener('click', () => {
+                burger.classList.toggle('is-active');
+                menu.classList.toggle('is-active');
+            });
+        });
+
+        // Изменение навбара при скролле
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // Инициализация
+        displayReviews();
+        updateStars(5, false);
+        document.getElementById('ratingValue').textContent = '5 из 5';
+    </script>
+
+</body>
+
+</html>

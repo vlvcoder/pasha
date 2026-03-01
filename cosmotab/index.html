@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmoTab — все версии лендинга</title>
+
+    <!-- Простые стили для главной страницы (без фреймворков) -->
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Переменные */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #f72585;
+            --dark: #1e1e2f;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --link: steelblue;
+            --hover-link: rgb(19, 131, 228);
+
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 16px;
+            --border-radius-full: 9999px;
+
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        /* Базовые стили */
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Карточка с меню */
+        .menu-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 48px;
+            width: 100%;
+        }
+
+        /* Заголовок */
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .vendor-link {
+            text-decoration: none;
+            color: var(--link);
+        }
+
+        .vendor-link:hover {
+            color: var(--hover-link);
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+
+        /* Сетка с фреймворками */
+        .frameworks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        /* Карточка фреймворка */
+        .framework-card {
+            background: white;
+            border-radius: var(--border-radius-md);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .framework-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Цветные полоски для каждого фреймворка */
+        .framework-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .framework-card.bootstrap::before {
+            background: linear-gradient(90deg, #7952b3, #563d7c);
+        }
+
+        .framework-card.tailwind::before {
+            background: linear-gradient(90deg, #38b2ac, #0ea5e9);
+        }
+
+        .framework-card.bulma::before {
+            background: linear-gradient(90deg, #00d1b2, #009e86);
+        }
+
+        .framework-card.foundation::before {
+            background: linear-gradient(90deg, #1779ba, #126195);
+        }
+
+        .framework-card.materialize::before {
+            background: linear-gradient(90deg, #ee6e73, #c62828);
+        }
+
+        .framework-card.pure::before {
+            background: linear-gradient(90deg, #673ab7, #512da8);
+        }
+
+        .framework-card.mui::before {
+            background: linear-gradient(90deg, #3a44b7, #512da8);
+        }
+
+        .framework-card.css::before {
+            background: linear-gradient(90deg, #264de4, #2965f1);
+        }
+
+        /* Иконка фреймворка */
+        .framework-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .bootstrap-icon {
+            color: #7952b3;
+        }
+
+        .tailwind-icon {
+            color: #38b2ac;
+        }
+
+        .bulma-icon {
+            color: #00d1b2;
+        }
+
+        .foundation-icon {
+            color: #1779ba;
+        }
+
+        .materialize-icon {
+            color: #ee6e73;
+        }
+
+        .framework-image-container {
+            display: flex;
+            justify-content: center;
+            padding-top: 2px;
+            padding-bottom: 16px;
+        }
+
+        .framework-img {
+            height: 50px;
+            border-radius: 5px;
+        }
+
+        .css-icon {
+            color: #264de4;
+        }
+
+        /* Название фреймворка */
+        .framework-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        /* Описание */
+        .framework-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        /* Теги особенностей */
+        .framework-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: var(--light);
+            color: var(--dark);
+            padding: 4px 12px;
+            border-radius: var(--border-radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Кнопка */
+        .framework-link {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background: var(--light);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: var(--border-radius-md);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .framework-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* Специфичные цвета кнопок при наведении */
+        .framework-card.bootstrap .framework-link:hover {
+            background: #7952b3;
+        }
+
+        .framework-card.tailwind .framework-link:hover {
+            background: #38b2ac;
+        }
+
+        .framework-card.bulma .framework-link:hover {
+            background: #00d1b2;
+        }
+
+        .framework-card.foundation .framework-link:hover {
+            background: #1779ba;
+        }
+
+        .framework-card.materialize .framework-link:hover {
+            background: #ee6e73;
+        }
+
+        .framework-card.pure .framework-link:hover {
+            background: #673ab7;
+        }
+
+        .framework-card.mui .framework-link:hover {
+            background: #3a44b7;
+        }
+
+        .framework-card.css .framework-link:hover {
+            background: #264de4;
+        }
+
+        /* Информационная секция */
+        .info-section {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 24px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            color: var(--gray);
+        }
+
+        .feature-item i {
+            color: var(--primary);
+        }
+
+        /* Кнопка для перехода к последней версии */
+        .last-version {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px 32px;
+            border-radius: var(--border-radius-full);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .last-version:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Адаптивность */
+        @media screen and (max-width: 768px) {
+            .menu-card {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .frameworks-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .framework-card {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .framework-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .framework-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .framework-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .framework-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .framework-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .framework-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .framework-card:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        .framework-card:nth-child(8) {
+            animation-delay: 0.8s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="menu-card">
+            <!-- Заголовок -->
+            <div class="header">
+                <div class="logo">
+                    <span class="logo-icon">⏰</span>
+                    <span class="logo-icon">✨</span>
+                </div>
+                <h1>CosmoTab</h1>
+                <p class="subtitle">Планшет для путешествий во времени — в 7 разных стилях</p>
+                <p class="subtitle" style="margin-top: 8px;">Выберите фреймворк для просмотра лендинга</p>
+            </div>
+
+            <!-- Сетка с фреймворками -->
+            <div class="frameworks-grid">
+                <!-- Bootstrap -->
+                <div class="framework-card bootstrap">
+                    <a href="https://getbootstrap.com/" target="_blank" class="vendor-link">
+                        <div class="framework-icon bootstrap-icon">
+                            <i class="fab fa-bootstrap"></i>
+                        </div>
+                        <div class="framework-name">
+                            Bootstrap
+                        </div>
+                    </a>
+                    <div class="framework-description">
+                        Самый популярный CSS-фреймворк с богатой экосистемой компонентов
+                    </div>
+                    <div class="framework-tags">
+                        <span class="tag">Компонентный</span>
+                        <span class="tag">Сетка 12 колонок</span>
+                        <span class="tag">jQuery</span>
+                    </div>
+                    <a href="./cosmotab-bootstrap.html" class="framework-link">
+                        <i class="fas fa-arrow-right"></i> Перейти к версии
+                    </a>
+                </div>
+
+                <!-- Tailwind CSS -->
+                <div class="framework-card tailwind">
+                    <a href="https://tailwindcss.com/" target="_blank" class="vendor-link">
+                        <div class="framework-image-container">
+                            <img src="./images/logo-tailwind.png" alt="" class="framework-img">
+                        </div>
+                        <div class="framework-name">
+                            Tailwind CSS
+                        </div>
+                    </a>
+                    <div class="framework-description">
+                        Утилитарный фреймворк для быстрой кастомизации без отрыва от HTML
+                    </div>
+                    <div class="framework-tags">
+                        <span class="tag">Utility-first</span>
+                        <span class="tag">JIT компиляция</span>
+                        <span class="tag">Flexbox</span>
+                    </div>
+                    <a href="./cosmotab-tailwind.html" class="framework-link">
+                        <i class="fas fa-arrow-right"></i> Перейти к версии
+                    </a>
+                </div>
+
+                <!-- Bulma -->
+                <div class="framework-card bulma">
+                    <a href="https://bulma.io/" target="_blank" class="vendor-link">
+                        <div class="framework-image-container">
+                            <img src="./images/logo-bulma.png" alt="" class="framework-img">
+                        </div>
+                        <div class="framework-name">
+                            Bulma
+                        </div>
+                    </a>
+                    <div class="framework-description">
+                        Современный фреймворк на Flexbox с чистыми и понятными классами
+                    </div>
+                    <div class="framework-tags">
+                        <span class="tag">Flexbox</span>
+                        <span class="tag">Modular</span>
+                        <span class="tag">No JS</span>
+                    </div>
+                    <a href="./cosmotab-bulma.html" class="framework-link">
+                        <i class="fas fa-arrow-right"></i> Перейти к версии
+                    </a>
+                </div>
+
+                <!-- Foundation -->
+                <div class="framework-card foundation">
+                    <a href="https://get.foundation/" target="_blank" class="vendor-link">
+                        <div class="framework-icon foundation-icon">
+                            <i class="fab fa-css3-alt"></i>
+                        </div>
+                        <div class="framework-name">
+                            Foundation
+                        </div>
+                    </a>
+                    <div class="framework-description">
+                        Enterprise-фреймворк для сложных проектов и email-верстки
+                    </div>
+                    <div class="framework-tags">
+                        <span class="tag">Enterprise</span>
+                        <span class="tag">Accessibility</span>
+                        <span class="tag">Flex Grid</span>
+                    </div>
+                    <a href="./cosmotab-foundation.html" class="framework-link">
+                        <i class="fas fa-arrow-right"></i> Перейти к версии
+                    </a>
+                </div>
+
+                <!-- Materialize CSS -->
+                <div class="framework-card materialize">
+                    <a href="https://materializecss.com/" target="_blank" class="vendor-link">
+                        <div class="framework-image-container">
+                            <img src="./images/logo-materialize.png" alt="" class="framework-img">
+                        </div>
+                        <div class="framework-name">
+                            Materialize
+                        </div>
+                    </a>
+                    <div class="framework-description">
+                        Реализация Material Design от Google с красивыми анимациями
+                    </div>
+                    <div class="framework-tags">
+                        <span class="tag">Material Design</span>
+                        <span class="tag">Анимации</span>
+                        <span class="tag">JS-компоненты</span>
+                    </div>
+                    <a href="./cosmotab-materialize.html" class="framework-link">
+                        <i class="fas fa-arrow-right"></i> Перейти к версии
+                    </a>
+                </div>
+
+                <!-- Pure.css -->
+                <div class="framework-card pure">
+                    <a href="https://pure-css.github.io/" target="_blank" class="vendor-link">
+                        <div class="framework-image-container">
+                            <img src="./images/logo-pure.png" alt="" class="framework-img">
+                        </div>
+                        <div class="framework-name">
+                            Pure.css
+                        </div>
+                    </a>
+                    <div class="framework-description">
+                        Минималистичный фреймворк от Yahoo (всего 4KB)
+                    </div>
+                    <div class="framework-tags">
+                        <span class="tag">Минимализм</span>
+                        <span class="tag">4KB</span>
+                        <span class="tag">Модульный</span>
+                    </div>
+                    <a href="./cosmotab-pure-css.html" class="framework-link">
+                        <i class="fas fa-arrow-right"></i> Перейти к версии
+                    </a>
+                </div>
+
+                <!-- Mui -->
+                <div class="framework-card mui">
+                    <a href="https://mui.com/" target="_blank" class="vendor-link">
+                        <div class="framework-image-container">
+                            <img src="./images/logo-mui.png" alt="" class="framework-img">
+                        </div>
+                        <div class="framework-name">
+                            Mui
+                        </div>
+                    </a>
+                    <div class="framework-description">
+                        Лёгкий CSS-фреймворк, который соответствует рекомендациям Material Design
+                    </div>
+                    <div class="framework-tags">
+                        <span class="tag">Adaptive</span>
+                        <span class="tag">Material Design</span>
+                        <span class="tag">Библиотека компонентов React</span>
+                    </div>
+                    <a href="./cosmotab-mui.html" class="framework-link">
+                        <i class="fas fa-arrow-right"></i> Перейти к версии
+                    </a>
+                </div>
+
+                <!-- Чистый CSS -->
+                <div class="framework-card css">
+                    <div class="framework-icon css-icon">
+                        <i class="fab fa-css3-alt"></i>
+                    </div>
+                    <div class="framework-name">Чистый CSS</div>
+                    <div class="framework-description">
+                        Полностью самописный CSS без использования фреймворков
+                    </div>
+                    <div class="framework-tags">
+                        <span class="tag">Flexbox</span>
+                        <span class="tag">Grid</span>
+                        <span class="tag">Анимации</span>
+                    </div>
+                    <a href="./cosmotab-css.html" class="framework-link">
+                        <i class="fas fa-arrow-right"></i> Перейти к версии
+                    </a>
+                </div>
+            </div>
+
+            <!-- Информационная секция -->
+            <div class="info-section">
+                <h2 class="info-title">Что общего во всех версиях?</h2>
+
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Заголовок и логотип</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Галерея товаров</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Описание товара</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Мотивирующий слоган</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Преимущества</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Отзывы с модалкой</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Форма заказа</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Футер</span>
+                    </div>
+                </div>
+
+                <p style="color: var(--gray); margin-bottom: 24px;">
+                    Все страницы содержат одинаковый контент, но оформлены в стиле разных фреймворков,<br>
+                    чтобы наглядно показать различия в подходе к стилизации.
+                </p>
+
+                <!-- Кнопка для перехода к последней версии (чистый CSS) -->
+                <a href="#" class="last-version" onclick="alert('Переход к последней версии на чистом CSS')">
+                    <span>✨ Последняя версия</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Небольшой скрипт для реальных ссылок (когда страницы будут размещены) -->
+    <script>
+        // Здесь можно будет прописать реальные ссылки на страницы
+        document.querySelectorAll('.framework-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // В реальном проекте здесь будет переход на соответствующую страницу
+                // e.preventDefault(); // Раскомментировать, если ссылки еще не готовы
+            });
+        });
+    </script>
+</body>
+
+</html>

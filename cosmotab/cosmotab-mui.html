@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmoTab — планшет для путешествий во времени (MUI)</title>
+
+    <!-- Material UI (MUI) и Roboto Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+    <!-- MUI Core CSS (для использования без React) -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@mui/material@5.15.0/umd/material-ui.production.min.css" />
+
+    <!-- Дополнительные стили для кастомизации MUI -->
+    <style>
+        /* Базовый сброс и переменные */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        /* Навигация (MUI AppBar стилизация) */
+        .mui-navbar {
+            background-color: #1976d2 !important;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1100;
+            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        .mui-navbar.scrolled {
+            background-color: #1565c0 !important;
+            box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+        }
+
+        .mui-navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mui-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.25rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .mui-logo i {
+            font-size: 2rem;
+        }
+
+        .mui-nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .mui-nav-menu a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+
+        .mui-nav-menu a:hover {
+            color: white;
+        }
+
+        .mui-button {
+            background-color: white;
+            color: #1976d2;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+        }
+
+        .mui-button:hover {
+            background-color: #f5f5f5;
+            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+        }
+
+        .mui-button-contained {
+            background-color: #1976d2;
+            color: white;
+        }
+
+        .mui-button-contained:hover {
+            background-color: #1565c0;
+        }
+
+        /* Hero секция */
+        .mui-hero {
+            background: linear-gradient(135deg, #1976d2 0%, #9c27b0 100%);
+            color: white;
+            padding: 80px 0;
+            margin-top: 64px;
+            text-align: center;
+        }
+
+        .mui-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .mui-hero .lead {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 32px;
+            opacity: 0.9;
+        }
+
+        .mui-slogan {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin: 32px 0;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% 300%;
+            animation: gradient 8s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Секции */
+        .mui-section {
+            padding: 64px 0;
+        }
+
+        .mui-section-light {
+            background-color: #fafafa;
+        }
+
+        .mui-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .mui-section-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 48px;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        .mui-section-title.left {
+            text-align: left;
+        }
+
+        /* Карточки товаров */
+        .mui-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .mui-card {
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .mui-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        .mui-card-media {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .mui-card-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background-color: #f44336;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+        }
+
+        .mui-card-content {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mui-card-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        .mui-card-subtitle {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+        }
+
+        .mui-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0;
+        }
+
+        .mui-list-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: rgba(0, 0, 0, 0.87);
+            font-size: 0.875rem;
+        }
+
+        .mui-list-item i {
+            color: #1976d2;
+            font-size: 1.125rem;
+        }
+
+        .mui-card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding: 8px 16px 16px;
+        }
+
+        .mui-price {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #1976d2;
+        }
+
+        .mui-chip {
+            background-color: #e0e0e0;
+            padding: 4px 8px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.87);
+            display: inline-block;
+        }
+
+        /* Преимущества */
+        .mui-advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .mui-advantage-card {
+            background: white;
+            padding: 24px;
+            border-radius: 4px;
+            text-align: center;
+            box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        .mui-advantage-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        .mui-advantage-card i {
+            font-size: 3rem;
+            color: #1976d2;
+            margin-bottom: 16px;
+        }
+
+        .mui-advantage-card h4 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        .mui-advantage-card p {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 0.875rem;
+        }
+
+        /* Описание */
+        .mui-description-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .mui-feature-list {
+            margin-top: 24px;
+        }
+
+        .mui-feature-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        .mui-feature-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+        }
+
+        .mui-feature-item i {
+            font-size: 2rem;
+            color: #1976d2;
+        }
+
+        .mui-feature-item h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        .mui-feature-item p {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .mui-description-image {
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        .mui-description-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Отзывы */
+        .mui-testimonials-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 48px;
+        }
+
+        .mui-testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .mui-testimonial-card {
+            background: white;
+            padding: 24px;
+            border-radius: 4px;
+            box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        .mui-testimonial-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        .mui-testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .mui-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            font-size: 1.25rem;
+            margin-right: 16px;
+        }
+
+        .mui-avatar.primary {
+            background-color: #1976d2;
+        }
+
+        .mui-avatar.purple {
+            background-color: #9c27b0;
+        }
+
+        .mui-avatar.orange {
+            background-color: #f57c00;
+        }
+
+        .mui-avatar.green {
+            background-color: #4caf50;
+        }
+
+        .mui-avatar.red {
+            background-color: #f44336;
+        }
+
+        .mui-author-info h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        .mui-rating {
+            color: #ffc107;
+        }
+
+        .mui-rating i {
+            font-size: 1.125rem;
+        }
+
+        .mui-testimonial-text {
+            color: rgba(0, 0, 0, 0.6);
+            font-style: italic;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        /* Форма заказа */
+        .mui-form-section {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            padding: 48px;
+            border-radius: 4px;
+        }
+
+        .mui-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .mui-form-group {
+            margin-bottom: 16px;
+        }
+
+        .mui-form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .mui-text-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.23);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .mui-text-field:focus {
+            outline: none;
+            border-color: #1976d2;
+            border-width: 2px;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+        }
+
+        .mui-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.23);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+            background-color: white;
+        }
+
+        .mui-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.23);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .mui-textarea:focus {
+            outline: none;
+            border-color: #1976d2;
+            border-width: 2px;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+        }
+
+        /* Футер */
+        .mui-footer {
+            background-color: #263238;
+            color: white;
+            padding: 48px 0 24px;
+        }
+
+        .mui-footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .mui-footer h5 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mui-footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .mui-footer-logo i {
+            font-size: 2rem;
+            color: #1976d2;
+        }
+
+        .mui-footer-logo span {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .mui-footer p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+        }
+
+        .mui-footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mui-footer ul li {
+            margin-bottom: 8px;
+        }
+
+        .mui-footer ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .mui-footer ul li a:hover {
+            color: white;
+        }
+
+        .mui-social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .mui-social-links a {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .mui-social-links a:hover {
+            color: #1976d2;
+        }
+
+        .mui-footer-divider {
+            border: none;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.12);
+            margin: 32px 0;
+        }
+
+        .mui-copyright {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+        }
+
+        /* Модальное окно MUI стиль */
+        .mui-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mui-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .mui-modal-content {
+            background-color: white;
+            border-radius: 4px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mui-modal-header {
+            background-color: #1976d2;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .mui-modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mui-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .mui-modal-close:hover {
+            opacity: 1;
+        }
+
+        .mui-modal-body {
+            padding: 24px;
+        }
+
+        .mui-modal-footer {
+            padding: 16px 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        /* Рейтинг звездами */
+        .mui-rating-stars {
+            display: flex;
+            gap: 4px;
+            margin: 8px 0 16px;
+        }
+
+        .mui-rating-stars i {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mui-rating-stars i:hover {
+            transform: scale(1.2);
+        }
+
+        .mui-rating-stars i.active {
+            color: #ffc107;
+        }
+
+        .mui-rating-stars i.inactive {
+            color: #e0e0e0;
+        }
+
+        /* Выбор аватара */
+        .mui-avatar-options {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0 16px;
+        }
+
+        .mui-avatar-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .mui-avatar-option:hover {
+            transform: scale(1.2);
+        }
+
+        .mui-avatar-option.selected {
+            border-color: #1976d2;
+            transform: scale(1.1);
+        }
+
+        /* Предпросмотр отзыва */
+        .mui-preview-box {
+            background-color: #f5f5f5;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+        }
+
+        .mui-preview-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Адаптивность */
+        @media screen and (max-width: 960px) {
+
+            .mui-grid,
+            .mui-advantages-grid,
+            .mui-testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mui-description-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .mui-nav-menu {
+                display: none;
+            }
+
+            .mui-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .mui-slogan {
+                font-size: 1.75rem;
+            }
+
+            .mui-grid,
+            .mui-advantages-grid,
+            .mui-testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mui-footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mui-testimonials-header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .mui-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mui-form-group.full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Навигация (MUI AppBar стиль) -->
+    <div class="mui-navbar" id="navbar">
+        <div class="mui-navbar-container">
+            <div class="mui-logo">
+                <i class="material-icons">schedule</i>
+                <span>CosmoTab</span>
+            </div>
+
+            <div class="mui-nav-menu">
+                <a href="#gallery">Галерея</a>
+                <a href="#description">Описание</a>
+                <a href="#advantages">Преимущества</a>
+                <a href="#testimonials">Отзывы</a>
+                <button class="mui-button"
+                    onclick="document.getElementById('order').scrollIntoView({behavior: 'smooth'})">Заказать</button>
+            </div>
+
+            <!-- Мобильный вариант (без бургера для простоты) -->
+            <div style="display: none;">Мобильное меню</div>
+        </div>
+    </div>
+
+    <!-- Hero Section / Мотивирующий слоган -->
+    <section class="mui-hero">
+        <div class="mui-container">
+            <h1>⏰ CosmoTab</h1>
+            <p class="lead">Первый в мире планшет для путешествий во времени</p>
+            <div class="mui-slogan">
+                Время ждёт только тех,<br>у кого нет CosmoTab!
+            </div>
+            <p class="lead">Начните путешествовать уже сегодня</p>
+            <button class="mui-button mui-button-contained" style="font-size: 1rem; padding: 10px 32px;"
+                onclick="document.getElementById('order').scrollIntoView({behavior: 'smooth'})">
+                Заказать сейчас
+            </button>
+        </div>
+    </section>
+
+    <!-- Галерея товаров -->
+    <section id="gallery" class="mui-section">
+        <div class="mui-container">
+            <h2 class="mui-section-title">Наши модели</h2>
+
+            <div class="mui-grid">
+                <!-- Модель 1 -->
+                <div class="mui-card">
+                    <div class="mui-card-media"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%231976d2\'/%3E%3Ctext x=\'200\' y=\'160\' font-size=\'30\' text-anchor=\'middle\' fill=\'white\' font-family=\'Roboto\'%3ECosmoTab Pro%3C/text%3E%3C/svg%3E')">
+                        <span class="mui-card-badge">Хит</span>
+                    </div>
+                    <div class="mui-card-content">
+                        <h3 class="mui-card-title">CosmoTab Pro</h3>
+                        <div class="mui-card-subtitle">Путешествуйте на 100 лет вперёд</div>
+
+                        <ul class="mui-list">
+                            <li class="mui-list-item">
+                                <i class="material-icons">check_circle</i> Квантовый процессор X1
+                            </li>
+                            <li class="mui-list-item">
+                                <i class="material-icons">check_circle</i> 100 лет полёта
+                            </li>
+                            <li class="mui-list-item">
+                                <i class="material-icons">check_circle</i> Голографический дисплей
+                            </li>
+                        </ul>
+
+                        <div class="mui-card-actions">
+                            <span class="mui-price">$999</span>
+                            <button class="mui-button">Подробнее</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модель 2 -->
+                <div class="mui-card">
+                    <div class="mui-card-media"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%23f44336\'/%3E%3Ctext x=\'200\' y=\'160\' font-size=\'30\' text-anchor=\'middle\' fill=\'white\' font-family=\'Roboto\'%3ECosmoTab Lite%3C/text%3E%3C/svg%3E')">
+                    </div>
+                    <div class="mui-card-content">
+                        <h3 class="mui-card-title">CosmoTab Lite</h3>
+                        <div class="mui-card-subtitle">Базовые путешествия до 10 лет</div>
+
+                        <ul class="mui-list">
+                            <li class="mui-list-item">
+                                <i class="material-icons">check_circle</i> Базовый процессор
+                            </li>
+                            <li class="mui-list-item">
+                                <i class="material-icons">check_circle</i> 10 лет полёта
+                            </li>
+                            <li class="mui-list-item">
+                                <i class="material-icons">check_circle</i> LCD дисплей
+                            </li>
+                        </ul>
+
+                        <div class="mui-card-actions">
+                            <span class="mui-price">$499</span>
+                            <button class="mui-button">Подробнее</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модель 3 -->
+                <div class="mui-card">
+                    <div class="mui-card-media"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%234caf50\'/%3E%3Ctext x=\'200\' y=\'160\' font-size=\'30\' text-anchor=\'middle\' fill=\'white\' font-family=\'Roboto\'%3ECosmoTab Infinity%3C/text%3E%3C/svg%3E')">
+                    </div>
+                    <div class="mui-card-content">
+                        <h3 class="mui-card-title">CosmoTab Infinity</h3>
+                        <div class="mui-card-subtitle">Неограниченные путешествия</div>
+
+                        <ul class="mui-list">
+                            <li class="mui-list-item">
+                                <i class="material-icons">check_circle</i> Квантовый процессор X9
+                            </li>
+                            <li class="mui-list-item">
+                                <i class="material-icons">check_circle</i> ∞ лет полёта
+                            </li>
+                            <li class="mui-list-item">
+                                <i class="material-icons">check_circle</i> 8K голографический дисплей
+                            </li>
+                        </ul>
+
+                        <div class="mui-card-actions">
+                            <span class="mui-price">$1999</span>
+                            <button class="mui-button">Подробнее</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок описания товара -->
+    <section id="description" class="mui-section mui-section-light">
+        <div class="mui-container">
+            <div class="mui-description-grid">
+                <div>
+                    <h2 class="mui-section-title left">Что такое CosmoTab?</h2>
+                    <p style="font-size: 1.125rem; color: rgba(0,0,0,0.6); margin-bottom: 32px;">
+                        Первый в мире планшет, позволяющий перемещаться во времени. Основан на квантовой запутанности и
+                        теории струн.
+                    </p>
+
+                    <div class="mui-feature-list">
+                        <div class="mui-feature-item">
+                            <i class="material-icons">science</i>
+                            <div>
+                                <h4>Технология</h4>
+                                <p>Использует квантовую запутанность для создания временных петель. Процессор ChronoCore
+                                    X1 обрабатывает миллиарды временных линий в секунду.</p>
+                            </div>
+                        </div>
+
+                        <div class="mui-feature-item">
+                            <i class="material-icons">bolt</i>
+                            <div>
+                                <h4>Энергия</h4>
+                                <p>Работает от временного поля, создаваемого при перемещении. Не требует подзарядки в
+                                    течение всего срока службы.</p>
+                            </div>
+                        </div>
+
+                        <div class="mui-feature-item">
+                            <i class="material-icons">public</i>
+                            <div>
+                                <h4>Доступность</h4>
+                                <p>Работает в любой точке пространственно-временного континуума. Даже в параллельных
+                                    вселенных!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mui-description-image">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23333'/%3E%3Ctext x='300' y='200' font-size='40' text-anchor='middle' fill='white' font-family='Roboto'%3ECosmoTab в действии%3C/text%3E%3C/svg%3E"
+                        alt="CosmoTab устройство">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества товара -->
+    <section id="advantages" class="mui-section">
+        <div class="mui-container">
+            <h2 class="mui-section-title">Почему выбирают CosmoTab?</h2>
+
+            <div class="mui-advantages-grid">
+                <div class="mui-advantage-card">
+                    <i class="material-icons">bolt</i>
+                    <h4>Молниеносно</h4>
+                    <p>Перемещение за 0.0001 секунды. Мгновенный прыжок во времени.</p>
+                </div>
+
+                <div class="mui-advantage-card">
+                    <i class="material-icons">battery_charging_full</i>
+                    <h4>Вечная батарея</h4>
+                    <p>Работает от временного поля. Никогда не разряжается.</p>
+                </div>
+
+                <div class="mui-advantage-card">
+                    <i class="material-icons">security</i>
+                    <h4>Безопасность</h4>
+                    <p>Не меняет прошлое. Защита от парадоксов.</p>
+                </div>
+
+                <div class="mui-advantage-card">
+                    <i class="material-icons">all_inclusive</i>
+                    <h4>Мультивселенная</h4>
+                    <p>Посещайте альтернативные реальности.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Отзывы покупателей -->
+    <section id="testimonials" class="mui-section mui-section-light">
+        <div class="mui-container">
+            <div class="mui-testimonials-header">
+                <h2 class="mui-section-title left" style="margin-bottom: 0;">Что говорят наши клиенты</h2>
+                <button class="mui-button mui-button-contained" onclick="openModal()">
+                    <i class="material-icons" style="font-size: 1.125rem; margin-right: 4px;">add</i> Оставить отзыв
+                </button>
+            </div>
+
+            <div class="mui-testimonials-grid" id="reviewsContainer">
+                <!-- Отзывы будут добавляться сюда динамически -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма заказа -->
+    <section id="order" class="mui-section">
+        <div class="mui-container">
+            <div class="mui-form-section">
+                <h2 class="mui-section-title" style="margin-top: 0;">Оформить заказ</h2>
+                <p style="text-align: center; color: rgba(0,0,0,0.6); margin-bottom: 32px;">Оставьте заявку, и наш
+                    хроноконсультант свяжется с вами</p>
+
+                <div class="mui-form-grid">
+                    <div class="mui-form-group">
+                        <label style="display: block; margin-bottom: 4px; color: rgba(0,0,0,0.6);">Ваше имя</label>
+                        <div style="position: relative;">
+                            <i class="material-icons"
+                                style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(0,0,0,0.3);">person</i>
+                            <input type="text" class="mui-text-field" style="padding-left: 44px;"
+                                placeholder="Иван Петров">
+                        </div>
+                    </div>
+
+                    <div class="mui-form-group">
+                        <label style="display: block; margin-bottom: 4px; color: rgba(0,0,0,0.6);">Email</label>
+                        <div style="position: relative;">
+                            <i class="material-icons"
+                                style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(0,0,0,0.3);">email</i>
+                            <input type="email" class="mui-text-field" style="padding-left: 44px;"
+                                placeholder="ivan@example.com">
+                        </div>
+                    </div>
+
+                    <div class="mui-form-group">
+                        <label style="display: block; margin-bottom: 4px; color: rgba(0,0,0,0.6);">Телефон</label>
+                        <div style="position: relative;">
+                            <i class="material-icons"
+                                style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(0,0,0,0.3);">phone</i>
+                            <input type="tel" class="mui-text-field" style="padding-left: 44px;"
+                                placeholder="+7 (999) 123-45-67">
+                        </div>
+                    </div>
+
+                    <div class="mui-form-group">
+                        <label style="display: block; margin-bottom: 4px; color: rgba(0,0,0,0.6);">Выберите
+                            модель</label>
+                        <div style="position: relative;">
+                            <i class="material-icons"
+                                style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(0,0,0,0.3);">shopping_bag</i>
+                            <select class="mui-select" style="padding-left: 44px;">
+                                <option selected disabled>— Выберите модель —</option>
+                                <option>CosmoTab Pro - $999</option>
+                                <option>CosmoTab Lite - $499</option>
+                                <option>CosmoTab Infinity - $1999</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mui-form-group full-width">
+                        <label style="display: block; margin-bottom: 4px; color: rgba(0,0,0,0.6);">Дополнительные
+                            пожелания</label>
+                        <textarea class="mui-textarea" rows="4" placeholder="Хочу отправиться в 3023 год..."></textarea>
+                    </div>
+
+                    <div class="mui-form-group full-width" style="text-align: center;">
+                        <button class="mui-button mui-button-contained" style="padding: 12px 48px; font-size: 1rem;">
+                            <i class="material-icons" style="font-size: 1.125rem; margin-right: 8px;">send</i> Отправить
+                            заявку
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="mui-footer">
+        <div class="mui-container">
+            <div class="mui-footer-grid">
+                <div>
+                    <div class="mui-footer-logo">
+                        <i class="material-icons">schedule</i>
+                        <span>CosmoTab</span>
+                    </div>
+                    <p>Первый в мире планшет для путешествий во времени. Основан в 2026 году.</p>
+                    <p>© 2026 CosmoTab Corp. Все права защищены.</p>
+                </div>
+
+                <div>
+                    <h5>Навигация</h5>
+                    <ul>
+                        <li><a href="#gallery">Галерея</a></li>
+                        <li><a href="#description">Описание</a></li>
+                        <li><a href="#advantages">Преимущества</a></li>
+                        <li><a href="#testimonials">Отзывы</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5>Контакты</h5>
+                    <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">email</i>
+                        info@cosmotab.com</p>
+                    <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">phone</i> +7 (999)
+                        123-45-67</p>
+
+                    <div class="mui-social-links">
+                        <a href="#"><i class="material-icons">send</i></a>
+                        <a href="#"><i class="material-icons">chat</i></a>
+                        <a href="#"><i class="material-icons">smart_display</i></a>
+                        <a href="#"><i class="material-icons">camera_alt</i></a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="mui-footer-divider">
+
+            <div class="mui-copyright">
+                Время — это деньги. Инвестируйте с умом. ⏳
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для добавления отзыва -->
+    <div class="mui-modal" id="reviewModal">
+        <div class="mui-modal-content">
+            <div class="mui-modal-header">
+                <h3><i class="material-icons">star</i> Оставить отзыв</h3>
+                <button class="mui-modal-close" onclick="closeModal()">&times;</button>
+            </div>
+
+            <div class="mui-modal-body">
+                <form id="reviewForm">
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 4px; color: rgba(0,0,0,0.6);">Ваше имя <span
+                                style="color: red;">*</span></label>
+                        <input type="text" id="reviewerName" class="mui-text-field" placeholder="Иван Петров" required>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 4px; color: rgba(0,0,0,0.6);">Оценка</label>
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div class="mui-rating-stars" id="ratingStars">
+                                <i class="material-icons" data-rating="1">star</i>
+                                <i class="material-icons" data-rating="2">star</i>
+                                <i class="material-icons" data-rating="3">star</i>
+                                <i class="material-icons" data-rating="4">star</i>
+                                <i class="material-icons" data-rating="5">star</i>
+                            </div>
+                            <span id="ratingValue">5 из 5</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 4px; color: rgba(0,0,0,0.6);">Ваш отзыв <span
+                                style="color: red;">*</span></label>
+                        <textarea id="reviewText" class="mui-textarea" rows="4"
+                            placeholder="Поделитесь своими впечатлениями..." required></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 4px; color: rgba(0,0,0,0.6);">Цвет аватара</label>
+                        <div class="mui-avatar-options">
+                            <div class="mui-avatar-option selected" data-color="primary"
+                                style="background-color: #1976d2;"></div>
+                            <div class="mui-avatar-option" data-color="purple" style="background-color: #9c27b0;"></div>
+                            <div class="mui-avatar-option" data-color="orange" style="background-color: #f57c00;"></div>
+                            <div class="mui-avatar-option" data-color="green" style="background-color: #4caf50;"></div>
+                            <div class="mui-avatar-option" data-color="red" style="background-color: #f44336;"></div>
+                        </div>
+                    </div>
+
+                    <div class="mui-preview-box">
+                        <label style="display: block; margin-bottom: 8px; color: rgba(0,0,0,0.6);">Предпросмотр:</label>
+                        <div class="mui-preview-content">
+                            <div class="mui-avatar" id="avatarPreview" style="background-color: #1976d2;">
+                                <span id="avatarInitials">??</span>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0 0 4px; font-weight: 500;" id="previewName">Ваше имя</h4>
+                                <div class="mui-rating" id="previewRating">
+                                    <i class="material-icons">star</i>
+                                    <i class="material-icons">star</i>
+                                    <i class="material-icons">star</i>
+                                    <i class="material-icons">star</i>
+                                    <i class="material-icons">star</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="mui-modal-footer">
+                <button class="mui-button" onclick="closeModal()">Отмена</button>
+                <button class="mui-button mui-button-contained" id="submitReviewBtn">Опубликовать</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script>
+        // Переменные для хранения отзывов
+        let reviews = [
+            {
+                initials: 'АН',
+                name: 'Анна Н.',
+                rating: 5,
+                text: 'Побывала в 1985 году на концерте Queen! CosmoTab изменил мою жизнь! Теперь я могу увидеть любимых исполнителей в любую эпоху.',
+                color: 'primary'
+            },
+            {
+                initials: 'ИП',
+                name: 'Иван П.',
+                rating: 5,
+                text: 'Проверил теорию относительности на практике. Работает! Теперь я понимаю, почему Эйнштейн был гением.',
+                color: 'purple'
+            },
+            {
+                initials: 'МК',
+                name: 'Мария К.',
+                rating: 4,
+                text: 'Очень круто, но немного страшно менять прошлое. Безопасность на высоте! Использую только для наблюдения.',
+                color: 'orange'
+            }
+        ];
+
+        let currentRating = 5;
+        let currentColor = 'primary';
+
+        // Функция для отображения отзывов
+        function displayReviews() {
+            const container = document.getElementById('reviewsContainer');
+            container.innerHTML = '';
+
+            reviews.forEach(review => {
+                const stars = [];
+                for (let i = 1; i <= 5; i++) {
+                    stars.push(`<i class="material-icons" style="color: ${i <= review.rating ? '#ffc107' : '#e0e0e0'};">star</i>`);
+                }
+
+                const reviewHtml = `
+                <div class="mui-testimonial-card">
+                    <div class="mui-testimonial-author">
+                        <div class="mui-avatar ${review.color}">${review.initials}</div>
+                        <div class="mui-author-info">
+                            <h4>${review.name}</h4>
+                            <div class="mui-rating">
+                                ${stars.join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mui-testimonial-text">"${review.text}"</p>
+                </div>
+            `;
+
+                container.innerHTML += reviewHtml;
+            });
+        }
+
+        // Функции для модального окна
+        function openModal() {
+            document.getElementById('reviewModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('reviewModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Звезды рейтинга
+        document.querySelectorAll('#ratingStars i').forEach(star => {
+            star.addEventListener('mouseover', function () {
+                const rating = parseInt(this.dataset.rating);
+                updateStars(rating);
+            });
+
+            star.addEventListener('mouseout', function () {
+                updateStars(currentRating);
+            });
+
+            star.addEventListener('click', function () {
+                currentRating = parseInt(this.dataset.rating);
+                updateStars(currentRating);
+                document.getElementById('ratingValue').textContent = currentRating + ' из 5';
+                updatePreview();
+            });
+        });
+
+        function updateStars(rating) {
+            document.querySelectorAll('#ratingStars i').forEach((star, index) => {
+                const starRating = index + 1;
+                if (starRating <= rating) {
+                    star.style.color = '#ffc107';
+                } else {
+                    star.style.color = '#e0e0e0';
+                }
+            });
+        }
+
+        // Выбор цвета аватара
+        document.querySelectorAll('.mui-avatar-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.mui-avatar-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                currentColor = this.dataset.color;
+
+                const colors = {
+                    primary: '#1976d2',
+                    purple: '#9c27b0',
+                    orange: '#f57c00',
+                    green: '#4caf50',
+                    red: '#f44336'
+                };
+
+                document.getElementById('avatarPreview').style.backgroundColor = colors[currentColor];
+                updatePreview();
+            });
+        });
+
+        // Обновление предпросмотра
+        function updatePreview() {
+            const name = document.getElementById('reviewerName').value;
+            const initials = name ? name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : '??';
+            document.getElementById('avatarInitials').textContent = initials;
+            document.getElementById('previewName').textContent = name || 'Ваше имя';
+
+            const previewRating = document.getElementById('previewRating');
+            previewRating.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                previewRating.innerHTML += `<i class="material-icons" style="color: ${i <= currentRating ? '#ffc107' : '#e0e0e0'};">star</i>`;
+            }
+        }
+
+        document.getElementById('reviewerName').addEventListener('input', updatePreview);
+
+        // Отправка отзыва
+        document.getElementById('submitReviewBtn').addEventListener('click', function () {
+            const name = document.getElementById('reviewerName').value;
+            const text = document.getElementById('reviewText').value;
+
+            if (!name || !text) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+
+            reviews.push({
+                initials: initials,
+                name: name,
+                rating: currentRating,
+                text: text,
+                color: currentColor
+            });
+
+            displayReviews();
+            closeModal();
+
+            // Сброс формы
+            document.getElementById('reviewForm').reset();
+            currentRating = 5;
+            currentColor = 'primary';
+            updateStars(5);
+            document.getElementById('avatarPreview').style.backgroundColor = '#1976d2';
+            document.getElementById('avatarInitials').textContent = '??';
+            document.getElementById('previewName').textContent = 'Ваше имя';
+            document.getElementById('ratingValue').textContent = '5 из 5';
+        });
+
+        // Закрытие модалки по клику вне её
+        document.getElementById('reviewModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Изменение навбара при скролле
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Инициализация
+        displayReviews();
+        updateStars(5);
+        document.getElementById('ratingValue').textContent = '5 из 5';
+    </script>
+
+</body>
+
+</html>

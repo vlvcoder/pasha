@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmoTab — планшет для путешествий во времени</title>
+
+    <!-- Bootstrap 5 CSS (единственный фреймворк) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons (для красивых иконок) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Дополнительные стили только для кастомизации Bootstrap -->
+    <style>
+        :root {
+            --bs-primary: #4ecdc4;
+            --bs-primary-rgb: 78, 205, 196;
+            --bs-secondary: #ff6b6b;
+            --bs-secondary-rgb: 255, 107, 107;
+        }
+
+        .btn-primary {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #3db9b0;
+            border-color: #3db9b0;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--bs-primary);
+            color: var(--bs-primary);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+
+        .text-primary {
+            color: var(--bs-primary) !important;
+        }
+
+        .bg-primary {
+            background-color: var(--bs-primary) !important;
+        }
+
+        .bg-secondary {
+            background-color: var(--bs-secondary) !important;
+        }
+
+        .navbar {
+            transition: all 0.3s ease;
+        }
+
+        .navbar-scrolled {
+            background-color: rgba(33, 37, 41, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            margin-top: 56px;
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .advantage-icon {
+            font-size: 3rem;
+            color: var(--bs-primary);
+        }
+
+        .testimonial-card {
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: scale(1.05);
+        }
+
+        .slogan-text {
+            animation: pulse 3s infinite;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% 300%;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .gallery-img {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .feature-item {
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .rating {
+            color: #ffc107;
+        }
+
+        .order-form {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        footer {
+            background: #212529;
+            color: white;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            color: white;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--bs-primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="bi bi-clock-history fs-1 me-2 text-primary"></i>
+                <span class="fw-bold fs-4">CosmoTab</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#gallery">Галерея</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#description">Описание</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#advantages">Преимущества</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimonials">Отзывы</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#order">Заказать</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section / Мотивирующий слоган -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-2 fw-bold mb-4">⏰ CosmoTab</h1>
+            <p class="display-6 mb-5">Первый в мире планшет для путешествий во времени</p>
+            <h2 class="slogan-text display-4 fw-bold mb-4">Время ждёт только тех, у кого нет CosmoTab!</h2>
+            <p class="lead mb-5">Начните путешествовать уже сегодня</p>
+            <a href="#order" class="btn btn-primary btn-lg px-5 py-3">Заказать сейчас</a>
+        </div>
+    </section>
+
+    <!-- Галерея товаров -->
+    <section id="gallery" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 display-4 fw-bold">Наши модели</h2>
+            <div class="row g-4">
+                <!-- Модель 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card product-card shadow h-100">
+                        <div class="position-relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234ecdc4'/%3E%3Ctext x='200' y='160' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Pro%3C/text%3E%3C/svg%3E"
+                                class="card-img-top" alt="CosmoTab Pro">
+                            <span
+                                class="position-absolute top-0 end-0 bg-primary text-white px-3 py-2 m-2 rounded-pill">Хит</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title fs-3">CosmoTab Pro</h5>
+                            <p class="card-text text-muted">Путешествуйте на 100 лет вперёд с максимальным комфортом.
+                            </p>
+                            <ul class="list-unstyled mb-4">
+                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Квантовый процессор X1</li>
+                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>100 лет полёта</li>
+                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Голографический дисплей
+                                </li>
+                            </ul>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fs-3 fw-bold text-primary">$999</span>
+                                <button class="btn btn-outline-primary">Подробнее</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модель 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card product-card shadow h-100">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23ff6b6b'/%3E%3Ctext x='200' y='160' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Lite%3C/text%3E%3C/svg%3E"
+                            class="card-img-top" alt="CosmoTab Lite">
+                        <div class="card-body">
+                            <h5 class="card-title fs-3">CosmoTab Lite</h5>
+                            <p class="card-text text-muted">Базовые путешествия до 10 лет. Идеально для начинающих.</p>
+                            <ul class="list-unstyled mb-4">
+                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Базовый процессор</li>
+                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>10 лет полёта</li>
+                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>LCD дисплей</li>
+                            </ul>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fs-3 fw-bold text-primary">$499</span>
+                                <button class="btn btn-outline-primary">Подробнее</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модель 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card product-card shadow h-100">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%2396ceb4'/%3E%3Ctext x='200' y='160' font-size='30' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab Infinity%3C/text%3E%3C/svg%3E"
+                            class="card-img-top" alt="CosmoTab Infinity">
+                        <div class="card-body">
+                            <h5 class="card-title fs-3">CosmoTab Infinity</h5>
+                            <p class="card-text text-muted">Неограниченные путешествия во времени. Для истинных
+                                исследователей.</p>
+                            <ul class="list-unstyled mb-4">
+                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Квантовый процессор X9</li>
+                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>∞ лет полёта</li>
+                                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>8K голографический дисплей
+                                </li>
+                            </ul>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fs-3 fw-bold text-primary">$1999</span>
+                                <button class="btn btn-outline-primary">Подробнее</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок описания товара -->
+    <section id="description" class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="display-4 fw-bold mb-4">Что такое CosmoTab?</h2>
+                    <p class="lead mb-4">Первый в мире планшет, позволяющий перемещаться во времени. Основан на
+                        квантовой запутанности и теории струн.</p>
+
+                    <div class="accordion" id="descriptionAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne">
+                                    🔬 Технология
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                data-bs-parent="#descriptionAccordion">
+                                <div class="accordion-body">
+                                    Использует квантовую запутанность для создания временных петель. Процессор
+                                    ChronoCore X1 обрабатывает миллиарды временных линий в секунду.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo">
+                                    ⚡ Энергия
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse"
+                                data-bs-parent="#descriptionAccordion">
+                                <div class="accordion-body">
+                                    Работает от временного поля, создаваемого при перемещении. Не требует подзарядки в
+                                    течение всего срока службы.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseThree">
+                                    🌍 Доступность
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse"
+                                data-bs-parent="#descriptionAccordion">
+                                <div class="accordion-body">
+                                    Работает в любой точке пространственно-временного континуума. Даже в параллельных
+                                    вселенных!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23333'/%3E%3Ctext x='300' y='200' font-size='40' text-anchor='middle' fill='white' font-family='Arial'%3ECosmoTab в действии%3C/text%3E%3C/svg%3E"
+                        class="img-fluid rounded-4 shadow" alt="CosmoTab устройство">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества товара -->
+    <section id="advantages" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 display-4 fw-bold">Почему выбирают CosmoTab?</h2>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-item text-center">
+                        <i class="bi bi-lightning-charge-fill advantage-icon"></i>
+                        <h4 class="mt-3">Молниеносно</h4>
+                        <p class="text-muted">Перемещение за 0.0001 секунды. Мгновенный прыжок во времени.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-item text-center">
+                        <i class="bi bi-battery-charging advantage-icon"></i>
+                        <h4 class="mt-3">Вечная батарея</h4>
+                        <p class="text-muted">Работает от временного поля. Никогда не разряжается.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-item text-center">
+                        <i class="bi bi-shield-check advantage-icon"></i>
+                        <h4 class="mt-3">Безопасность</h4>
+                        <p class="text-muted">Не меняет прошлое. Защита от парадоксов.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-item text-center">
+                        <i class="bi bi-infinity advantage-icon"></i>
+                        <h4 class="mt-3">Мультивселенная</h4>
+                        <p class="text-muted">Посещайте альтернативные реальности.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Отзывы покупателей -->
+    <section id="testimonials" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5 display-4 fw-bold">Что говорят наши клиенты</h2>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card testimonial-card h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 60px; height: 60px;">
+                                    <span class="fs-3">АН</span>
+                                </div>
+                                <div class="ms-3">
+                                    <h5 class="mb-1">Анна Н.</h5>
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="card-text">"Побывала в 1985 году на концерте Queen! CosmoTab изменил мою жизнь!
+                                Теперь я могу увидеть любимых исполнителей в любую эпоху."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card testimonial-card h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 60px; height: 60px;">
+                                    <span class="fs-3">ИП</span>
+                                </div>
+                                <div class="ms-3">
+                                    <h5 class="mb-1">Иван П.</h5>
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="card-text">"Проверил теорию относительности на практике. Работает! Теперь я
+                                понимаю, почему Эйнштейн был гением."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card testimonial-card h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 60px; height: 60px;">
+                                    <span class="fs-3">МК</span>
+                                </div>
+                                <div class="ms-3">
+                                    <h5 class="mb-1">Мария К.</h5>
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="card-text">"Очень круто, но немного страшно менять прошлое. Безопасность на
+                                высоте! Использую только для наблюдения."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма заказа -->
+    <section id="order" class="py-5">
+        <div class="container">
+            <div class="order-form">
+                <h2 class="text-center mb-4 display-4 fw-bold">Оформить заказ</h2>
+                <p class="text-center lead mb-5">Оставьте заявку, и наш хроноконсультант свяжется с вами</p>
+
+                <form class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Ваше имя</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input type="text" class="form-control form-control-lg" placeholder="Иван Петров">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control form-control-lg" placeholder="ivan@example.com">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Телефон</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                            <input type="tel" class="form-control form-control-lg" placeholder="+7 (999) 123-45-67">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Выберите модель</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-box"></i></span>
+                            <select class="form-select form-select-lg">
+                                <option selected disabled>— Выберите модель —</option>
+                                <option>CosmoTab Pro - $999</option>
+                                <option>CosmoTab Lite - $499</option>
+                                <option>CosmoTab Infinity - $1999</option>
+                                <option>CosmoTab Air - $1299</option>
+                                <option>CosmoTab Max - $2499</option>
+                                <option>CosmoTab Mini - $299</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Дополнительные пожелания</label>
+                        <textarea class="form-control" rows="3" placeholder="Хочу отправиться в 3023 год..."></textarea>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
+                            <i class="bi bi-send me-2"></i>Отправить заявку
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-clock-history fs-1 text-primary me-2"></i>
+                        <h3 class="fw-bold">CosmoTab</h3>
+                    </div>
+                    <p>Первый в мире планшет для путешествий во времени. Основан в 2026 году.</p>
+                    <p class="text-muted">© 2026 CosmoTab Corp. Все права защищены.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">Навигация</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#gallery" class="text-white text-decoration-none">Галерея</a></li>
+                        <li><a href="#description" class="text-white text-decoration-none">Описание</a></li>
+                        <li><a href="#advantages" class="text-white text-decoration-none">Преимущества</a></li>
+                        <li><a href="#testimonials" class="text-white text-decoration-none">Отзывы</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">Контакты</h5>
+                    <p><i class="bi bi-envelope me-2"></i>info@cosmotab.com</p>
+                    <p><i class="bi bi-telephone me-2"></i>+7 (999) 123-45-67</p>
+                    <div class="mt-3">
+                        <a href="#" class="social-icon"><i class="bi bi-telegram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-whatsapp"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center">
+                <p class="mb-0">Время — это деньги. Инвестируйте с умом. ⏳</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Скрипт для изменения навбара при скролле -->
+    <script>
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+    </script>
+
+</body>
+
+</html>
