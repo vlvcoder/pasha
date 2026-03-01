@@ -362,6 +362,23 @@
             box-shadow: var(--shadow-lg);
         }
 
+        .appendix {
+            height: 100px;
+            margin-top: 25px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .appendix a {
+            text-decoration: none;
+            color: var(--link);
+        }
+
+        .appendix a:hover {
+            color: var(--hover-link);
+        }
+
         /* Адаптивность */
         @media screen and (max-width: 768px) {
             .menu-card {
@@ -679,6 +696,10 @@
                     <span>✨ Последняя версия</span>
                     <i class="fas fa-arrow-right"></i>
                 </a>
+            </div>
+            <div class="appendix">
+                <a href="./soaring.html">soaring</a>
+                <a href="./floating-manual.html">floating</a>
             </div>
         </div>
     </div>

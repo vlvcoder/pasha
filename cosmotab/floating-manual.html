@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmoTab - эффект парения для галереи</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0f172a;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Контейнер для демонстрации */
+        .showcase {
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        h2 span {
+            color: #4ecdc4;
+            font-weight: 600;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* Базовый класс для всех карточек */
+        .card {
+            text-align: center;
+        }
+
+        .card-image {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .card-title {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* ===== РАЗНЫЕ ТИПЫ ТЕНЕЙ ===== */
+
+        /* 1. Классическая тень снизу */
+        .shadow-classic {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5),
+                0 10px 10px -5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .shadow-classic:hover {
+            box-shadow: 0 30px 35px -5px rgba(0, 0, 0, 0.6),
+                0 15px 15px -5px rgba(0, 0, 0, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* 2. Тень с размытием */
+        .shadow-blur {
+            box-shadow: 0 30px 40px -10px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .shadow-blur:hover {
+            box-shadow: 0 40px 50px -8px rgba(0, 0, 0, 0.8);
+            transform: translateY(-8px);
+        }
+
+        /* 3. Двойная тень */
+        .shadow-double {
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3),
+                0 30px 30px -10px rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .shadow-double:hover {
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.4),
+                0 40px 40px -8px rgba(0, 255, 255, 0.3);
+            transform: translateY(-6px);
+        }
+
+        /* 4. Тень с эффектом свечения */
+        .shadow-glow {
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .shadow-glow:hover {
+            box-shadow: 0 25px 35px rgba(0, 0, 0, 0.6),
+                0 0 20px rgba(78, 205, 196, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* 5. Мягкая тень */
+        .shadow-soft {
+            box-shadow: 0 25px 40px -10px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .shadow-soft:hover {
+            box-shadow: 0 35px 50px -8px rgba(0, 0, 0, 0.5);
+            transform: translateY(-7px);
+        }
+
+        /* 6. Тень с цветным отливом */
+        .shadow-colored {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5),
+                0 10px 10px -5px rgba(78, 205, 196, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .shadow-colored:hover {
+            box-shadow: 0 30px 35px -5px rgba(0, 0, 0, 0.6),
+                0 15px 15px -5px rgba(78, 205, 196, 0.3);
+            transform: translateY(-8px);
+        }
+
+        /* Информационная панель */
+        .info-panel {
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 30px;
+            padding: 30px;
+            margin: 40px auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-panel h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .code-example {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 15px;
+            color: #4ecdc4;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature i {
+            color: #4ecdc4;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+        <h2><span>Floating</span> — эффект парения для изображений</h2>
+    <div class="showcase">
+
+        <div class="gallery">
+            <!-- 1. Классическая -->
+            <div class="card">
+                <div class="card-image shadow-classic">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 250 250'%3E%3Crect width='250' height='250' fill='%234361ee'/%3E%3Ctext x='125' y='140' font-size='20' text-anchor='middle' fill='white' font-family='Arial'%3EКлассика%3C/text%3E%3C/svg%3E"
+                        alt="Classic">
+                </div>
+                <div class="card-title">Классическая тень</div>
+                <div class="card-subtitle">box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5)</div>
+            </div>
+
+            <!-- 2. С размытием -->
+            <div class="card">
+                <div class="card-image shadow-blur">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 250 250'%3E%3Crect width='250' height='250' fill='%239c27b0'/%3E%3Ctext x='125' y='140' font-size='20' text-anchor='middle' fill='white' font-family='Arial'%3EРазмытие%3C/text%3E%3C/svg%3E"
+                        alt="Blur">
+                </div>
+                <div class="card-title">Сильное размытие</div>
+                <div class="card-subtitle">0 30px 40px -10px rgba(0,0,0,0.6)</div>
+            </div>
+
+            <!-- 3. Двойная -->
+            <div class="card">
+                <div class="card-image shadow-double">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 250 250'%3E%3Crect width='250' height='250' fill='%23f72585'/%3E%3Ctext x='125' y='140' font-size='20' text-anchor='middle' fill='white' font-family='Arial'%3EДвойная%3C/text%3E%3C/svg%3E"
+                        alt="Double">
+                </div>
+                <div class="card-title">Двойная тень</div>
+                <div class="card-subtitle">основная + цветная</div>
+            </div>
+
+            <!-- 4. Со свечением -->
+            <div class="card">
+                <div class="card-image shadow-glow">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 250 250'%3E%3Crect width='250' height='250' fill='%234ecdc4'/%3E%3Ctext x='125' y='140' font-size='20' text-anchor='middle' fill='white' font-family='Arial'%3EСвечение%3C/text%3E%3C/svg%3E"
+                        alt="Glow">
+                </div>
+                <div class="card-title">Со свечением</div>
+                <div class="card-subtitle">0 0 20px rgba(78,205,196,0.4)</div>
+            </div>
+
+            <!-- 5. Мягкая -->
+            <div class="card">
+                <div class="card-image shadow-soft">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 250 250'%3E%3Crect width='250' height='250' fill='%23fb8b24'/%3E%3Ctext x='125' y='140' font-size='20' text-anchor='middle' fill='white' font-family='Arial'%3EМягкая%3C/text%3E%3C/svg%3E"
+                        alt="Soft">
+                </div>
+                <div class="card-title">Мягкая тень</div>
+                <div class="card-subtitle">0 25px 40px -10px</div>
+            </div>
+
+            <!-- 6. Цветная -->
+            <div class="card">
+                <div class="card-image shadow-colored">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 250 250'%3E%3Crect width='250' height='250' fill='%239d65ff'/%3E%3Ctext x='125' y='140' font-size='20' text-anchor='middle' fill='white' font-family='Arial'%3EЦветная%3C/text%3E%3C/svg%3E"
+                        alt="Colored">
+                </div>
+                <div class="card-title">Цветной отлив</div>
+                <div class="card-subtitle">с бирюзовым подтоном</div>
+            </div>
+        </div>
+
+    </div>
+
+        <div class="info-panel">
+            <h3>🎨 Как создать эффект парения</h3>
+
+            <div class="code-example">
+                /* Базовая формула */<br>
+                box-shadow: [смещение_X] [смещение_Y] [размытие] [растяжение] [цвет];<br><br>
+
+                /* Для эффекта парения используйте: */<br>
+                .element {<br>
+                &nbsp;&nbsp;box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);<br>
+                &nbsp;&nbsp;transition: all 0.3s ease;<br>
+                }<br><br>
+
+                /* При наведении усиливайте тень */<br>
+                .element:hover {<br>
+                &nbsp;&nbsp;box-shadow: 0 30px 35px -5px rgba(0,0,0,0.6);<br>
+                &nbsp;&nbsp;transform: translateY(-5px);<br>
+                }
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <i>📏</i> смещение_Y = 20-30px
+                </div>
+                <div class="feature">
+                    <i>💫</i> размытие = 25-40px
+                </div>
+                <div class="feature">
+                    <i>📐</i> растяжение = -5px (важно!)
+                </div>
+                <div class="feature">
+                    <i>⬆️</i> translateY при hover
+                </div>
+            </div>
+        </div>
+
+</body>
+
+</html>
