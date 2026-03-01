@@ -27,7 +27,8 @@
         /* Кастомные стили поверх Bulma */
         .navbar {
             transition: all 0.3s ease;
-            background-color: #0a0a0a;
+            /* background-color: #0a0a0a; */
+            background-color: transparent;
         }
 
         .navbar-menu.is-active {
@@ -38,11 +39,17 @@
             color: #00ab91 !important;
         }
 
+        .navbar-item:hover {
+            color: gray !important;
+        }
+        .navbar-item:hover .has-text-white {
+            color: gray !important;
+        }
+
         .navbar-scrolled {
             background-color: rgba(10, 10, 10, 0.95) !important;
             backdrop-filter: blur(10px);
         }
-
 
         @keyframes back-pos-animation {
             0% {
