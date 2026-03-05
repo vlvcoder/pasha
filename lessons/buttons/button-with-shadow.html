@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a.button {
+            /* background-image: -moz-linear-gradient(top, #ffffff, #dbdbdb); */
+            background-image: linear-gradient(to bottom, #ffffff, #dbdbdb);
+            /* background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #dbdbdb)); */
+            border: 1px solid #fff;
+            -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4);
+            -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4);
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            padding: 5px 15px;
+            text-decoration: none;
+            text-shadow: #fff 0 1px 0;
+            float: left;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            display: block;
+            color: #597390;
+            line-height: 24px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        a.button:hover {
+            background-image: -moz-linear-gradient(top, #ffffff, #eeeeee);
+            background-image: -webkit-gradient(linear, left top, left bottom,
+                    color-stop(0, #ffffff), color-stop(1, #eeeeee));
+            display: block;
+        }
+
+        a.button:active {
+            background-image: -moz-linear-gradient(top, #dbdbdb, #ffffff);
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #dbdbdb), color-stop(1, #ffffff));
+            text-shadow: 0px -1px 0 rgba(255, 255, 255, 0.5);
+            margin-top: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <a class="button" href="#">blabla</a>
+
+</body>
+
+</html>
