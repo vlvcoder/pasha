@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nezith — часы для каждого мгновения</title>
+    <!-- Material Icons & шрифт Roboto (стандарт Material) -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Псевдо‑Material стили (чистый CSS, как у фреймворка) -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #212121;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* Material‑тени, скругления, отступы */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* типовые карточки / поверхности */
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+            padding: 24px;
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        /* кнопки Material */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: #6200ee;
+            /* primary */
+            color: white;
+            border: none;
+            border-radius: 28px;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+            transition: background 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #3700b3;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #6200ee;
+            box-shadow: inset 0 0 0 1px #6200ee;
+        }
+
+        .btn-outline:hover {
+            background: rgba(98, 0, 238, 0.08);
+            box-shadow: inset 0 0 0 2px #3700b3;
+            color: #3700b3;
+        }
+
+        /* заголовки секций */
+        .section-title {
+            font-size: 2.125rem;
+            /* 34px */
+            font-weight: 400;
+            margin-bottom: 32px;
+            color: #212121;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .material-icons {
+            font-size: 2.5rem;
+            color: #6200ee;
+        }
+
+        /* сетка flex/grid типа Material */
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .grid-item {
+            flex: 1 1 300px;
+        }
+
+        /* хедер (панель навигации) */
+        .app-bar {
+            background-color: #6200ee;
+            color: white;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        .app-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        /* герой (первый экран) */
+        .hero {
+            padding: 48px 0;
+            height: 100vh;
+            background: linear-gradient(145deg, transparent 0%, #bd91fb 100%);
+        }
+
+        .hero .container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .hero-text {
+            flex: 1 1 300px;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 16px;
+            color: #212121;
+        }
+
+        .hero-text .brand {
+            font-weight: 700;
+            color: #6200ee;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #616161;
+            margin-bottom: 24px;
+        }
+
+        /* галерея (карточки товаров) */
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            width: 320px;
+            padding: 20px 16px 24px;
+            text-align: left;
+            box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 5px 8px 0 rgba(0, 0, 0, 0.14), 0 1px 14px 0 rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-image {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 16px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9e9e9e;
+            font-size: 1rem;
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* имитация изображений часов */
+        .img-lite {
+            /* background: linear-gradient(135deg, #b0bec5, #eceff1); */
+            background-image: url(./images/lite1.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .img-lite::after {
+            content: "⏱️ полипропилен";
+            font-size: 1rem;
+            color: #ade2fb;
+        }
+
+        .img-elegant {
+            background-image: url(./images/alumny1.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .img-elegant::after {
+            content: "⚙️ алюминий";
+            font-size: 1rem;
+            color: #1dacf3;
+        }
+
+        .img-premium {
+            background: linear-gradient(135deg, #cfb53b, #f5e7a3);
+            background-image: url(./images/gold3.png);
+            background-size: 130%;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* background: linear-gradient(135deg, #cfb53b, #f5e7a3); */
+        }
+
+        .img-face {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            background-image: url(./images/gold2.jpg);
+            background-size: 130%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .img-premium::after {
+            content: "✨ золото";
+            font-size: 1rem;
+            color: #eca306;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin: 12px 0 4px;
+        }
+
+        .product-material {
+            color: #757575;
+            margin-bottom: 12px;
+            font-weight: 300;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #212121;
+            margin: 16px 0 8px;
+        }
+
+        /* Список характеристик в карточке */
+        .spec-list {
+            list-style: none;
+            margin: 16px 0;
+            padding: 0;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 16px;
+        }
+
+        .spec-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #424242;
+        }
+
+        .spec-list .material-icons {
+            font-size: 1.2rem;
+            color: #6200ee;
+        }
+
+        .card-actions {
+            margin-top: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* описание (раскрытие) */
+        .desc-grid {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .desc-text {
+            flex: 2 1 400px;
+            font-size: 1.1rem;
+        }
+
+        .desc-features {
+            flex: 1 1 250px;
+            list-style: none;
+        }
+
+        .desc-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .material-icons.md-primary {
+            color: #6200ee;
+        }
+
+        /* преимущества (chip style) */
+        .advantages-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .advantage-chip {
+            background: white;
+            border-radius: 40px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex: 1 1 250px;
+        }
+
+        /* отзывы (карусель в стиле Material карточек) */
+        .reviews-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            flex: 1 1 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #b39ddb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+        }
+
+        .stars {
+            color: #ffb300;
+            margin-bottom: 8px;
+        }
+
+        /* форма заказа (Material поля) */
+        .form-container {
+            background: white;
+            border-radius: 28px;
+            padding: 40px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .input-field {
+            margin-bottom: 24px;
+        }
+
+        .input-field label {
+            font-size: 0.9rem;
+            color: #616161;
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .input-field input,
+        .input-field select,
+        .input-field textarea {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 28px;
+            background: #fafafa;
+            transition: border 0.2s, box-shadow 0.2s;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .input-field input:focus,
+        .input-field select:focus,
+        .input-field textarea:focus {
+            outline: none;
+            border-color: #6200ee;
+            box-shadow: 0 0 0 3px rgba(98, 0, 238, 0.2);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin: 16px 0;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        footer {
+            background: #212121;
+            color: #bdbdbd;
+            padding: 24px 0;
+            margin-top: 64px;
+            text-align: center;
+        }
+
+        /* разделитель */
+        .section {
+            padding: 60px 0;
+        }
+
+        .bg-light {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Верхняя панель (App Bar) -->
+    <header class="app-bar">
+        <div class="container">
+            <div class="logo">
+                <span class="material-icons">watch</span> NeziTec
+            </div>
+            <nav class="nav-links">
+                <a href="#gallery">Галерея</a>
+                <a href="#description">Описание</a>
+                <a href="#advantages">Преимущества</a>
+                <a href="#reviews">Отзывы</a>
+                <a href="#order">Заказ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Главный экран / Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-text">
+                <h1>Nezith<br><span class="brand">время твоего стиля</span></h1>
+                <p>Три характера. Одна душа. От полипропилена до золота — NeziTec создаёт часы для тех, кто ценит
+                    точность и эстетику.</p>
+                <a href="#gallery" class="btn" style="background: #6200ee;">Смотреть коллекцию <span
+                        class="material-icons">arrow_forward</span></a>
+            </div>
+            <div style="flex: 0 0 200px; text-align: center; background-color: transparent;">
+                <!-- <span class="material-icons" style="font-size: 12rem; color: #b39ddb;">watch</span> -->
+                <div class="img-face"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Галерея (три модели с характеристиками) -->
+    <section id="gallery" class="section">
+        <div class="container">
+            <h2 class="section-title"><span class="material-icons">photo_library</span> Галерея Nezith</h2>
+            <div class="gallery-grid">
+                <!-- Lite (полипропилен) -->
+                <div class="product-card">
+                    <div class="product-image img-lite"></div>
+                    <div class="product-title">Nezith Lite</div>
+                    <div class="product-material">полипропилен</div>
+                    <ul class="spec-list">
+                        <li><span class="material-icons">circle</span> Корпус: полипропилен (лёгкий ударопрочный)</li>
+                        <li><span class="material-icons">visibility</span> Минеральное стекло</li>
+                        <li><span class="material-icons">schedule</span> Кварцевый механизм / батарея</li>
+                        <li><span class="material-icons">straighten</span> Диаметр 42 мм</li>
+                        <li><span class="material-icons">water_drop</span> Водозащита 3 АТМ (дождь/брызги)</li>
+                        <li><span class="material-icons">watch</span> Ремешок: силикон (гипоаллергенный)</li>
+                    </ul>
+                    <div class="product-price" style="margin-top: 38px;">₽ 4 990</div>
+                    <div class="card-actions">
+                        <button class="btn btn-outline" style="padding: 8px 16px;">Выбрать</button>
+                    </div>
+                </div>
+                <!-- Elegant (алюминий) -->
+                <div class="product-card">
+                    <div class="product-image img-elegant"></div>
+                    <div class="product-title">Nezith Elegant</div>
+                    <div class="product-material">алюминий</div>
+                    <ul class="spec-list">
+                        <li><span class="material-icons">circle</span> Корпус: авиационный алюминий (анодированный)</li>
+                        <li><span class="material-icons">visibility</span> Сапфировое стекло</li>
+                        <li><span class="material-icons">schedule</span> Кварцевый хронограф (японский механизм)</li>
+                        <li><span class="material-icons">straighten</span> Диаметр 40 мм</li>
+                        <li><span class="material-icons">water_drop</span> Водозащита 5 АТМ (плавание)</li>
+                        <li><span class="material-icons">watch</span> Ремешок: натуральная кожа</li>
+                    </ul>
+                    <div class="product-price">₽ 9 490</div>
+                    <div class="card-actions">
+                        <button class="btn btn-outline" style="padding: 8px 16px;">Выбрать</button>
+                    </div>
+                </div>
+                <!-- Premium (золото) -->
+                <div class="product-card">
+                    <div class="product-image img-premium item-premium"></div>
+                    <div class="product-title">Nezith Premium</div>
+                    <div class="product-material">золото 18 карат</div>
+                    <ul class="spec-list">
+                        <li><span class="material-icons">circle</span> Золото 18 карат (750 проба)</li>
+                        <li><span class="material-icons">visibility</span> Сапфировые стёкла с обеих сторон</li>
+                        <li><span class="material-icons">autorenew</span> Автоподзавод (механический)</li>
+                        <li><span class="material-icons">straighten</span> Диаметр 37 мм</li>
+                        <li><span class="material-icons">water_drop</span> Водозащита 5 АТМ</li>
+                        <li><span class="material-icons">watch</span> Ремешок: кожа аллигатора</li>
+                    </ul>
+                    <div class="product-price" style="margin-top: 59px;">₽ 29 990</div>
+                    <div class="card-actions">
+                        <button class="btn btn-outline" style="padding: 8px 16px;">Выбрать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Описание -->
+    <section id="description" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title"><span class="material-icons">description</span> Описание</h2>
+            <div class="desc-grid">
+                <div class="desc-text card">
+                    <p style="margin-bottom: 16px;"><strong>NeziTec</strong> представляет линейку
+                        <strong>Nezith</strong> — синтез современных материалов и швейцарской точности. Каждая модель
+                        проходит 72-часовой тест и получает индивидуальный паспорт.
+                    </p>
+                    <p>Задняя крышка с гравировкой, сапфировое стекло, японский механизм. Мы объединили лёгкость
+                        полипропилена, холодный блеск алюминия и благородство золота — выберите своё отражение.</p>
+                </div>
+                <ul class="desc-features card">
+                    <li><span class="material-icons md-primary">waterproof</span> Водозащита до 5 АТМ</li>
+                    <li><span class="material-icons md-primary">battery_charging_full</span> Запас хода 80 ч (механика)
+                    </li>
+                    <li><span class="material-icons md-primary">hotel_class</span> Японские механизмы</li>
+                    <li><span class="material-icons md-primary">local_offer</span> 3 года гарантии</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества -->
+    <section id="advantages" class="section">
+        <div class="container">
+            <h2 class="section-title"><span class="material-icons">stars</span> Преимущества</h2>
+            <div class="advantages-grid">
+                <div class="advantage-chip"><span class="material-icons md-primary">fitness_center</span> Лёгкость (Lite
+                    42 г)</div>
+                <div class="advantage-chip"><span class="material-icons md-primary">brush</span> Устойчивость к
+                    царапинам</div>
+                <div class="advantage-chip"><span class="material-icons md-primary">invert_colors</span> Гипоаллергенные
+                    сплавы</div>
+                <div class="advantage-chip"><span class="material-icons md-primary">timelapse</span> Хронограф</div>
+                <div class="advantage-chip"><span class="material-icons md-primary">nights_stay</span> Люминесцентные
+                    стрелки</div>
+                <div class="advantage-chip"><span class="material-icons md-primary">phone_iphone</span> Совместимость с
+                    ремешками 20 мм</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Отзывы -->
+    <section id="reviews" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title"><span class="material-icons">rate_review</span> Отзывы</h2>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="avatar">ИК</span>
+                        <div><strong>Ирина К.</strong><br>модель Elegant</div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p>«Очень лёгкие, алюминий вообще не ощущается на руке. Дизайн минималистичный, циферблат читается
+                        отлично. Спасибо NeziTec!»</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="avatar">АМ</span>
+                        <div><strong>Алексей М.</strong><br>модель Premium</div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <p>«Золото выглядит дорого, но не вычурно. Механизм идёт точно +/– 2 секунды. Презентация и коробка
+                        — высший класс.»</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="avatar">ЕВ</span>
+                        <div><strong>Елена В.</strong><br>модель Lite</div>
+                    </div>
+                    <div class="stars">★★★★☆</div>
+                    <p>«Полипропилен очень лёгкий, для спорта идеально. Ремешок мягкий. 4 звезды, потому что хочется
+                        больше цветов в линейке.»</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма заказа -->
+    <section id="order" class="section">
+        <div class="container">
+            <h2 class="section-title"><span class="material-icons">shopping_cart</span> Форма заказа</h2>
+            <div class="form-container card">
+                <form action="#" method="post">
+                    <div class="input-field">
+                        <label>Ваше имя</label>
+                        <input type="text" placeholder="Иван Петров" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Электронная почта</label>
+                        <input type="email" placeholder="ivan@example.com" required>
+                    </div>
+                    <div class="input-field">
+                        <label>Телефон</label>
+                        <input type="tel" placeholder="+7 (999) 123-45-67">
+                    </div>
+                    <div class="input-field">
+                        <label>Выберите модель</label>
+                        <select required>
+                            <option value="" disabled selected>––– выберите –––</option>
+                            <option value="lite">Nezith Lite (полипропилен) — 4 990 ₽</option>
+                            <option value="elegant">Nezith Elegant (алюминий) — 9 490 ₽</option>
+                            <option value="premium">Nezith Premium (золото 18к, автоподзавод) — 29 990 ₽</option>
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Цвет ремешка</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="strap" value="black" checked> Чёрный</label>
+                            <label><input type="radio" name="strap" value="brown"> Коричневый</label>
+                            <label><input type="radio" name="strap" value="blue"> Синий</label>
+                        </div>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Дополнительные пожелания</label>
+                        <textarea rows="3" placeholder="Гравировка, подарочная упаковка..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;"><span class="material-icons">check</span>
+                        Оформить заказ</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- футер -->
+    <footer>
+        <div class="container">
+            <p>© 2026 NeziTec. Все права защищены. Nezith — зарегистрированная марка.</p>
+            <p style="margin-top: 12px; opacity: 0.6;">Материал UI · точность и стиль</p>
+        </div>
+    </footer>
+
+    <!-- быстрый скролл (кнопка вверх — дополнительно) -->
+    <div style="position: fixed; bottom: 30px; right: 30px;">
+        <a href="#" class="btn"
+            style="border-radius: 50%; width: 56px; height: 56px; padding: 0; display: flex; align-items: center; justify-content: center; background: #6200ee;">
+            <span class="material-icons" style="font-size: 28px;">arrow_upward</span>
+        </a>
+    </div>
+</body>
+
+</html>
