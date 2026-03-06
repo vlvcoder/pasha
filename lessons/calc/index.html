@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Comic+Relief:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --border-color: rgba(0, 0, 0, 0.586);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: Roboto;
+            font-size: 18px;
+        }
+
+        table {
+            margin: 0 auto;
+            /* border: 2px solid var(--border-color); */
+            height: 450px;
+            width: 300px;
+            text-align: center;
+        }
+
+        td {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            width: 25%;
+            /* transition: .3s; */
+        }
+
+        .result-output {
+            text-align: right;
+            padding: 0 15px;
+            color: rgba(0, 0, 0, 0.425);
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+
+        .clear {
+            background-color: rgba(158, 0, 0, 0.637);
+            color: whitesmoke;
+            transition: .3s;
+        }
+
+        .clear:hover {
+            box-shadow: 0px 0px 31px 2px rgba(0, 0, 0, 0.57) inset;
+            background-color: red;
+        }
+
+        .equals {
+            background-color: yellowgreen;
+        }
+
+        .operation {
+            background-color: rgb(226, 223, 15);
+        }
+
+        tr:not(:nth-child(1)) td:hover {
+            background-color: rgb(187, 185, 185);
+        }
+
+        tr:not(:nth-child(1)) td:active {
+            box-shadow: 0px 0px 31px -5px rgba(116, 116, 116, 0.57) inset;
+            background: linear-gradient(to bottom, transparent 50%, rgb(187, 185, 185) 100%);
+        }
+
+        @media screen and (max-width: 768px) {
+            /* стили для всех мобильных устройств */
+            table {
+                height: 100vh;
+                width: 100vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td class="result-output" colspan="3">result</td>
+                <td class="clear"><b>C</b></td>
+            </tr>
+            <tr>
+                <td class="digit">1</td>
+                <td class="digit">2</td>
+                <td class="digit">3</td>
+                <td class="operation">+</td>
+            </tr>
+            <tr>
+                <td class="digit">4</td>
+                <td class="digit">5</td>
+                <td class="digit">6</td>
+                <td class="operation">-</td>
+            </tr>
+            <tr>
+                <td class="digit">7</td>
+                <td class="digit">8</td>
+                <td class="digit">9</td>
+                <td class="operation">*</td>
+            </tr>
+            <tr>
+                <td class="operation">/</td>
+                <td class="digit">0</td>
+                <td class="point">.</td>
+                <td class="equals">=</td>
+            </tr>
+        </tbody>
+    </table>
+    <script src="./calc.js"></script>
+</body>
+
+</html>
