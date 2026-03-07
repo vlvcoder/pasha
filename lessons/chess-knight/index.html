@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Comic+Relief:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>Chess Knight</title>
+    <style>
+        :root {
+            --color-primary: brown;
+            --color-secondary: rgb(165, 42, 42, 0.5);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-image: url(./images/Background-Chess-light.jpg);
+            background-repeat: no-repeat;
+            font-family: Comfortaa;
+            display: flex;
+            justify-content: space-around;
+            justify-items: center;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            user-select: none;
+        }
+
+        .header {
+            color: rgb(76, 75, 75);
+            width: 600px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+        }
+
+        @keyframes knight-animation {
+            0% {
+                transform: scale(1) translateY(0) translateX(0) rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-10deg);
+            }
+
+            50% {
+                transform: scale(0.9) translateY(20px) translateX(40px);
+            }
+
+            75% {
+                transform: rotate(10deg);
+            }
+
+            100% {
+                transform: scale(1) translateY(0) translateX(0) rotate(0deg);
+            }
+        }
+
+        .logo {
+            position: relative;
+            width: 300px;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+            border-radius: 20px;
+        }
+
+        .logo:hover {
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-image {
+            margin-top: 20px;
+            width: 60px;
+        }
+
+        h1 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 5em;
+        }
+
+        p {
+            text-align: center;
+            color: var(--color-primary);
+            font-size: 2em;
+        }
+
+        table {
+            width: 648px;
+            max-width: 95dvw;
+            aspect-ratio: 1 / 1;
+            border-spacing: 1px;
+            border: 2px solid gray;
+            margin: 20px auto;
+            table-layout: fixed;
+            background-color: white;
+        }
+
+        td {
+            width: 12.5%;
+            height: 12.5%;
+            /* width: 80px;
+            height: 80px; */
+            position: relative;
+            border: 1px solid gray;
+            cursor: pointer;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .visited {
+            background-image: url(./images/chess_knight.svg);
+            background-repeat: no-repeat;
+            background-size: 60%;
+            background-position: center;
+        }
+
+        .current {
+            background-image: url(./images/chess_knight_current.svg);
+        }
+
+        tr:nth-child(odd) td:nth-child(even) {
+            background-color: var(--color-secondary);
+        }
+
+        tr:nth-child(even) td:nth-child(odd) {
+            background-color: var(--color-secondary);
+        }
+
+        body:has(#nextCheck:checked) .candidate::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 25%;
+            height: 25%;
+            transform: translate(-50%, -50%);
+            border-radius: 100px;
+            background-color: yellow;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        #nextCheck {
+            accent-color: var(--color-primary);
+        }
+
+        .resetButton {
+            padding: 10px 30px;
+            border-radius: 1000px;
+            border-color: var(--color-primary);
+            background-color: var(--color-secondary);
+            color: white;
+            font-size: 1em;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                width: 95dvw;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Ход конем</h1>
+        <p>Заполните все клетки шахматной доски ходом коня</p>
+        <img class="logo" src="./images/chess_knight.svg" alt="">
+        <img class="step-image" src="./images/step.png" alt="">
+    </div>
+
+    <div>
+        <table>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <div class="footer">
+            <div>
+                <input id="nextCheck" type="checkbox" checked>
+                <label for="nextCheck">Подсказки</label>
+            </div>
+            <button class="resetButton">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        (() => {
+            let x;
+            let y;
+            const KNIGHT_ANIMATION = '3s linear 0s infinite normal none running knight-animation';
+
+            const logoImage = document.querySelectorAll('.logo')[0];
+
+            reset();
+
+            document.querySelectorAll('td').forEach(element => {
+                element.addEventListener('click', function () {
+                    if (element.classList.contains('visited')) return;
+                    if (!checkNext(element)) return;
+
+                    document.querySelectorAll('.current').forEach(element => {
+                        element.classList.remove('current');
+                    });
+                    element.classList.add('visited');
+                    element.classList.add('current');
+
+                    x = element.cellIndex;
+                    y = element.parentNode.rowIndex;
+                    setCandidates();
+                });
+            });
+
+            document.querySelectorAll('.resetButton')[0].addEventListener('click', reset);
+
+            logoImage.addEventListener('click', function () {
+                if (logoImage.style.animation === KNIGHT_ANIMATION)
+                    logoImage.style.animation = 'none';
+                else
+                    logoImage.style.animation = KNIGHT_ANIMATION;
+            });
+
+            function setAnimations() {
+                logoImage.style.animation = KNIGHT_ANIMATION;
+            }
+
+            function reset() {
+                document.querySelectorAll('td').forEach(element => {
+                    element.classList.remove('visited');
+                    element.classList.remove('current');
+                    element.classList.remove('candidate');
+                    if (element.cellIndex === 0 && element.parentNode.rowIndex === 7) {
+                        element.classList.add('start');
+                        element.classList.add('visited');
+                    }
+                });
+                x = 0;
+                y = 7;
+                setCandidates();
+                setAnimations();
+            }
+
+            function checkNext(element) {
+                if (element.classList.contains('visited')) return false;
+                const xNext = element.cellIndex;
+                const yNext = element.parentNode.rowIndex;
+                const deltaX = Math.abs(x - xNext);
+                const deltaY = Math.abs(y - yNext);
+                return (deltaX === 2 && deltaY === 1) || (deltaX === 1 && deltaY === 2);
+            }
+
+            function setCandidates() {
+                let existsCandidates = false;
+                document.querySelectorAll('td').forEach(element => {
+                    element.classList.remove('candidate');
+                    if (checkNext(element)) {
+                        element.classList.add('candidate');
+                        existsCandidates = true;
+                    }
+                });
+
+                if (!existsCandidates) {
+                    if (confirm('Вы проиграли!!! Начать  новую игру?')) reset();
+                }
+            }
+        })();
+    </script>
+
+</body>
+
+</html>
