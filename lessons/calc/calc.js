@@ -8,12 +8,6 @@ const resultElement = document.getElementsByClassName('result-output')[0];
 
 const result = () => operation ? `${prevValue}${operation}${value === '0' ? '' : value}` : value;
 
-
-function show() {
-    const res = result();
-    resultElement.textContent = res.substring(0, MAX_LENGTH);
-}
-
 show();
 
 document.querySelectorAll('.digit').forEach(element => {
@@ -37,7 +31,7 @@ document.querySelectorAll('.point').forEach(element => {
 
 document.querySelectorAll('.operation').forEach(element => {
     element.addEventListener('click', function () {
-        if (operation) return;
+        if (operation) onEquals();
         prevValue = value;
         value = '0';
         operation = element.textContent;
@@ -46,13 +40,7 @@ document.querySelectorAll('.operation').forEach(element => {
 });
 
 document.querySelectorAll('.equals').forEach(element => {
-    element.addEventListener('click', function () {
-        if (!operation) return;
-        value = String(eval(result()));
-        prevValue = '0';
-        operation = null;
-        show();
-    });
+    element.addEventListener('click', onEquals);
 });
 
 document.querySelectorAll('.clear').forEach(element => {
@@ -69,4 +57,21 @@ function removeLeadingZeros(str) {
     if (isNaN(num)) return str;
     if (/^0+\.0+$/.test(str)) return '0.0';
     return num.toString();
+}
+
+function show() {
+    const res = result();
+    if (!operation && res.length > MAX_LENGTH && res.indexOf('.') < 0) {
+        resultElement.textContent = 'Overflow';
+    } else {
+        resultElement.textContent = res.substring(0, MAX_LENGTH);
+    }
+}
+
+function onEquals() {
+    if (!operation) return;
+    value = String(eval(result()));
+    prevValue = '0';
+    operation = null;
+    show();
 }
