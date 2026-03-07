@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Калькулятор</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #f0f2f5 0%, #e0e5ec 100%);
+            margin: 0;
+            padding: 8px;
+            user-select: none;
+        }
+
+        .calculator-card {
+            width: 100%;
+            max-width: 400px;
+            background: #2d3e4f;
+            border-radius: 32px;
+            padding: 20px 16px 24px 16px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .display {
+            background: #a2b9c7;
+            border-radius: 18px;
+            padding: 18px 16px;
+            margin-bottom: 18px;
+            text-align: right;
+            font-size: 2.4rem;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: 1px;
+            color: #0b1a24;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2), 0 2px 0 #cbd5e0;
+            border: 1px solid #7f9eb5;
+            word-wrap: break-word;
+            word-break: break-all;
+            min-height: 85px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .display-history {
+            font-size: 1rem;
+            color: #1e3b4a;
+            min-height: 1.5rem;
+            opacity: 0.8;
+            font-weight: 400;
+            word-break: break-all;
+        }
+
+        .display-main {
+            font-size: 2.4rem;
+            font-weight: 600;
+            line-height: 1.2;
+            word-break: break-all;
+        }
+
+        .calc-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            border-spacing: 0;
+        }
+
+        .calc-table td {
+            padding: 5px;
+            vertical-align: middle;
+        }
+
+        /* Базовые кнопки (квадратные) */
+        .calc-btn {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #e9f0f5;
+            border: none;
+            border-radius: 24px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1e2f3d;
+            box-shadow: 0 6px 0 #8b9fb1, 0 8px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.05s ease-in;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-family: inherit;
+            padding: 0;
+            font-size: clamp(1.4rem, 6vw, 2rem);
+        }
+
+        @media (max-width: 360px) {
+            .calc-btn {
+                border-radius: 18px;
+                font-size: 1.5rem;
+            }
+
+            .display-main {
+                font-size: 2rem;
+            }
+        }
+
+        .calc-btn.operator {
+            background: #ffb259;
+            color: #2d2d2d;
+            box-shadow: 0 6px 0 #b26b2e, 0 8px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .calc-btn.clear {
+            background: #f2a6a6;
+            color: #631e1e;
+            box-shadow: 0 6px 0 #a15555, 0 8px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .calc-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #7b8c9e, 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .sqrt-symbol {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #bdd3e6;
+            font-size: 0.7rem;
+            margin-top: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* Ячейка для кнопки "=" с rowspan */
+        .equals-cell {
+            padding: 5px;
+            height: 100%;
+            vertical-align: stretch;
+            /* критично для растягивания кнопки по высоте */
+        }
+
+        /* Кнопка "=" растянута на всю высоту ячейки */
+        .equals-btn {
+            width: 100%;
+            height: 100%;
+            /* занимает всю высоту родительской ячейки */
+            background: #6fcf97;
+            border: none;
+            border-radius: 24px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1f4f2b;
+            box-shadow: 0 6px 0 #2d7a4b, 0 8px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.05s ease-in;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-family: inherit;
+            padding: 0;
+            font-size: clamp(1.4rem, 6vw, 2rem);
+            aspect-ratio: auto;
+            /* отключаем квадрат, чтобы растянуться */
+        }
+
+        .equals-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #2d7a4b, 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Кнопка "0" (двойной ширины) */
+        .zero-cell {
+            padding: 5px;
+        }
+
+        .zero-btn {
+            width: 100%;
+            height: 100%;
+            background: #e9f0f5;
+            border: none;
+            border-radius: 24px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1e2f3d;
+            box-shadow: 0 6px 0 #8b9fb1, 0 8px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.05s ease-in;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-family: inherit;
+            padding: 12px 0;
+            aspect-ratio: auto;
+            font-size: clamp(1.4rem, 6vw, 2rem);
+        }
+
+        .zero-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #7b8c9e, 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Точка должна быть квадратной */
+        .dot-btn {
+            aspect-ratio: 1 / 1;
+        }
+
+        /* Важно для rowspan: задаем высоту строк, чтобы ячейка с rowspan могла растянуться */
+        .calc-table {
+            height: 100%;
+        }
+
+        /* Делаем так, чтобы все ячейки по умолчанию занимали всю высоту строки */
+        .calc-table td {
+            height: 100%;
+        }
+
+        /* Фиксируем высоту строк, чтобы rowspan работал предсказуемо */
+        .calc-table tr {
+            height: 1px;
+            /* трюк: строки будут минимальной высоты, но rowspan заставит их растягиваться */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator-card">
+        <div class="display" id="display">
+            <div class="display-history" id="history"></div>
+            <div class="display-main" id="current">0</div>
+        </div>
+
+        <!-- ЕДИНСТВЕННАЯ ТАБЛИЦА -->
+        <table class="calc-table">
+            <!-- Ряд 1: C, √, /, * -->
+            <tr>
+                <td><button class="calc-btn clear" data-action="clear">C</button></td>
+                <td><button class="calc-btn operator" data-action="sqrt"><span class="sqrt-symbol">√</span></button>
+                </td>
+                <td><button class="calc-btn operator" data-action="/">÷</button></td>
+                <td><button class="calc-btn operator" data-action="*">×</button></td>
+            </tr>
+            <!-- Ряд 2: 7, 8, 9, - -->
+            <tr>
+                <td><button class="calc-btn" data-value="7">7</button></td>
+                <td><button class="calc-btn" data-value="8">8</button></td>
+                <td><button class="calc-btn" data-value="9">9</button></td>
+                <td><button class="calc-btn operator" data-action="-">−</button></td>
+            </tr>
+            <!-- Ряд 3: 4, 5, 6, + -->
+            <tr>
+                <td><button class="calc-btn" data-value="4">4</button></td>
+                <td><button class="calc-btn" data-value="5">5</button></td>
+                <td><button class="calc-btn" data-value="6">6</button></td>
+                <td><button class="calc-btn operator" data-action="+">+</button></td>
+            </tr>
+            <!-- Ряд 4: 1, 2, 3, и ячейка для "=" с rowspan=2 -->
+            <tr>
+                <td><button class="calc-btn" data-value="1">1</button></td>
+                <td><button class="calc-btn" data-value="2">2</button></td>
+                <td><button class="calc-btn" data-value="3">3</button></td>
+                <td rowspan="2" class="equals-cell">
+                    <button class="equals-btn" data-action="=">=</button>
+                </td>
+            </tr>
+            <!-- Ряд 5: 0 (colspan=2) и точка -->
+            <tr>
+                <td colspan="2" class="zero-cell" style="padding:5px;">
+                    <button class="zero-btn" data-value="0">0</button>
+                </td>
+                <td style="padding:5px;">
+                    <button class="calc-btn dot-btn" data-value=".">,</button>
+                </td>
+                <!-- четвертая ячейка не нужна, т.к. её занимает rowspan из ряда выше -->
+            </tr>
+        </table>
+
+        <div class="footer-note">калькулятор на таблице</div>
+    </div>
+
+    <script>
+        (function () {
+            const displayMain = document.getElementById('current');
+            const displayHistory = document.getElementById('history');
+
+            let currentInput = '0';
+            let previousInput = '';
+            let operation = null;
+            let resetNext = false;
+            const maxLength = 12;
+
+            function updateDisplay() {
+                displayMain.innerText = currentInput.length > 14 ? parseFloat(currentInput).toExponential(6) : currentInput;
+                if (operation && previousInput) {
+                    let opSymbol = operation === '*' ? '×' : operation === '/' ? '÷' : operation === 'sqrt' ? '√' : operation;
+                    displayHistory.innerText = `${previousInput} ${opSymbol}`;
+                } else if (previousInput) {
+                    displayHistory.innerText = previousInput;
+                } else {
+                    displayHistory.innerText = '';
+                }
+            }
+
+            function handleNumber(value) {
+                if (resetNext) {
+                    currentInput = '';
+                    resetNext = false;
+                }
+
+                if (value === '.') {
+                    if (currentInput.includes('.')) return;
+                    if (currentInput === '' || currentInput === '-') currentInput = '0';
+                    currentInput += '.';
+                } else {
+                    if (currentInput === '0' && value !== '.') {
+                        currentInput = value;
+                    } else {
+                        if (currentInput.length < maxLength) {
+                            currentInput += value;
+                        }
+                    }
+                }
+                updateDisplay();
+            }
+
+            function setOperation(op) {
+                if (op === 'sqrt') {
+                    if (currentInput === '' || currentInput === '-') return;
+                    let x = parseFloat(currentInput);
+                    if (x < 0) {
+                        currentInput = 'Ошибка';
+                        operation = null;
+                        previousInput = '';
+                        resetNext = true;
+                        updateDisplay();
+                        return;
+                    }
+                    let result = Math.sqrt(x);
+                    currentInput = result.toString();
+                    operation = null;
+                    previousInput = '';
+                    resetNext = true;
+                    updateDisplay();
+                    return;
+                }
+
+                if (operation !== null && previousInput !== '' && !resetNext) {
+                    calculate();
+                }
+
+                if (currentInput !== '') {
+                    previousInput = currentInput;
+                    operation = op;
+                    resetNext = true;
+                } else if (previousInput !== '') {
+                    operation = op;
+                }
+                updateDisplay();
+            }
+
+            function calculate() {
+                if (operation === null || previousInput === '' || currentInput === '') return;
+
+                let a = parseFloat(previousInput);
+                let b = parseFloat(currentInput);
+                if (isNaN(a) || isNaN(b)) return;
+
+                let result;
+                switch (operation) {
+                    case '+': result = a + b; break;
+                    case '-': result = a - b; break;
+                    case '*': result = a * b; break;
+                    case '/':
+                        if (b === 0) {
+                            currentInput = '∞';
+                            operation = null;
+                            previousInput = '';
+                            resetNext = true;
+                            updateDisplay();
+                            return;
+                        }
+                        result = a / b;
+                        break;
+                    default: return;
+                }
+
+                if (result.toString().length > maxLength) {
+                    result = result.toExponential(6);
+                }
+
+                currentInput = result.toString();
+                operation = null;
+                previousInput = '';
+                resetNext = true;
+                updateDisplay();
+            }
+
+            function allClear() {
+                currentInput = '0';
+                previousInput = '';
+                operation = null;
+                resetNext = false;
+                updateDisplay();
+            }
+
+            document.querySelectorAll('.calc-btn, .zero-btn, .equals-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const value = btn.dataset.value;
+                    const action = btn.dataset.action;
+
+                    if (value !== undefined) {
+                        handleNumber(value);
+                    } else if (action) {
+                        if (action === 'clear') {
+                            allClear();
+                        } else if (action === '=') {
+                            calculate();
+                        } else if (action === 'sqrt') {
+                            setOperation('sqrt');
+                        } else {
+                            setOperation(action);
+                        }
+                    }
+                });
+            });
+
+            window.addEventListener('keydown', (e) => {
+                const key = e.key;
+                if (key >= '0' && key <= '9') handleNumber(key);
+                if (key === '.') handleNumber('.');
+                if (key === '+') setOperation('+');
+                if (key === '-') setOperation('-');
+                if (key === '*') setOperation('*');
+                if (key === '/') {
+                    e.preventDefault();
+                    setOperation('/');
+                }
+                if (key === 'Enter' || key === '=') calculate();
+                if (key === 'Escape' || key === 'c' || key === 'C') allClear();
+            });
+
+            updateDisplay();
+        })();
+    </script>
+</body>
+
+</html>
