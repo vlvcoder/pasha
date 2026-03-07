@@ -4,12 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Калькулятор день/ночь</title>
+    <title>Калькулятор</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            /* Убираем выделение при тапе на всех элементах */
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -137,7 +145,7 @@
             box-shadow: 0 4px 0 #1f2e3a;
         }
 
-        /* Основные стили калькулятора (не зависят от темы) */
+        /* Основные стили калькулятора */
         .calculator-card {
             width: 100%;
             max-width: 400px;
@@ -183,6 +191,7 @@
 
         .calc-table {
             width: 100%;
+            height: 100%;
             border-collapse: collapse;
             table-layout: fixed;
             border-spacing: 0;
@@ -214,6 +223,9 @@
             font-family: inherit;
             padding: 0;
             font-size: clamp(1.4rem, 6vw, 2rem);
+            /* Убираем стандартный outline и фон при тапе */
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         @media (max-width: 360px) {
@@ -229,6 +241,14 @@
 
         .calc-btn:active {
             transform: translateY(5px);
+        }
+
+        /* Убираем outline при фокусе для всех кнопок */
+        .calc-btn:focus,
+        .equals-btn:focus,
+        .zero-btn:focus,
+        .theme-toggle:focus {
+            outline: none;
         }
 
         .sqrt-symbol {
@@ -266,6 +286,8 @@
             padding: 0;
             font-size: clamp(1.4rem, 6vw, 2rem);
             aspect-ratio: auto;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .equals-btn:active {
@@ -293,6 +315,8 @@
             padding: 12px 0;
             aspect-ratio: auto;
             font-size: clamp(1.4rem, 6vw, 2rem);
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .zero-btn:active {
@@ -323,6 +347,8 @@
             gap: 8px;
             box-shadow: 0 4px 0 #8b9fb1, 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.1s ease, background-color 0.3s ease, color 0.3s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .theme-toggle:active {
@@ -332,6 +358,12 @@
 
         .theme-icon {
             font-size: 1.3rem;
+        }
+
+        /* Дополнительная защита от выделения и подсветки на мобильных */
+        button {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-focus-ring-color: transparent;
         }
     </style>
 </head>
@@ -375,7 +407,7 @@
                 <td><button class="calc-btn" data-value="1">1</button></td>
                 <td><button class="calc-btn" data-value="2">2</button></td>
                 <td><button class="calc-btn" data-value="3">3</button></td>
-                <td rowspan="2" class="equals-cell" style="padding:5px; vertical-align:stretch; height:100%;">
+                <td rowspan="2" class="equals-cell">
                     <button class="equals-btn" data-action="=">=</button>
                 </td>
             </tr>
@@ -388,8 +420,6 @@
                 </td>
             </tr>
         </table>
-
-        <div class="footer-note">калькулятор день/ночь</div>
     </div>
 
     <script>
