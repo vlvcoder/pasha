@@ -276,6 +276,7 @@
                 <input id="nextCheck" type="checkbox" checked>
                 <label for="nextCheck">Подсказки</label>
             </div>
+            <span id="totalSpan"> </span>
             <button class="resetButton">Reset</button>
         </div>
     </div>
@@ -284,9 +285,13 @@
         (() => {
             let x;
             let y;
+            let counter = 1;
+
+            const TOTAL_COUNT = 64;
             const KNIGHT_ANIMATION = '3s linear 0s infinite normal none running knight-animation';
 
             const logoImage = document.querySelectorAll('.logo')[0];
+            const totalSpan = document.getElementById('totalSpan');
 
             reset();
 
@@ -300,10 +305,12 @@
                     });
                     element.classList.add('visited');
                     element.classList.add('current');
+                    counter++;
 
                     x = element.cellIndex;
                     y = element.parentNode.rowIndex;
                     setCandidates();
+                    setTotal();
                 });
             });
 
@@ -332,8 +339,10 @@
                 });
                 x = 0;
                 y = 7;
+                counter = 1;
                 setCandidates();
                 setAnimations();
+                setTotal();
             }
 
             function checkNext(element) {
@@ -359,6 +368,11 @@
                     if (confirm('Вы проиграли!!! Начать  новую игру?')) reset();
                 }
             }
+
+            function setTotal() {
+                totalSpan.textContent = `${counter} / ${TOTAL_COUNT}`;
+            }
+
         })();
     </script>
 
