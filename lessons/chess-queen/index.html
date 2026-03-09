@@ -10,9 +10,10 @@
     <title>Chess Knight</title>
     <style>
         :root {
-            --color-primary: brown;
-            --color-secondary: rgb(165, 42, 42, 0.5);
+            --color-primary: rgb(6, 56, 70);
+            --color-secondary: rgb(15, 105, 130);
         }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -77,7 +78,7 @@
 
         .step-image {
             margin-top: 20px;
-            width: 60px;
+            width: 80px;
         }
 
         h1 {
@@ -115,14 +116,10 @@
         }
 
         .visited {
-            background-image: url(./images/chess_knight.svg);
+            background-image: url(./images/chess_queen.svg);
             background-repeat: no-repeat;
             background-size: 60%;
             background-position: center;
-        }
-
-        .current {
-            background-image: url(./images/chess_knight_current.svg);
         }
 
         tr:nth-child(odd) td:nth-child(even) {
@@ -133,7 +130,7 @@
             background-color: var(--color-secondary);
         }
 
-        body:has(#nextCheck:checked) .candidate::after {
+        body:has(#nextCheck:checked) .attack::after {
             content: "";
             position: absolute;
             top: 50%;
@@ -142,7 +139,7 @@
             height: 25%;
             transform: translate(-50%, -50%);
             border-radius: 100px;
-            background-color: yellow;
+            background-color: rgb(255, 119, 0);
         }
 
         .footer {
@@ -173,15 +170,14 @@
                 width: 95dvw;
             }
         }
-
     </style>
 </head>
 
 <body>
     <div class="header">
-        <h1>Ход конем</h1>
-        <p>Заполните все клетки шахматной доски ходом коня</p>
-        <img class="logo" src="./images/chess_knight.svg" alt="">
+        <h1>8 ферзей</h1>
+        <p>Разместите на шахматной доске 8 ферзей так, чтобы они они не угрожали друг другу</p>
+        <img class="logo" src="./images/chess_queen.svg" alt="">
         <img class="step-image" src="./images/step.png" alt="">
     </div>
 
@@ -280,11 +276,9 @@
 
     <script>
         (() => {
-            let x;
-            let y;
             let counter = 0;
 
-            const TOTAL_COUNT = 64;
+            const TOTAL_COUNT = 8;
             const KNIGHT_ANIMATION = '3s linear 0s infinite normal none running knight-animation';
 
             const logoImage = document.querySelectorAll('.logo')[0];
@@ -292,20 +286,52 @@
 
             reset();
 
+            function getTd (x, y) {
+                if (x < 0 || y < 0 || x >= TOTAL_COUNT || y >= TOTAL_COUNT) return null;
+                const tr = document.querySelectorAll('tr')[y];
+                return tr.querySelectorAll('td')[x];
+            }
+
+            function coords(element) {
+                return {
+                    x: element.cellIndex,
+                    y: element.parentNode.rowIndex,
+                };
+            }
+
+            function setAttacks(element) {
+                if (counter === TOTAL_COUNT) {
+                    if (confirm('Поздравляем, вы выиграли!!! Начать  новую игру?')) reset();
+                    return;
+                }
+                const { x, y } = coords(element);
+                const attacks = [];
+                for (let i = 0; i < TOTAL_COUNT; i++) {
+                    const mx = x - i;
+                    const px = x + i;
+                    const my = y - i;
+                    const py = y + i;
+                    attacks.push(getTd(mx, my));
+                    attacks.push(getTd(mx, py));
+                    attacks.push(getTd(px, my));
+                    attacks.push(getTd(px, py));
+                    attacks.push(getTd(i, y));
+                    attacks.push(getTd(x, i));
+                }
+                attacks
+                    .filter( item => item)
+                    .forEach(element => element.classList.add('attack'));
+                element.classList.remove('attack');
+            }
+
             document.querySelectorAll('td').forEach(element => {
                 element.addEventListener('click', function () {
                     if (element.classList.contains('visited')) return;
-                    if (!checkNext(element)) return;
-                    document.querySelectorAll('.current').forEach(element => {
-                        element.classList.remove('current');
-                    });
-                    element.classList.add('visited');
-                    element.classList.add('current');
-                    counter++;
+                    if (element.classList.contains('attack')) return;
 
-                    x = element.cellIndex;
-                    y = element.parentNode.rowIndex;
-                    setCandidates();
+                    element.classList.add('visited');
+                    counter++;
+                    setAttacks(element);
                     setTotal();
                 });
             });
@@ -326,45 +352,11 @@
             function reset() {
                 document.querySelectorAll('td').forEach(element => {
                     element.classList.remove('visited');
-                    element.classList.remove('current');
-                    element.classList.remove('candidate');
+                    element.classList.remove('attack');
                 });
-                x = 0;
-                y = 0;
                 counter = 0;
-                setCandidates();
                 setAnimations();
                 setTotal();
-            }
-
-            function checkNext(element) {
-                if (counter === 0) return true;
-                if (element.classList.contains('visited')) return false;
-                const xNext = element.cellIndex;
-                const yNext = element.parentNode.rowIndex;
-                const deltaX = Math.abs(x - xNext);
-                const deltaY = Math.abs(y - yNext);
-                return (deltaX === 2 && deltaY === 1) || (deltaX === 1 && deltaY === 2);
-            }
-
-            function setCandidates() {
-                if (counter === 0) return;
-                let existsCandidates = false;
-                document.querySelectorAll('td').forEach(element => {
-                    element.classList.remove('candidate');
-                    if (checkNext(element)) {
-                        element.classList.add('candidate');
-                        existsCandidates = true;
-                    }
-                });
-
-                if (counter === TOTAL_COUNT) {
-                    if (confirm('Поздравляем, вы выиграли!!! Начать  новую игру?')) reset();
-                }
-
-                if (!existsCandidates) {
-                    if (confirm('Вы проиграли!!! Начать  новую игру?')) reset();
-                }
             }
 
             function setTotal() {
