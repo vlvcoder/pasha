@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Comic+Relief:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>Игры на шахматной доске</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Comfortaa;
+            color: rgb(37, 37, 37);
+            user-select: none;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url(https://images.wallpaperscraft.com/image/single/chess_chessboard_figures_127755_1280x720.jpg) center/cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .main {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .card {
+            border-radius: 20px;
+            width: 370px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: -2px -1px 29px 3px rgba(0, 0, 0, 0.62);
+
+            .title {
+                font-weight: 900;
+            }
+        }
+
+        .logo {
+            width: 300px;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+            border-radius: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 3em;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .view {
+            height: 300px;
+        }
+
+        .title {
+            color: white;
+            padding: 20px;
+            font-size: 2em;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .card-queen {
+            background-image: url(https://images.wallpaperscraft.com/image/single/chess_king_queen_207428_800x600.jpg);
+            background-size: cover;
+
+            & .title {
+                background-color: rgba(11, 80, 99, 0.8);
+                transition: 1s;
+            }
+        }
+
+        .card-knight {
+            background-image: url(https://images.wallpaperscraft.com/image/single/chess_game_board_214892_800x600.jpg);
+            background-size: cover;
+
+            & .title {
+                background-color: rgb(165, 42, 42, 0.8);
+                transition: 1s;
+            }
+        }
+
+        .card:hover .title {
+            background-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                width: 200px;
+            }
+
+            .view {
+                height: 200px;
+            }
+
+            .card {
+                width: 240px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Игры на шахматной доске</h1>
+    <div class="main">
+        <a href="./chess-knight/index.html">
+            <div class="card card-knight">
+                <div class="view">
+                    <img class="logo" src="./chess-knight/images/chess_knight.svg" alt="">
+                </div>
+                <div class="title">Ход конем</div>
+            </div>
+        </a>
+        <a href="./chess-queen/index.html">
+            <div class="card card-queen">
+                <div class="view">
+                    <img class="logo" src="./chess-queen/images/chess_queen.svg" alt="">
+                </div>
+                <div class="title">8 ферзей</div>
+            </div>
+        </a>
+    </div>
+</body>
+
+</html>
