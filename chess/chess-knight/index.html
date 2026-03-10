@@ -333,9 +333,9 @@
                 x = 0;
                 y = 0;
                 counter = 0;
-                setCandidates();
                 setAnimations();
                 setTotal();
+                setCandidates();
             }
 
             function checkNext(element) {
@@ -360,12 +360,16 @@
                 });
 
                 if (counter === TOTAL_COUNT) {
-                    if (confirm('Поздравляем, вы выиграли!!! Начать  новую игру?')) reset();
+                    setTimeout(() => {
+                        if (confirm('Поздравляем, вы выиграли!!! Начать  новую игру?')) reset();
+                    }, 0);
                     return;
                 }
 
                 if (!existsCandidates) {
-                    if (confirm('Вы проиграли!!! Начать  новую игру?')) reset();
+                    setTimeout(() => {
+                        if (confirm('Вы проиграли!!! Начать  новую игру?')) reset();
+                    }, 0);
                 }
             }
 
