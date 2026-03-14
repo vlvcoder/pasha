@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Lexend+Zetta:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>Ступени</title>
+    <style>
+        body {
+            font-family: Roboto;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            color: rgb(212, 122, 5);
+            text-shadow: 0px 0px 5px gray;
+        }
+
+        .container {
+            background: white;
+            margin: 10px auto;
+            width: 300px;
+            height: 300px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .stair {
+            background-color: rgb(128, 86, 167);
+            width: 25%;
+            height: 25%;
+            transition: 1s;
+        }
+        .stair:nth-child(2) {
+            margin-left: 25%;
+        }
+        .stair:nth-child(3) {
+            margin-left: 50%;
+        }
+        .stair:nth-child(4) {
+            margin-left: 75%;
+        }
+        .container:hover .stair {
+            margin-left: 0%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Ступени</h1>
+
+    <div class="container">
+        <div class="stair"></div>
+        <div class="stair"></div>
+        <div class="stair"></div>
+        <div class="stair"></div>
+    </div>
+
+</body>
+
+</html>
