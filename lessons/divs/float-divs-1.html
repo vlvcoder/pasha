@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Одна колонка с обтеканием</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Блок слева с обтеканием */
+        .float-left {
+            float: left;
+            width: 200px;
+            height: 150px;
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            margin: 0 20px 10px 0;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Блок справа с обтеканием */
+        .float-right {
+            float: right;
+            width: 200px;
+            height: 150px;
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            margin: 0 0 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Центрированный блок */
+        .centered-block {
+            width: 80%;
+            margin: 30px auto;
+            background: #2ecc71;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            clear: both;
+        }
+
+        /* Очистка float */
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>🌊 Одна колонка с плавающими элементами</h2>
+
+        <div class="float-left">
+            <strong>float: left;</strong><br>
+            Блок слева
+        </div>
+
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Текст обтекает
+            красный блок справа, так как он имеет float: left. Duis aute irure dolor in reprehenderit in voluptate velit
+            esse cillum dolore eu fugiat nulla pariatur.
+        </p>
+
+        <p>
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+        </p>
+
+        <div class="float-right">
+            <strong>float: right;</strong><br>
+            Блок справа
+        </div>
+
+        <p>
+            А теперь у нас появился синий блок с float: right. Текст будет обтекать его слева. Totam rem aperiam, eaque
+            ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
+            voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+        </p>
+
+        <p>
+            Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui
+            dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora
+            incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
+        </p>
+
+        <div class="centered-block">
+            <strong>Центрированный блок</strong><br>
+            clear: both; — отменяет обтекание
+        </div>
+
+        <p>
+            После применения clear: both, этот текст начинается с новой строки, ниже всех плавающих блоков. Ut enim ad
+            minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
+            consequatur?
+        </p>
+
+        <div style="background: #f1c40f; padding: 10px; margin-top: 20px; border-radius: 8px;">
+            <strong>📌 Важно:</strong> В одноколоночном макете все элементы располагаются друг под другом, но float
+            позволяет элементам "вырываться" из потока и обтекаться текстом.
+        </div>
+    </div>
+</body>
+
+</html>
