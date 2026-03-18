@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 500px;
+            height: 300px;
+            background-color: lightblue;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 200px auto;
+
+            -webkit-box-shadow: -2px 2px 27px 4px rgba(34, 60, 80, 0.2);
+            -moz-box-shadow: -2px 2px 27px 4px rgba(34, 60, 80, 0.2);
+            box-shadow: -2px 2px 27px 4px rgba(34, 60, 80, 0.2);
+        }
+
+        .sun {
+            width: 1px;
+            height: 1px;
+            border-radius: 50%;
+            background-color: rgb(255, 200, 0);
+            transition: 0.5s;
+            margin-left: -50px;
+            margin-top: -50px;
+        }
+
+        .container:hover .sun {
+            width: 800px;
+            height: 800px;
+            margin-left: -150px;
+            margin-top: -150px;
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Длительность анимации:</p>
+
+    <input type="radio" id="transition05" name="contact" value="0.5s" checked>
+    <label for="transition05">transition: 0.5s;</label><br>
+
+    <input type="radio" id="transition2" name="contact" value="2s">
+    <label for="transition2">transition: 2s;</label><br>
+
+    <input type="radio" id="transition10" name="contact" value="10s">
+    <label for="transition10">transition: 10s;</label>
+
+    <div class="container">
+        <div class="sun"></div>
+    </div>
+
+    <script>
+        const sun = document.getElementsByClassName('sun')[0];
+        document.querySelectorAll('input').forEach(element => {
+            element.addEventListener('change', (e) => sun.style.transition = e.target.defaultValue);            
+        });
+    </script>
+
+</body>
+
+</html>
