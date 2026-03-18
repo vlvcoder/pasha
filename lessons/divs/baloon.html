@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .block {
+            border: 1px solid green;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            width: 50vw;
+            background: green;
+            color: #fff;
+            box-shadow: 0 0 7px #000;
+            margin: 100px auto;
+        }
+
+        .block::after,
+        .block::before {
+            content: '';
+            position: absolute;
+            background: green;
+            left: 20px;
+            bottom: -11px;
+            width: 20px;
+            height: 20px;
+            box-shadow: 0 0 7px #000;
+            /* Добавляем тень для уголка */
+            z-index: -1;
+            /* Прячем за основным блоком */
+            transform: rotate(45deg);
+            /* Поворачиваем на 45º */
+            -webkit-transform: rotate(45deg);
+        }
+
+        .block::before {
+            z-index: 1;
+            /* Накладываем поверх, чтобы скрыть следы тени */
+            box-shadow: none;
+            /* Прячем тень */
+        }
+
+        .bloon {
+            width: 500px;
+            background-color: lightslategray;
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            margin: 100px auto;
+            position: relative;
+        }
+
+        .bloon::after {
+            content: "";
+            background-color: lightslategray;
+            position: absolute;
+            transform: rotate(45deg);
+
+            left: 40px;
+            bottom: -10px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .triangle {
+            margin: 100px auto;
+            border: 20px solid transparent;
+            border-left-color: chocolate;
+            width: 0;
+        }
+
+        .clip {
+            width: 200px;
+            height: 200px;
+            margin: 100px auto;
+            background-color: lightseagreen;
+            /* clip-path: polygon(0% 0%, 0% 50%, 50% 0%); */
+            clip-path: polygon(57% -19%, -20% 41.5%, 44.5% 43.5%, -61% 100%, 42% 114%, 94.00% 39.50%);
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Блок с треугольником</h1>
+    <div class="bloon">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque quam ipsa porro delectus inventore, sequi
+        tenetur ipsam voluptatem assumenda? Laborum!
+    </div>
+    <div class="block">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque quam ipsa porro delectus inventore, sequi
+        tenetur ipsam voluptatem assumenda? Laborum!
+    </div>
+
+    <div class="triangle"></div>
+
+    <div class="clip"></div>
+
+    <ul>
+        <li><a href="https://htmlbook.ru/blog/treugolniki-cherez-css" target="_blank">Треугольники через CSS</a></li>
+        <li><a href="https://habr.com/ru/articles/126207/" target="_blank">Геометрические фигуры на CSS</a></li>
+        <li><a href="https://habr.com/ru/companies/skillfactory/articles/539064/" target="_blank">clip-path в CSS</a></li>
+    </ul>
+
+</body>
+
+</html>
