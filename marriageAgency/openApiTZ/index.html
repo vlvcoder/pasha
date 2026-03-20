@@ -180,6 +180,7 @@
             padding: 20px;
             border-radius: 10px;
             min-width: fit-content;
+            max-width: 100%;
         }
 
         .cmd {
@@ -287,20 +288,19 @@
                         <div class="card-body p-4">
                             <p class="fw-medium">Запрос списка пользователей</p>
                                 <div class="col-md-6">
-                                    <table class="table table-sm table-borderless table-params small">
+                                    <table class="table table-sm table-params">
                                         <tr>
-                                            <td colspan="2" class="text-secondary-emphasis"><i class="bi bi-gear"></i>
-                                                Параметры</td>
+                                            <th>параметр</th>
+                                            <th>тип / описание</th>
                                         </tr>
                                         <tr>
                                             <td><code>searchString</code></td>
                                             <td>query, необязательный, string</td>
                                         </tr>
                                     </table>
-                                    <div class="badge bg-secondary">тело запроса отсутствует</div>
+                                    <div class="badge bg-secondary">Тело запроса отсутствует</div>
                                     <br>
                                     <br>
-
                                 </div>
                                 <div class="col-md-6">
                                     <div class="fw-semibold mb-1">✅ Возврат (200)</div>
@@ -324,12 +324,21 @@
     }
 ]
                                         </pre>
+                                    <div class="footnote-note mt-2">
+                                        <i class="bi bi-palette me-1"></i> <strong>gender</strong> допустимые
+                                        значения:
+                                        <br>
+                                        <code>male, female</code>
+                                        <br>Используется enum
+                                    </div>
+                                    <br>
+
                                 </div>
                                 <div class="col-md-6">
                                     <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
                                     <pre>
 {
-    "message": "Во время выполнения операции произошла ошибка",
+    "message": "Ошибка выполнения операции",
     "details": "Видимо, что-то случилось",
 }
                                     </pre>
@@ -346,7 +355,7 @@
                         <div class="card-body p-4">
                             <p class="fw-medium">Запрос на добавление пользователя</p>
                                 <div class="col-md-6">
-                                    <div class="fw-semibold mb-1">Тело запроса (JSON)</div>
+                                    <div class="fw-semibold mb-1">&#128292;Тело запроса (JSON)</div>
                                         <pre>
 {
     "name": "Harry",
@@ -370,7 +379,7 @@
                                     <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
                                     <pre>
 {
-    "message": "Во время выполнения операции произошла ошибка",
+    "message": "Ошибка выполнения операции",
     "details": "Видимо, что-то случилось",
 }
                                     </pre>
@@ -408,7 +417,7 @@
                                             <td>query, необязательный, string (date)</td>
                                         </tr>
                                     </table>
-                                    <div class="badge bg-secondary">тело запроса отсутствует</div>
+                                    <div class="badge bg-secondary">Тело запроса отсутствует</div>
                                     <br>
                                     <br>
                                 </div>
@@ -436,7 +445,10 @@
                                     </pre>
                                     <div class="footnote-note mt-2">
                                         <i class="bi bi-palette me-1"></i> <strong>smileColor</strong> допустимые
-                                        значения: <code>none, red, green, yellow</code>
+                                        значения:
+                                        <br>
+                                        <code>none, red, green, yellow</code>
+                                        <br>Используйте enum
                                     </div>
                                 </div>
                                 <br>
@@ -444,7 +456,7 @@
                                     <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
                                     <pre>
 {
-    "message": "Во время выполнения операции произошла ошибка",
+    "message": "Ошибка выполнения операции",
     "details": "Видимо, что-то случилось",
 }
                                     </pre>
@@ -461,8 +473,21 @@
                         <div class="card-body p-4">
                             <p class="fw-medium">Запрос на создание поста</p>
                                 <div class="col-md-6">
-                                    <div class="param-chip mb-2"><i class="bi bi-link"></i> path: userId (обяз.)</div>
-                                    <div class="fw-semibold mt-2">Тело запроса</div>
+                                    <table class="table table-sm table-params">
+                                        <tr>
+                                            <th>параметр</th>
+                                            <th>тип / описание</th>
+                                        </tr>
+                                        <tr>
+                                            <td><code>userId</code></td>
+                                            <td>path, обязательный, длинное целое</td>
+                                        </tr>
+                                    </table>
+                                    <div class="fw-semibold mb-1">&#128292;Тело запроса (JSON)</div>
+                                </div>
+
+
+                                <div class="col-md-6">
                                     <pre>
 {
     "date": "2001-03-23",
@@ -485,7 +510,7 @@
                                     <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
                                     <pre>
 {
-    "message": "Во время выполнения операции произошла ошибка",
+    "message": "Ошибка выполнения операции",
     "details": "Видимо, что-то случилось",
 }
                                     </pre>
@@ -503,9 +528,24 @@
                         <div class="card-body p-4">
                             <p class="fw-medium">Запрос на редактирование поста</p>
                                 <div class="col-md-6">
-                                    <span class="param-chip"><i class="bi bi-person"></i> userId (path)</span>
-                                    <span class="param-chip"><i class="bi bi-postcard"></i> postId (path)</span>
-                                    <div class="fw-semibold mt-3">Тело запроса</div>
+                                    <table class="table table-sm table-params">
+                                        <tr>
+                                            <th>параметр</th>
+                                            <th>тип / описание</th>
+                                        </tr>
+                                        <tr>
+                                            <td><code>userId</code></td>
+                                            <td>path, обязательный, длинное целое</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>postId</code></td>
+                                            <td>path, обязательный, длинное целое</td>
+                                        </tr>
+                                    </table>
+                                    <div class="fw-semibold mb-1">&#128292;Тело запроса (JSON)</div>                                    
+                                </div>
+
+                                <div class="col-md-6">
                                     <pre>
 {
     "text": "Hi all! I want to die",
@@ -525,7 +565,7 @@
                                     <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
                                     <pre>
 {
-    "message": "Во время выполнения операции произошла ошибка",
+    "message": "Ошибка выполнения операции",
     "details": "Видимо, что-то случилось",
 }
                                     </pre>
@@ -542,14 +582,25 @@
                         <div class="card-body p-4">
                             <p class="fw-medium">Запрос на удаление поста</p>
                                 <div class="col-md-6">
-                                    <span class="param-chip"><i class="bi bi-person"></i> userId</span>
-                                    <span class="param-chip"><i class="bi bi-hash"></i> postId</span>
-                                    <br>
-                                    <br>
-                                    <div class="badge bg-secondary">тело запроса отсутствует</div>
+                                    <table class="table table-sm table-params">
+                                        <tr>
+                                            <th>параметр</th>
+                                            <th>тип / описание</th>
+                                        </tr>
+                                        <tr>
+                                            <td><code>userId</code></td>
+                                            <td>path, обязательный, длинное целое</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>postId</code></td>
+                                            <td>path, обязательный, длинное целое</td>
+                                        </tr>
+                                    </table>
+                                    <div class="badge bg-secondary">Тело запроса отсутствует</div>
                                     <br>
                                     <br>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="fw-semibold mb-1">✅ Возврат</div>
                                     <pre>
@@ -562,7 +613,7 @@
                                 <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
                                     <pre>
 {
-    "message": "Во время выполнения операции произошла ошибка",
+    "message": "Ошибка выполнения операции",
     "details": "Видимо, что-то случилось",
 }
                                     </pre>
