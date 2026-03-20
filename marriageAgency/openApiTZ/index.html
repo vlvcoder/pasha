@@ -221,7 +221,9 @@
                 <div class="toc-sticky bg-white p-3 rounded-4 shadow-sm border">
                     <h6 class="fw-semibold mb-3"><i class="bi bi-list-ul me-2"></i>Содержание ТЗ</h6>
                     <nav class="nav flex-column">
-                        <a class="toc-link" href="#users"><i class="bi bi-people-fill"></i> 1. Интерфейс /users</a>
+                        <div>
+                            <a class="toc-link" href="#users"><i class="bi bi-people-fill"></i> 1. Интерфейс /users</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge bg-success">Реализован для примера</span>
+                        </div>
                         <a class="toc-link ms-3 inner" href="#get-users">
                             <span class="cmd">GET</span> /users
                         </a>
@@ -247,7 +249,7 @@
                         <i class="bi bi-info-circle"></i> Спецификация частично реализована в двух альтернативных форматах:
                     </p>
                     <p class="small text-secondary mb-0 px-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api в формате YAML: <code>
-                            <a href="./ma-openapi.yml" class="source-link" target="_blank">ma-openapi.yml</a>
+                            <a href="./ma-openapi.yml.txt" class="source-link" target="_blank">ma-openapi.yml</a>
                         </code>
                     </p>
                     <p class="small text-secondary mb-0 px-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api в формате JSON: <code>
@@ -273,7 +275,7 @@
                         <span class="text-muted fs-4">/users</span></h2>
                     <p class="text-secondary mb-3">Методы для работы с пользователями. <span
                             class="badge bg-info bg-opacity-10 text-info-emphasis rounded-pill">реализация в 
-                            <a href="./ma-openapi.yml" class="source-link" target="_blank">ma-openapi.yml</a> ,
+                            <a href="./ma-openapi.yml.txt" class="source-link" target="_blank">ma-openapi.yml</a> ,
                             <a href="./ma-openapi.json" class="source-link" target="_blank">ma-openapi.json</a> 
                         </span>
                         </p>
@@ -399,6 +401,7 @@
                         <div class="card-header-custom">
                             <span class="endpoint-badge method-get me-2">GET</span>
                             <code class="fs-5">/users/{userId}/posts</code>
+                            <span class="ms-auto badge bg-light text-dark">query: postDate</span>
                         </div>
                         <div class="card-body p-4">
                             <p class="fw-medium">Запрос списка постов пользователя</p>
@@ -642,26 +645,25 @@
                     <h4><i class="bi bi-braces"></i> Общие требования к OpenAPI-спецификации</h4>
                     <ul class="list-group list-group-flush bg-transparent">
                         <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
-                            Формат описания — YAML или JSON (ссылочная модель ma-openapi.json).</li>
+                            Формат описания — YAML или JSON (ссылочная модель <a href="./ma-openapi.json" class="source-link" target="_blank">ma-openapi.json</a>).</li>
                         <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
-                            Корректно описать все path- и query-параметры, схемы ответов (200, 4xx, 5xx).</li>
+                            Корректно описать все path- и query-параметры, схемы ответов (200, 201, default).</li>
                         <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
                             Для <code>smileColor</code> использовать enum (none, red, green, yellow).</li>
-                        <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
-                            Включить компонент безопасности (например, ApiKey или Bearer — на усмотрение).</li>
+                        <!-- <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
+                            Включить компонент безопасности (например, ApiKey или Bearer — на усмотрение).</li> -->
                         <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
                             Модели <code>User</code>, <code>Post</code> вынести в <code>components/schemas</code>.</li>
                     </ul>
                     <hr>
                     <p class="mb-0 text-secondary small"><i class="bi bi-asterisk"></i> Пример выполнен в качестве
-                        образца в <code>ma-openapi.json</code> — структура должна быть расширена, но сохранена
+                        образца в <a href="./ma-openapi.json" class="source-link" target="_blank">ma-openapi.json</a> — структура должна быть расширена, но сохранена
                         стилистика.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- футер с bootstrap и небольшим упоминанием -->
     <footer class="bg-white border-top mt-4 py-3 text-center text-secondary small">
         <i class="bi bi-file-earmark-code"></i> Техническое задание подготовлено для разработки OpenAPI | Bootstrap 5
         интерфейс
