@@ -8,3 +8,115 @@ npx @openapitools/openapi-generator-cli generate -i ./ma-openapi.json -g typescr
 
 Генерация доков:
 npx @openapitools/openapi-generator-cli generate -i ./ma-openapi.json -g html -o ./apidoc --additional-properties=enumPropertyNaming=PascalCase
+
+
+========================= Примеры api
+
+Техническое задание.
+
+Требуется разработать схему api в формате openapi.
+
+1. Интерфейс пользователей /users (пример выполнен в качестве образца в ma-openapi.json)
+
+1.1 GET     /users
+Запрос списка пользователей
+Необязательный query-параметр searchString
+Тело запроса отсутствует
+Возврат:
+[
+  {
+    "id": 7,
+    "name": "Hermione",
+    "surname": "Granger",
+    "age": 38,
+    "gender": "female",
+    "married": false
+  },
+  {
+    "id": 8,
+    "name": "Indiana",
+    "surname": "Jones",
+    "age": 54,
+    "gender": "male",
+    "married": false
+  }
+]
+
+1.2 POST    /users
+Запрос на добавление пользователя
+Тело запроса:
+{
+    "name": "Harry",
+    "surname": "Potter",
+    "age": 38,
+    "gender": "male",
+    "married": false
+}
+Возврат:
+{
+    "id": 337,
+    "message": "Операция выполнена успешно"
+}
+
+2. Интерфейс пользовательских постов /posts
+
+2.1 GET     /users/{userId}/posts
+Запрос списка постов пользователей
+Обязательный path-параметр userId
+Необязательный query-параметр postDate
+Тело запроса отсутствует
+Возврат (Поле smileColor предполагает одно из значений: none, red, green, yellow):
+[
+  {
+    "id": 1234,
+    "userId": 314,
+    "date": "2001-03-23",
+    "time": "15:55",
+    "text": "Hi all! I am fine",
+    "smileColor": "green"
+  },
+  {
+    "id": 1235,
+    "userId": 314,
+    "date": "2001-04-23",
+    "time": "03:00",
+    "text": "I want to get married!"
+    "smileColor": "green"
+  }
+]
+
+2.2 POST    /users/{userId}/posts
+Запрос на создание поста
+Обязательный path-параметр userId
+Тело запроса:
+{
+    "date": "2001-03-23",
+    "time": "15:55",
+    "text": "Hi all! I am married!",
+    "smileColor": "yellow"
+}
+Возврат:
+{
+    "id": 1236,
+    "message": "Операция выполнена успешно"
+}
+
+2.3 PATCH   /users/{userId}/posts/{postId}
+Запрос на редактирование поста
+Тело запроса:
+{
+    "text": "Hi all! I want to die",
+    "smileColor": "red"
+}
+Возврат:
+{
+    "message": "Операция выполнена успешно"
+}
+
+2.4 DELETE   /users/{userId}/posts/{postId}
+Запрос на удаление поста
+Тело запроса отсутствует
+Возврат:
+{
+    "message": "Операция выполнена успешно"
+}

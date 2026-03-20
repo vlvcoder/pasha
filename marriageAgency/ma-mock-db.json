@@ -394,6 +394,13 @@
             "date": "2001-03-23",
             "time": "15:55",
             "text": "Hi all! I am married!"
+        },
+        {
+            "id": 1236,
+            "userId": 315,
+            "date": "2001-03-23",
+            "time": "15:55",
+            "text": "Hi all! I want to die"
         }
     ]
 }

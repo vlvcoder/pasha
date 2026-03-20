@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техническое задание · OpenAPI спецификация</title>
+    <!-- Bootstrap 5 CSS (светлая тема) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons для визуальных акцентов -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- дополнительные стили для оформления ТЗ -->
+    <style>
+        body {
+            background: #f2f5f9;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        .tz-header {
+            background: linear-gradient(145deg, #0b2a4e 0%, #123b6e 100%);
+            color: white;
+            border-radius: 0 0 2.5rem 2.5rem;
+            padding: 2.5rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 12px 30px rgba(0, 20, 40, 0.2);
+        }
+
+        .tz-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .spec-card {
+            background: white;
+            border-radius: 1.2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 20, 40, 0.05);
+            border: 1px solid rgba(0, 40, 80, 0.1);
+            transition: transform 0.1s ease, box-shadow 0.2s;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .spec-card:hover {
+            box-shadow: 0 16px 28px rgba(0, 35, 70, 0.1);
+        }
+
+        .card-header-custom {
+            background-color: #f9fcff;
+            border-bottom: 2px solid #e9edf4;
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.3rem;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-header-custom i {
+            font-size: 1.6rem;
+            color: #1e5b9c;
+        }
+
+        .endpoint-badge {
+            display: inline-block;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-weight: 600;
+            padding: 0.25rem 0.9rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .method-get {
+            background: #dcfce7;
+            color: #0a5c2e;
+            border-left: 4px solid #22c55e;
+        }
+
+        .method-post {
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .method-patch {
+            background: #fef9c3;
+            color: #854d0e;
+            border-left: 4px solid #eab308;
+        }
+
+        .method-delete {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-left: 4px solid #ef4444;
+        }
+
+        .param-chip {
+            background: #eef2f6;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            color: #1f3a5f;
+        }
+
+        .param-chip i {
+            font-size: 0.8rem;
+            color: #4b6a92;
+        }
+
+        .json-example {
+            background: #1f2937;
+            color: #e2e8f0;
+            border-radius: 1rem;
+            padding: 1rem 1.2rem;
+            font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0.5rem 0 0.2rem;
+            border: 1px solid #2d3a4f;
+        }
+
+        .json-example i {
+            color: #9ecbff;
+        }
+
+        /* для подсветки ключей — чисто эстетика */
+        .table-params {
+            font-size: 0.95rem;
+        }
+
+        .table-params td:first-child {
+            font-family: monospace;
+            font-weight: 600;
+            color: #0b2b4c;
+        }
+
+        .footnote-note {
+            background: #f0f4fa;
+            border-radius: 1rem;
+            padding: 0.5rem 1rem;
+            margin: 1rem 0 0;
+            font-size: 0.9rem;
+            border-left: 4px solid #7899c7;
+        }
+
+        h2 i,
+        h3 i {
+            margin-right: 0.5rem;
+            color: #206ab0;
+        }
+
+        .toc-sticky {
+            position: sticky;
+            top: 2rem;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover, a:hover span {
+            text-decoration: underline
+        }
+
+        a.inner {
+            padding-left: 24px;
+            margin-top: 2px;
+        }
+
+        pre  {
+            background-color: #efefef;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: fit-content;
+        }
+
+        .cmd {
+            width: 65px;
+            background-color: #efefef;
+            padding: 2px 4px;
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+        section {
+            margin-top: 100px;
+        }
+
+        .source-link {
+            color: rgb(214, 51, 132);
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- шапка ТЗ -->
+    <div class="tz-header">
+        <div class="tz-container">
+            <h1 class="display-5 fw-bold">📄 Техническое задание</h1>
+            <p style="margin-left: 80px;" class="lead mb-0 opacity-90">Разработка спецификации API в формате OpenAPI</p>
+        </div>
+    </div>
+
+    <div class="tz-container">
+        <div class="row g-4">
+            <!-- боковое оглавление (небольшое, для удобства) -->
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <div class="toc-sticky bg-white p-3 rounded-4 shadow-sm border">
+                    <h6 class="fw-semibold mb-3"><i class="bi bi-list-ul me-2"></i>Содержание ТЗ</h6>
+                    <nav class="nav flex-column">
+                        <a class="toc-link" href="#users"><i class="bi bi-people-fill"></i> 1. Интерфейс /users</a>
+                        <a class="toc-link ms-3 inner" href="#get-users">
+                            <span class="cmd">GET</span> /users
+                        </a>
+                        <a class="toc-link ms-3 inner" href="#post-users">
+                            <span class="cmd">POST</span> /users
+                        </a>
+                        <a class="toc-link" href="#posts"><i class="bi bi-file-post-fill"></i> 2. Интерфейс /posts</a>
+                        <a class="toc-link ms-3 inner" href="#get-posts">
+                            <span class="cmd">GET</span> /users/{userId}/posts
+                        </a>
+                        <a class="toc-link ms-3 inner" href="#post-posts">
+                            <span class="cmd">POST</span> /users/{userId}/posts
+                        </a>
+                        <a class="toc-link ms-3 inner" href="#patch-posts">
+                            <span class="cmd">PATCH</span> /users/{userId}/posts/{postId}
+                        </a>
+                        <a class="toc-link ms-3 inner" href="#delete-posts">
+                            <span class="cmd">DELETE</span> /users/{userId}/posts/{postId}
+                        </a>
+                    </nav>
+                    <hr>
+                    <p class="small text-secondary mb-0 px-2">
+                        <i class="bi bi-info-circle"></i> Спецификация частично реализована в двух альтернативных форматах:
+                    </p>
+                    <p class="small text-secondary mb-0 px-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api в формате YAML: <code>
+                            <a href="./ma-openapi.yml" class="source-link" target="_blank">ma-openapi.yml</a>
+                        </code>
+                    </p>
+                    <p class="small text-secondary mb-0 px-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api в формате JSON: <code>
+                            <a href="./ma-openapi.json" class="source-link" target="_blank">ma-openapi.json</a>
+                        </code>
+                    </p>
+                    <br>
+                    <p class="small text-secondary mb-0 px-2">
+                        <i class="bi bi-info-circle"></i> В спецификации реализован интерфейс /users. Ожидается добавление реализации интерфейса /posts
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-3"></div>
+
+            <!-- основное содержимое — описание эндпоинтов -->
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8">
+            <div class="col-lg-2"></div>
+
+                <!-- секция 1. /users -->
+                <section id="users" class="mb-4">
+                    <h2 class="fw-bold border-bottom pb-2 mb-3"><i class="bi bi-people"></i> 1. Интерфейс пользователей
+                        <span class="text-muted fs-4">/users</span></h2>
+                    <p class="text-secondary mb-3">Методы для работы с пользователями. <span
+                            class="badge bg-info bg-opacity-10 text-info-emphasis rounded-pill">реализация в 
+                            <a href="./ma-openapi.yml" class="source-link" target="_blank">ma-openapi.yml</a> ,
+                            <a href="./ma-openapi.json" class="source-link" target="_blank">ma-openapi.json</a> 
+                        </span>
+                        </p>
+
+                    <!-- 1.1 GET /users -->
+                    <div class="spec-card" id="get-users">
+                        <div class="card-header-custom">
+                            <span class="endpoint-badge method-get me-2">GET</span> <code
+                                class="fs-5">/users</code>
+                            <span class="ms-auto badge bg-light text-dark">query: searchString</span>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="fw-medium">Запрос списка пользователей</p>
+                                <div class="col-md-6">
+                                    <table class="table table-sm table-borderless table-params small">
+                                        <tr>
+                                            <td colspan="2" class="text-secondary-emphasis"><i class="bi bi-gear"></i>
+                                                Параметры</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>searchString</code></td>
+                                            <td>query, необязательный, string</td>
+                                        </tr>
+                                    </table>
+                                    <div class="badge bg-secondary">тело запроса отсутствует</div>
+                                    <br>
+                                    <br>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">✅ Возврат (200)</div>
+                                        <pre>
+[
+    {
+        "id": 7,
+        "name": "Hermione",
+        "surname": "Granger",
+        "age": 38,
+        "gender": "female",
+        "married": false
+    },
+    {
+        "id": 8,
+        "name": "Indiana",
+        "surname": "Jones",
+        "age": 54,
+        "gender": "male",
+        "married": false
+    }
+]
+                                        </pre>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
+                                    <pre>
+{
+    "message": "Во время выполнения операции произошла ошибка",
+    "details": "Видимо, что-то случилось",
+}
+                                    </pre>
+                                </div>
+                        </div>
+                    </div>
+
+                    <!-- 1.2 POST /users -->
+                    <div class="spec-card" id="post-users">
+                        <div class="card-header-custom">
+                            <span class="endpoint-badge method-post me-2">POST</span>
+                            <code class="fs-5">/users</code>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="fw-medium">Запрос на добавление пользователя</p>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">Тело запроса (JSON)</div>
+                                        <pre>
+{
+    "name": "Harry",
+    "surname": "Potter",
+    "age": 38,
+    "gender": "male",
+    "married": false
+}
+                                        </pre>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">✅ Возврат (201)</div>
+                                        <pre>
+{
+    "id": 337,
+    "message": "Операция выполнена успешно"
+}
+                                        </pre>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
+                                    <pre>
+{
+    "message": "Во время выполнения операции произошла ошибка",
+    "details": "Видимо, что-то случилось",
+}
+                                    </pre>
+                                </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- секция 2. /posts -->
+                <section id="posts" class="mb-4">
+                    <h2 class="fw-bold border-bottom pb-2 mb-3"><i class="bi bi-file-post"></i> 2. Интерфейс
+                        пользовательских постов <span class="text-muted fs-4">/posts</span></h2>
+                    <p class="text-secondary mb-3">Управление постами, привязанными к пользователю.</p>
+
+                    <!-- 2.1 GET /users/{userId}/posts -->
+                    <div class="spec-card" id="get-posts">
+                        <div class="card-header-custom">
+                            <span class="endpoint-badge method-get me-2">GET</span>
+                            <code class="fs-5">/users/{userId}/posts</code>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="fw-medium">Запрос списка постов пользователя</p>
+                                <div class="col-md-6">
+                                    <table class="table table-sm table-params">
+                                        <tr>
+                                            <th>параметр</th>
+                                            <th>тип / описание</th>
+                                        </tr>
+                                        <tr>
+                                            <td><code>userId</code></td>
+                                            <td>path, обязательный, integer</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>postDate</code></td>
+                                            <td>query, необязательный, string (date)</td>
+                                        </tr>
+                                    </table>
+                                    <div class="badge bg-secondary">тело запроса отсутствует</div>
+                                    <br>
+                                    <br>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">✅ Возврат (200)</div>
+                                    <pre>
+[
+  {
+    "id": 1234,
+    "userId": 314,
+    "date": "2001-03-23",
+    "time": "15:55",
+    "text": "Hi all! I am fine",
+    "smileColor": "green"
+  },
+  {
+    "id": 1235,
+    "userId": 314,
+    "date": "2001-04-23",
+    "time": "03:00",
+    "text": "I want to get married!"
+    "smileColor": "green"
+  }
+]
+                                    </pre>
+                                    <div class="footnote-note mt-2">
+                                        <i class="bi bi-palette me-1"></i> <strong>smileColor</strong> допустимые
+                                        значения: <code>none, red, green, yellow</code>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
+                                    <pre>
+{
+    "message": "Во время выполнения операции произошла ошибка",
+    "details": "Видимо, что-то случилось",
+}
+                                    </pre>
+                                </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.2 POST /users/{userId}/posts -->
+                    <div class="spec-card" id="post-posts">
+                        <div class="card-header-custom">
+                            <span class="endpoint-badge method-post me-2">POST</span>
+                            <code class="fs-5">/users/{userId}/posts</code>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="fw-medium">Запрос на создание поста</p>
+                                <div class="col-md-6">
+                                    <div class="param-chip mb-2"><i class="bi bi-link"></i> path: userId (обяз.)</div>
+                                    <div class="fw-semibold mt-2">Тело запроса</div>
+                                    <pre>
+{
+    "date": "2001-03-23",
+    "time": "15:55",
+    "text": "Hi all! I am married!",
+    "smileColor": "yellow"
+}
+                                    </pre>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">✅ Возврат</div>
+                                    <pre>
+{
+    "id": 1236,
+    "message": "Операция выполнена успешно"
+}
+                                    </pre>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
+                                    <pre>
+{
+    "message": "Во время выполнения операции произошла ошибка",
+    "details": "Видимо, что-то случилось",
+}
+                                    </pre>
+                                </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.3 PATCH /users/{userId}/posts/{postId} -->
+                    <div class="spec-card" id="patch-posts">
+                        <div class="card-header-custom">
+                            <span
+                                class="endpoint-badge method-patch me-2">PATCH</span> <code
+                                class="fs-5">/users/{userId}/posts/{postId}</code>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="fw-medium">Запрос на редактирование поста</p>
+                                <div class="col-md-6">
+                                    <span class="param-chip"><i class="bi bi-person"></i> userId (path)</span>
+                                    <span class="param-chip"><i class="bi bi-postcard"></i> postId (path)</span>
+                                    <div class="fw-semibold mt-3">Тело запроса</div>
+                                    <pre>
+{
+    "text": "Hi all! I want to die",
+    "smileColor": "red"
+}
+                                    </pre>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">✅ Возврат</div>
+                                    <pre>
+{
+    "message": "Операция выполнена успешно"
+}
+                                    </pre>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
+                                    <pre>
+{
+    "message": "Во время выполнения операции произошла ошибка",
+    "details": "Видимо, что-то случилось",
+}
+                                    </pre>
+                                </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.4 DELETE /users/{userId}/posts/{postId} -->
+                    <div class="spec-card" id="delete-posts">
+                        <div class="card-header-custom">
+                            <span class="endpoint-badge method-delete me-2">DELETE</span>
+                            <code class="fs-5">/users/{userId}/posts/{postId}</code>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="fw-medium">Запрос на удаление поста</p>
+                                <div class="col-md-6">
+                                    <span class="param-chip"><i class="bi bi-person"></i> userId</span>
+                                    <span class="param-chip"><i class="bi bi-hash"></i> postId</span>
+                                    <br>
+                                    <br>
+                                    <div class="badge bg-secondary">тело запроса отсутствует</div>
+                                    <br>
+                                    <br>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-semibold mb-1">✅ Возврат</div>
+                                    <pre>
+{
+    "message": "Операция выполнена успешно"
+}
+                                    </pre>
+                                </div>
+                                <div class="col-md-6">
+                                <div class="fw-semibold mb-1">❌  Возврат по ошибке</div>
+                                    <pre>
+{
+    "message": "Во время выполнения операции произошла ошибка",
+    "details": "Видимо, что-то случилось",
+}
+                                    </pre>
+                                </div>
+                        </div>
+                    </div>
+
+                    <!-- дополнительное примечание про smileColor -->
+                    <div class="alert alert-primary bg-opacity-10 border-0 rounded-4 d-flex gap-3 mt-3" role="alert">
+                        <i class="bi bi-emoji-smile fs-3"></i>
+                        <div>
+                            <strong>Валидация smileColor:</strong> поле принимает только строки из фиксированного
+                            набора: 
+                            <ul style="list-style: none;">
+                                <li><code>none</code></li>
+                                <li><code>red</code></li>
+                                <li><code>green</code></li>
+                                <li><code>yellow</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- заключительная часть ТЗ — общие требования к OpenAPI -->
+                <div class="bg-white p-4 rounded-4 border mb-5">
+                    <h4><i class="bi bi-braces"></i> Общие требования к OpenAPI-спецификации</h4>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
+                            Формат описания — YAML или JSON (ссылочная модель ma-openapi.json).</li>
+                        <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
+                            Корректно описать все path- и query-параметры, схемы ответов (200, 4xx, 5xx).</li>
+                        <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
+                            Для <code>smileColor</code> использовать enum (none, red, green, yellow).</li>
+                        <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
+                            Включить компонент безопасности (например, ApiKey или Bearer — на усмотрение).</li>
+                        <li class="list-group-item bg-transparent ps-0"><i class="bi bi-check-lg text-success me-2"></i>
+                            Модели <code>User</code>, <code>Post</code> вынести в <code>components/schemas</code>.</li>
+                    </ul>
+                    <hr>
+                    <p class="mb-0 text-secondary small"><i class="bi bi-asterisk"></i> Пример выполнен в качестве
+                        образца в <code>ma-openapi.json</code> — структура должна быть расширена, но сохранена
+                        стилистика.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- футер с bootstrap и небольшим упоминанием -->
+    <footer class="bg-white border-top mt-4 py-3 text-center text-secondary small">
+        <i class="bi bi-file-earmark-code"></i> Техническое задание подготовлено для разработки OpenAPI | Bootstrap 5
+        интерфейс
+    </footer>
+
+    <!-- Bootstrap JS (для интерактивности не требуется, но подключим для совместимости) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
