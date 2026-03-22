@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- Place your kit's code here -->
+    <script src="https://kit.fontawesome.com/b753531ef2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-size: 16px;
+            background-color: beige;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100px;
+            height: 100px;
+            margin: 10vh auto;
+            width: 80vw;
+            height: 80vh;
+            position: relative;
+            /* padding: 20px; */
+            /* overflow: hidden; */
+
+            -webkit-box-shadow: 0px 5px 18px 10px rgba(34, 60, 80, 0.2);
+            -moz-box-shadow: 0px 5px 18px 10px rgba(34, 60, 80, 0.2);
+            box-shadow: 0px 5px 20px 10px rgba(34, 60, 80, 0.2);
+            border-radius: 16px;
+        }
+
+        .fa-tv {
+            color: lightseagreen;
+            position: relative;
+        }
+
+        .fa-tv:nth-child(3n) {
+            animation-delay: 0.25s;
+            color: tomato;
+            /* font-size: 42px; */
+        }
+
+        .fa-tv:nth-child(3n+1) {
+            animation-delay: 0.5s;
+            color: rgb(153, 226, 80);
+        }
+
+        .fa-tv:nth-child(3n+2) {
+            animation-delay: 0.75s;
+            color: rgb(88, 86, 143);
+        }
+
+        .fa-tv:nth-child(11n) {
+            animation-delay: 0.5s;
+        }
+
+        .fa-tv:nth-child(8n) {
+            font-size: 32px;
+        }
+
+        .fa-tv:nth-child(9n) {
+            color: rgb(100, 146, 193);
+        }
+
+        .fa-tv:nth-child(9n+3) {
+            color: rgb(225, 127, 66);
+        }
+
+        .fa-tv:nth-child(9n+7) {
+            color: rgb(225, 193, 66);
+        }
+
+        .fa-tv:nth-child(14n) {
+            color: rgb(128, 128, 75);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script>
+        const container = document.getElementById('container');
+        for (let i = 0; i < 80; i++) {
+            const icon = document.createElement('i');
+            icon.classList.add('fa-solid');
+            icon.classList.add('fa-tv');
+            icon.classList.add('fa-bounce');
+            icon.classList.add(`fa-${(i % 7) + 1}x`);
+            if (i % 3 === 0) {
+                icon.style.transition = '3s';
+            }
+            if (i % 4 === 0) {
+                icon.style.left = `${i % 19}px`;
+            }
+            if (i % 5 === 0) {
+                icon.style.top = `${i}px`;
+            }
+            if (i % 6 === 0) {
+                icon.classList.remove('fa-bounce');
+                icon.classList.add('fa-beat');
+            }
+            if (i % 7 === 1) {
+                icon.classList.remove('fa-bounce');
+                icon.classList.add('fa-flip');
+            }
+            if (i % 13 === 0) {
+                icon.style.transition = '4s';
+            }
+            container.append(icon);
+        }
+
+    </script>
+</body>
+
+</html>
