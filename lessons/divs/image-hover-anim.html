@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Lexend+Zetta:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>Изображения с эффектом при наведении</title>
+    <style>
+        body {
+            padding-left: 20vw;
+            padding-right: 20vw;
+            font-family: "Poppins", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        .box {
+            width: 400px;
+            height: 300px;
+            background-color: steelblue;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 1px 0px 17px -1px rgba(34, 60, 80, 0.56);
+            -moz-box-shadow: 1px 0px 17px -1px rgba(34, 60, 80, 0.56);
+            box-shadow: 1px 0px 17px -1px rgba(34, 60, 80, 0.56);
+
+        }
+
+        .left {
+            float: left;
+            margin: 16px;
+            margin-left: 0;
+        }
+
+        .right {
+            background-color: tomato;
+            float: right;
+            margin: 16px;
+            margin-right: 0;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 1px solid silver;
+        }
+
+        h1,
+        h2 {
+            color: rgb(0, 0, 0, .7);
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        .box-1 {
+            background-image: url(https://images.wallpaperscraft.com/image/single/temple_mountains_lake_127937_800x600.jpg);
+        }
+
+        .box-2 {
+            background-image: url(https://images.wallpaperscraft.com/image/single/house_forest_summer_123013_1280x720.jpg);
+        }
+
+        .box-3 {
+            background-image: url(https://images.wallpaperscraft.com/image/single/macaron_flowers_colorful_166408_800x600.jpg);
+        }
+
+        .container {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.wallpaperscraft.com/image/single/lamborghini_car_sports_car_146392_800x600.jpg');
+            /* background-image: url(https://images.wallpaperscraft.com/image/single/house_forest_summer_123013_1280x720.jpg); */
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+            /* Плавная анимация */
+        }
+
+        .container:hover::before {
+            transform: scale(1.2);
+            /* Увеличение на 20% при наведении */
+        }
+
+        .card {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.wallpaperscraft.com/image/single/planet_space_stars_139725_1024x600.jpg');
+            background-size: cover;
+            background-position: center;
+            transition: transform 1s ease-out;
+            z-index: 0;
+        }
+
+        .hero:hover::before {
+            transform: scale(1.3);
+            transition: transform 3s ease-out;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-align: center;
+            padding: 50px;
+            user-select: none;
+            font-family: "Comfortaa";
+        }
+
+        .gallery-item {
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Изображения с эффектом при наведении</h1>
+    <h2>Lorem ipsum dolor!</h2>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore accusamus dolor facilis quam minus quasi quia
+        omnis. Et iste officiis blanditiis perferendis, veniam nostrum vero ab sint laborum eius fugit dolorem inventore
+        nemo cumque enim ut maiores fugiat atque consequatur aperiam corporis. Voluptatibus, mollitia! Aperiam
+        aspernatur id molestias ipsa deserunt sunt atque consequuntur quas eos repellendus odio, esse, architecto quod.
+        Nam itaque, ullam sit sed officia delectus praesentium ex a rem asperiores ut? Sed dolorum exercitationem
+        asperiores, quisquam molestiae labore vero nemo? Totam beatae culpa est eaque? Voluptatibus beatae ullam
+        pariatur ex, non culpa. Suscipit corporis quaerat optio fugit necessitatibus?</p>
+    <div class="box left box-1"></div>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea commodi labore in blanditiis, non explicabo velit
+        doloribus fugiat tempora neque.</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quam atque minus obcaecati est, repellendus
+        quas repudiandae iure quo corrupti ipsum quae autem nulla officiis quaerat fuga ad totam aliquam quidem enim
+        doloremque sunt aspernatur ipsa laboriosam! Pariatur saepe dolor rem architecto consequatur dolores molestias
+        culpa. Illum quo aliquid esse a sequi delectus accusamus itaque, perferendis voluptates nulla iste ex commodi
+        non ad numquam reiciendis aut optio sit veniam praesentium accusantium nostrum quia? Cum dolore officia ab
+        repudiandae, ipsum aliquid velit laudantium ratione sit quos libero eligendi praesentium cumque, repellat animi,
+        provident quis voluptatum harum nulla corporis quo totam. Quaerat omnis modi minus non unde eaque sint labore,
+        fuga, dolorem provident id, nobis qui ad? Cumque beatae, quis nostrum reprehenderit neque enim quia expedita.
+        Laboriosam, ut distinctio. Voluptas, sunt reiciendis eos velit quasi, suscipit quisquam dignissimos blanditiis
+        fugit itaque fuga veritatis, dolor architecto. Veritatis, at, ipsum eius, dolorem facere repudiandae ipsa alias
+        sint rem illo sit deleniti ut nam quas dolor placeat. Voluptatum explicabo ullam delectus beatae dolores atque
+        quaerat voluptas soluta, ducimus, accusantium eos in eligendi magnam corrupti a. Odit laboriosam vero laborum
+        nihil, exercitationem harum saepe officia natus illum quasi impedit, cum, dolores magni facilis temporibus
+        consequatur facere?</p>
+    <div class="box right box-2"></div>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quam atque minus obcaecati est, repellendus
+        quas repudiandae iure quo corrupti ipsum quae autem nulla officiis quaerat fuga ad totam aliquam quidem enim
+        doloremque sunt aspernatur ipsa laboriosam! Pariatur saepe dolor rem architecto consequatur dolores molestias
+        culpa. Illum quo aliquid esse a sequi delectus accusamus itaque, perferendis voluptates nulla iste ex commodi
+        non ad numquam reiciendis aut optio sit veniam praesentium accusantium nostrum quia? Cum dolore officia ab
+        repudiandae, ipsum aliquid velit laudantium ratione sit quos libero eligendi praesentium cumque, repellat animi,
+        provident quis voluptatum harum nulla corporis quo totam. Quaerat omnis modi minus non unde eaque sint labore,
+        fuga, dolorem provident id, nobis qui ad? Cumque beatae, quis nostrum reprehenderit neque enim quia expedita.
+        Laboriosam, ut distinctio. Voluptas, sunt reiciendis eos velit quasi, suscipit quisquam dignissimos blanditiis
+        fugit itaque fuga veritatis, dolor architecto. Veritatis, at, ipsum eius, dolorem facere repudiandae ipsa alias
+        sint rem illo sit deleniti ut nam quas dolor placeat. Voluptatum explicabo ullam delectus beatae dolores atque
+        quaerat voluptas soluta, ducimus, accusantium eos in eligendi magnam corrupti a. Odit laboriosam vero laborum
+        nihil, exercitationem harum saepe officia natus illum quasi impedit, cum, dolores magni facilis temporibus
+        consequatur facere?</p>
+    <h2>Illum quo aliquid</h2>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quam atque minus obcaecati est, repellendus
+        quas repudiandae iure quo corrupti ipsum quae autem nulla officiis quaerat fuga ad totam aliquam quidem enim
+        doloremque sunt aspernatur ipsa laboriosam! Pariatur saepe dolor rem architecto consequatur dolores molestias
+        culpa. Illum quo aliquid esse a sequi delectus accusamus itaque, perferendis voluptates nulla iste ex commodi
+        non ad numquam reiciendis aut optio sit veniam praesentium accusantium nostrum quia? Cum dolore officia ab
+        repudiandae, ipsum aliquid velit laudantium ratione sit quos libero eligendi praesentium cumque, repellat animi,
+        provident quis voluptatum harum nulla corporis quo totam. Quaerat omnis modi minus non unde eaque sint labore,
+        fuga, dolorem provident id, nobis qui ad? Cumque beatae, quis nostrum reprehenderit neque enim quia expedita.
+        Laboriosam, ut distinctio. Voluptas, sunt reiciendis eos velit quasi, suscipit quisquam dignissimos blanditiis
+        fugit itaque fuga veritatis, dolor architecto. Veritatis, at, ipsum eius, dolorem facere repudiandae ipsa alias
+        sint rem illo sit deleniti ut nam quas dolor placeat. Voluptatum explicabo ullam delectus beatae dolores atque
+        quaerat voluptas soluta, ducimus, accusantium eos in eligendi magnam corrupti a. Odit laboriosam vero laborum
+        nihil, exercitationem harum saepe officia natus illum quasi impedit, cum, dolores magni facilis temporibus
+        consequatur facere?</p>
+    <div class="box container left"></div>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit quo deleniti ad quas mollitia officiis deserunt!
+        Laboriosam aperiam culpa eum rem consequuntur exercitationem quam! Necessitatibus et distinctio totam aperiam,
+        soluta, amet libero dignissimos numquam aspernatur, nisi error! Minima autem accusamus eveniet aut, facere amet
+        molestiae inventore delectus soluta repellat. Qui adipisci suscipit assumenda porro nihil autem recusandae ipsum
+        doloribus repudiandae, repellat consequatur enim soluta laborum odit nulla, quo deleniti quis itaque ab
+        aspernatur ducimus dolorem tenetur quasi illo! Impedit sit iste excepturi! Saepe enim consectetur, voluptates
+        eaque maiores optio aperiam alias doloribus veritatis tempore magni voluptatem necessitatibus numquam, rerum
+        architecto molestias neque mollitia harum rem? Et suscipit amet ut ab voluptatem. Culpa inventore reprehenderit
+        aut ad minima rem laboriosam repellat voluptate quod. Praesentium, at? Quo molestiae nam maiores adipisci
+        praesentium! Doloremque facere unde molestiae id ea iste, porro nemo vel maxime optio dolore cupiditate voluptas
+        neque natus quae quam repudiandae? Eum tempora ea sunt asperiores, impedit dignissimos cupiditate fugit
+        obcaecati dolorem quasi, libero eius ullam? Commodi dolores nesciunt dolore, exercitationem quis in tenetur
+        doloribus porro temporibus nihil voluptas, numquam, mollitia consectetur tempore ipsa sapiente natus at est rem
+        nam enim. Odit ex mollitia tempora nemo beatae ut nesciunt inventore laudantium.</p>
+
+    <div class="box card right box-3"></div>
+
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea excepturi optio cum. Impedit, praesentium suscipit
+        error incidunt similique harum laudantium id fuga corrupti nihil obcaecati, dolores autem sequi eum dicta quia.
+        Facilis quas mollitia ea rerum corrupti, obcaecati consequatur consequuntur. Est id optio amet soluta cupiditate
+        pariatur qui maxime ab error iste tempora assumenda alias voluptatum sit ullam explicabo expedita, aperiam
+        adipisci tenetur eius numquam illo, et, mollitia consectetur. Debitis corporis ad fugit expedita repellat beatae
+        doloribus incidunt dolor quaerat sapiente pariatur molestiae eligendi perferendis, ab repudiandae cupiditate.
+        Omnis aut, perspiciatis laudantium voluptate iusto ducimus perferendis consectetur blanditiis deleniti, iste
+        repellat? Consequuntur atque repellat eum magni provident explicabo labore optio eos quaerat odio ipsa, tempora
+        repellendus minima ducimus eaque obcaecati temporibus architecto! Voluptates sequi consequatur quasi ipsum
+        doloremque ex neque tenetur sapiente facilis dicta quibusdam mollitia quis aliquam consequuntur est perferendis
+        eos, voluptatum quo veniam, dolore expedita deleniti. Consequatur, adipisci perferendis magnam blanditiis earum
+        ut quas officia repellat veniam porro numquam perspiciatis corporis illum. Quibusdam alias non blanditiis
+        ducimus eveniet autem? Autem quia pariatur maiores voluptatum explicabo beatae quam, amet eos earum natus! Eius
+        nesciunt, hic alias quod, ratione eveniet repellat sunt atque provident dicta similique quaerat natus ad
+        deleniti.</p>
+
+    <h2>Voluptas, sunt reiciendis</h2>
+    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed, velit ducimus sequi ipsa officiis laboriosam quam
+        sint? Aperiam, optio! Facere iure ab quae quibusdam similique laboriosam maiores obcaecati dolore illum officiis
+        explicabo possimus fuga quos accusantium repellat voluptatibus libero perspiciatis, eius amet itaque corrupti
+        rerum esse! Exercitationem nemo esse dolorem.</p>
+
+    <div class="box left hero">
+        <div class="content">
+            <h2>С текстом</h2>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum labore, laboriosam corporis blanditiis
+                distinctio ipsum tenetur iste aliquid voluptatem nobis.</p>
+        </div>
+    </div>
+
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium voluptatem vitae dolor eaque repellat
+        laboriosam consequatur repudiandae corporis! Provident ipsa eveniet placeat debitis exercitationem pariatur vel
+        tempore quaerat repellendus eius voluptatibus eligendi quisquam corporis temporibus architecto ad accusamus ex
+        soluta labore ducimus saepe, quia odit ea. Consequuntur esse nisi ea incidunt nemo. In nihil quod nostrum
+        debitis fuga nemo consectetur necessitatibus labore earum, voluptatibus doloribus rerum aliquam? Earum quis
+        facilis, autem doloremque dolor cupiditate aliquam obcaecati nesciunt ut animi eaque error repudiandae corrupti,
+        perferendis atque magni sequi fugit at nostrum recusandae asperiores, voluptatem laboriosam eum. Vero magnam
+        nihil, architecto doloremque rem quo sint doloribus cum perferendis officia eligendi veniam, natus ducimus
+        pariatur. Quaerat dolorum repellendus veniam amet debitis, quis ea exercitationem ratione obcaecati. Porro ipsa
+        fugiat dolorum pariatur laborum reprehenderit cum distinctio omnis odit sint, quia ex odio maiores! Laboriosam
+        nesciunt eligendi repellat beatae ut necessitatibus voluptates odio atque est ipsa quasi, asperiores aut
+        quisquam quod reprehenderit veritatis perspiciatis quis debitis tempore optio cupiditate corrupti ducimus
+        consequatur recusandae? Cupiditate quidem earum repellendus sed voluptate eius culpa, inventore, quasi
+        reiciendis dolorem nobis magni exercitationem, temporibus nostrum dolor labore quas at! Error voluptates quo,
+        molestiae veniam hic veritatis temporibus odio dolorum facere?</p>
+
+
+    <div class="box gallery-item right">
+        <img src="https://images.wallpaperscraft.com/image/single/lamp_outlet_idea_120422_800x600.jpg" alt="">
+    </div>
+
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores distinctio quasi quo dolorum mollitia non,
+        voluptates optio, debitis velit nobis tempore rerum porro amet hic fugit sed sint atque. Omnis, rerum!
+        Consequuntur, a? Nisi et, consectetur eveniet obcaecati provident inventore dicta atque tempore tempora ea
+        doloribus! Eaque quo in quas, deserunt deleniti praesentium laudantium! Quia voluptatibus temporibus, iste
+        aliquam libero fugiat laborum eveniet magnam cupiditate ducimus amet ipsa voluptas odio officia tempore officiis
+        similique tenetur error provident ipsum at assumenda quam pariatur. Distinctio atque nam saepe qui illo nihil
+        quisquam, ducimus at, vel commodi repellat dolores quos cum, beatae quibusdam!</p>
+
+</body>
+
+</html>

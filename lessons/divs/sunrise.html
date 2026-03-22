@@ -38,7 +38,7 @@
             margin-top: -50px;
         }
 
-        .container:hover .sun {
+        .sun-rised {
             width: 800px;
             height: 800px;
             margin-left: -150px;
@@ -67,6 +67,11 @@
 
     <script>
         const sun = document.getElementsByClassName('sun')[0];
+
+        document.body.addEventListener('click', (e) => {
+            document.getElementsByClassName('sun')[0].classList.toggle('sun-rised');
+        });
+
         document.querySelectorAll('input').forEach(element => {
             element.addEventListener('change', (e) => sun.style.transition = e.target.defaultValue);
         });
