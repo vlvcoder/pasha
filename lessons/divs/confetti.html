@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <title>Confetti</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        button {
+            padding: 20px;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Confetti</h1>
+    <div class="container">
+        <button id="btnGo">Go</button>
+        <button id="btnEmojiGo">EmojiGo</button>
+    </div>
+
+    <script>
+        const jsConfetti = new JSConfetti();
+        document.getElementById('btnGo').addEventListener('click', () => {
+            jsConfetti.addConfetti({
+                confettiColors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00'], // массив цветов
+                confettiRadius: 6,   // радиус конфетти (по умолчанию)
+                confettiNumber: 500  // количество частиц (по умолчанию 150)
+            });
+        });
+        document.getElementById('btnEmojiGo').addEventListener('click', () => {
+            jsConfetti.addConfetti({
+                emojis: ['🎉', '✨', '🦄', '💖', '⚡️'],
+                emojiSize: 50,          // размер смайликов в пикселях
+                confettiNumber: 30,
+            });
+        });
+    </script>
+</body>
+
+</html>
