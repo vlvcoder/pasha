@@ -4,6 +4,12 @@
     margin: 0;
 }
 
+body {
+    background-image: url(https://images.wallpaperscraft.com/image/single/forest_fog_aerial_view_129318_1024x768.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .menu {
     font-family: "Comfortaa", sans-serif;
     font-size: 22px;
