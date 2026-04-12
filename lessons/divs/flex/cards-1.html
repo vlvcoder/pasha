@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Lexend+Zetta:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comfortaa';
+        }
+
+        body {
+            background-color: rgb(27, 29, 28);
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }   
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 50px;
+            padding: 20px;
+       }
+
+        .card {
+            position: relative;
+            width: 400px;
+            background-color: lime;
+            color: white;
+            min-width: 200px;
+        }
+
+        .card.active {
+            background-color: yellow;
+        }
+
+        .box {
+            padding: 30px;
+            background-color: #363636;
+            position: relative;
+            transition: .5s;
+            height: 100%;
+            left: 1px;
+            top: -1px;
+            cursor: pointer;
+        }
+
+        .card.active .box,
+        .box:hover {
+            left: 20px;
+            top: -20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Flex cards</h1>
+    <div class="container">
+        <div class="card">
+            <div class="box">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum quo dolorum nam eos nobis ut porro ipsum
+                quidem repellat. Quo!
+            </div>
+        </div>
+        <div class="card">
+            <div class="box">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo veritatis quidem dolores optio
+                reprehenderit harum dolor suscipit est ab nihil corporis molestiae explicabo iste, velit atque
+                aspernatur? Ullam, laboriosam expedita?
+            </div>
+        </div>
+        <div class="card">
+            <div class="box">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum quo dolorum nam eos nobis ut porro ipsum
+                quidem repellat. Quo!
+            </div>
+        </div>
+        <div class="card">
+            <div class="box">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum quo dolorum nam eos nobis ut porro ipsum
+                quidem repellat. Quo!
+            </div>
+        </div>
+        <div class="card">
+            <div class="box">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum quo dolorum nam eos nobis ut porro ipsum
+                quidem repellat. Quo!
+            </div>
+        </div>
+    </div>
+    <script>
+        const resetActive = () => document
+            .querySelectorAll('.card')
+            .forEach(card => card.classList.remove('active'));
+
+        document.querySelectorAll('.card').forEach(element => {
+            element.addEventListener('click', (event) => {
+                event.stopPropagation();
+                resetActive();
+                element.classList.add('active');
+            });
+        });
+
+        document.body.addEventListener('click', resetActive);
+
+
+    </script>
+
+</body>
+
+</html>
