@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Макет: шапка, сайдбар, карточки, подвал</title>
+    <style>
+        /* ---------- СБРОС И БАЗОВЫЕ СТИЛИ ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background: #eef2f5;
+            /* нейтральный фон за пределами панелей */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ----- ГЛАВНЫЙ КОНТЕЙНЕР (вертикальная структура) ----- */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* ХЕДЕР (ШАПКА): цветная заливка, центрированный текст */
+        .page-header {
+            background-color: #2c3e66;
+            /* глубокий сине-индиго */
+            color: white;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* РЯД С КОНТЕНТОМ: сайдбар (слева) + основная область */
+        .content-row {
+            display: flex;
+            flex: 1;
+            /* занимает всё доступное место между хедером и футером */
+            width: 100%;
+        }
+
+        /* БОКОВАЯ ПАНЕЛЬ (СЛЕВА) */
+        .sidebar {
+            background-color: #4a6a8b;
+            /* приглушённый стальной синий */
+            color: white;
+            width: 260px;
+            /* фиксированная ширина */
+            flex-shrink: 0;
+            /* не сжимается на узких экранах */
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 1.8rem;
+            font-weight: 500;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+        }
+
+        /* ОСНОВНАЯ ОБЛАСТЬ (MAIN): содержит гибкие карточки */
+        .main-content {
+            background-color: #f8fafc;
+            /* очень светлый фон */
+            flex: 1;
+            /* занимает оставшуюся ширину */
+            padding: 2rem 1.5rem;
+            overflow-x: auto;
+            /* безопасность при очень маленьких экранах */
+        }
+
+        /* КОНТЕЙНЕР КАРТОЧЕК — FLEX, перенос строк, центрирование */
+        .cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ОДНОЦВЕТНАЯ КАРТОЧКА: сплошной цвет, пустая внутри, одинаковые размеры */
+        .card {
+            background-color: #e7b42c;
+            /* тёплый золотисто-янтарный (единый цвет) */
+            width: 200px;
+            height: 180px;
+            border-radius: 20px;
+            /* лёгкая объёмность */
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            /* карточка полностью пустая, без содержимого */
+        }
+
+        /* лёгкий эффект при наведении (только визуал, не добавляет контент) */
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 24px rgba(0, 0, 0, 0.12);
+            background-color: #e7b42c;
+            /* сохраняем тот же сплошной цвет */
+        }
+
+        /* ПОДВАЛ (ФУТЕР): цветная заливка, центрированный текст */
+        .page-footer {
+            background-color: #2c5a4c;
+            /* глубокий тёмно-зелёный/чайный */
+            color: white;
+            text-align: center;
+            padding: 1.3rem 1rem;
+            font-size: 1.7rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-top: auto;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        /* дополнительная страховка: никакие псевдоэлементы не добавляют текст */
+        .card::before,
+        .card::after {
+            display: none;
+        }
+
+        /* ----- АДАПТИВНОСТЬ (RESPONSIVE) ----- */
+        /* Средние экраны: сайдбар чуть уже, карточки чуть меньше */
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 200px;
+                font-size: 1.4rem;
+            }
+
+            .card {
+                width: 170px;
+                height: 155px;
+            }
+
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .page-header {
+                font-size: 1.7rem;
+                padding: 1.2rem;
+            }
+
+            .page-footer {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Узкие мобильные устройства: сохраняем боковую панель слева, но уменьшаем */
+        @media (max-width: 550px) {
+            .content-row {
+                flex-wrap: nowrap;
+                /* сохраняем строку: сайдбар слева, main справа */
+            }
+
+            .sidebar {
+                width: 130px;
+                font-size: 1.1rem;
+                padding: 1rem 0.5rem;
+                word-break: break-word;
+            }
+
+            .card {
+                width: 140px;
+                height: 130px;
+            }
+
+            .cards-grid {
+                gap: 1rem;
+                justify-content: flex-start;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+        }
+
+        /* Очень маленькие экраны (до 400px): карточки подстраиваются */
+        @media (max-width: 400px) {
+            .card {
+                width: 120px;
+                height: 115px;
+            }
+
+            .sidebar {
+                width: 110px;
+                font-size: 1rem;
+            }
+
+            .page-header {
+                font-size: 1.4rem;
+            }
+
+            .page-footer {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Элементы доступности: фокус на карточках */
+        .card:focus-visible {
+            outline: 2px solid #1e466e;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- ХЕДЕР (ШАПКА): цветной блок с центрированной надписью -->
+        <header class="page-header">
+            HEADER
+        </header>
+
+        <!-- СЕРЕДИНА СТРАНИЦЫ: боковая панель слева + основной блок MAIN -->
+        <div class="content-row">
+            <!-- БОКОВАЯ ПАНЕЛЬ (СЛЕВА): пустая, но с цветной заливкой и надписью SIDE -->
+            <aside class="sidebar">
+                SIDE
+            </aside>
+
+            <!-- ОСНОВНАЯ ОБЛАСТЬ MAIN: содержит ровно 10 одноцветных ПУСТЫХ карточек (flex) -->
+            <main class="main-content">
+                <div class="cards-grid">
+                    <!-- 10 одинаковых пустых карточек, единый сплошной цвет -->
+                    <div class="card" aria-label="пустая карточка"></div>
+                    <div class="card" aria-label="пустая карточка"></div>
+                    <div class="card" aria-label="пустая карточка"></div>
+                    <div class="card" aria-label="пустая карточка"></div>
+                    <div class="card" aria-label="пустая карточка"></div>
+                    <div class="card" aria-label="пустая карточка"></div>
+                    <div class="card" aria-label="пустая карточка"></div>
+                    <div class="card" aria-label="пустая карточка"></div>
+                    <div class="card" aria-label="пустая карточка"></div>
+                    <div class="card" aria-label="пустая карточка"></div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ФУТЕР (ПОДВАЛ): цветная заливка + центрированная надпись FOOTER -->
+        <footer class="page-footer">
+            FOOTER
+        </footer>
+    </div>
+</body>
+
+</html>
