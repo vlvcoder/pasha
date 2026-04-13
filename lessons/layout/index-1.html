@@ -43,6 +43,14 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
+        .manual {
+            font-size: 1rem;
+            font-weight: normal;
+            margin: 0 auto;
+            margin-top: 20px;
+            width: 60%;
+        }
+
         /* РЯД С КОНТЕНТОМ: сайдбар (слева) + основная область */
         .content-row {
             display: flex;
@@ -218,6 +226,15 @@
         <!-- ХЕДЕР (ШАПКА): цветной блок с центрированной надписью -->
         <header class="page-header">
             HEADER
+            <hr>
+            <div class="manual">
+                Макет страницы с заголовком, футером и боковой панелью.
+                В основном блоке
+                <pre><code>
+&lt;div class="main"&gt;&lt;/div&gt;
+                </code></pre>
+                , который является flex-контейнером, размещаются карточки фиксированного размера (200x180).
+            </div>
         </header>
 
         <!-- СЕРЕДИНА СТРАНИЦЫ: боковая панель слева + основной блок MAIN -->
