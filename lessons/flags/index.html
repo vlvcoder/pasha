@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Флаги стран мира — главная страница</title>
-    <link rel="stylesheet" href="./coutries.css">
+    <link rel="stylesheet" href="./countries.css">
     <style>
         * {
             margin: 0;
@@ -109,6 +109,14 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
+
+            img {
+                width: 90px;
+                aspect-ratio: 3 / 2;
+                border-radius: 5px;
+                border: 1px solid silver;
+                object-fit: cover;
+            }
         }
 
         .flag-title {
@@ -150,9 +158,11 @@
         .flag-emodji {
             font-size: 3.5rem;
             border: none;
+            font-family: "Twemoji Mozilla", "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
         }
 
         .flag:hover,
+        .flag-card img:hover,
         .flag-emodji:hover {
             animation: wave 3s ease-in-out infinite;
         }
@@ -177,6 +187,10 @@
                 <div class="flag-title">Нидерланды</div>
             </div>
             <div class="flag-card">
+                <div class="flag ratio-5-3 horizontal-3 luxembourg"></div>
+                <div class="flag-title">Люксембург</div>
+            </div>
+            <div class="flag-card">
                 <div class="flag horizontal-3 austria"></div>
                 <div class="flag-title">Австрия</div>
             </div>
@@ -189,7 +203,8 @@
                 <div class="flag-title">Латвия</div>
             </div>
             <div class="flag-card">
-                <div class="flag flag-emodji">🇺🇸</div>
+                <!-- <div class="flag flag-emodji">🇺🇸</div> -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="us">
                 <div class="flag-title">США</div>
             </div>
             <div class="flag-card">
@@ -245,16 +260,11 @@
                 <div class="flag-title">Монако</div>
             </div>
             <div class="flag-card">
-                <div class="flag flag-emodji">
+                <!-- <div class="flag flag-emodji">
                     🇸🇬
-                </div>
+                </div> -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Singapore.svg" alt="sg">
                 <div class="flag-title">Сингапур</div>
-            </div>
-            <div class="flag-card">
-                <div class="flag flag-emodji">
-                    🇲🇹
-                </div>
-                <div class="flag-title">Мальта</div>
             </div>
             <div class="flag-card">
                 <!-- <span class="flag-emodji">🇯🇵</span> -->
@@ -266,15 +276,18 @@
                 <div class="flag-title">Бангладеш</div>
             </div>
             <div class="flag-card">
-                <div class="flag flag-emodji">🇧🇷</div>
+                <!-- <div class="flag flag-emodji">🇧🇷</div> -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="br">
                 <div class="flag-title">Бразилия</div>
             </div>
             <div class="flag-card">
-                <div class="flag flag-emodji">&#x1F1E6;&#x1F1F7;</div>
+                <!-- <div class="flag flag-emodji">&#x1F1E6;&#x1F1F7;</div> -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg" alt="ag">
                 <div class="flag-title">Аргентина</div>
             </div>
             <div class="flag-card">
-                <div class="flag flag-emodji">🇧🇹</div>
+                <!-- <div class="flag flag-emodji">🇧🇹</div> -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Flag_of_Bhutan.svg" alt="bt">
                 <div class="flag-title">Бутан</div>
             </div>
             <div class="flag-card">
@@ -286,12 +299,32 @@
                 <div class="flag-title">Объединенные Аарабские Эмираты</div>
             </div>
             <div class="flag-card">
+                <!-- <div class="flag flag-emodji">
+                    🇲🇹
+                </div> -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Malta.svg" alt="mt">
+                <div class="flag-title">Мальта</div>
+            </div>
+            <div class="flag-card">
                 <div class="flag horizontal-3 mianmar"></div>
                 <div class="flag-title">Мьянма</div>
             </div>
             <div class="flag-card">
+                <div class="flag horizontal-3 sierra-leone"></div>
+                <div class="flag-title">Сьерра-Леоне</div>
+            </div>
+            <div class="flag-card">
                 <div class="flag vietnam"></div>
                 <div class="flag-title">Вьетнам</div>
+            </div>
+            <div class="flag-card">
+                <div class="flag ratio-19-10 micronesia">
+                    <div class="micronesia-star"></div>
+                    <div class="micronesia-star"></div>
+                    <div class="micronesia-star"></div>
+                    <div class="micronesia-star"></div>
+                </div>
+                <div class="flag-title">Микронезия</div>
             </div>
         </div>
         <div class="flags-gallery">
@@ -339,8 +372,21 @@
                 <div class="flag vertical-3 guinea"></div>
                 <div class="flag-title">Гвинея</div>
             </div>
+            <div class="flag-card">
+                <div class="flag ratio-2-1 sent-lucia">
+                    <div class="sent-lucia__triangle"></div>
+                    <div class="sent-lucia__triangle"></div>
+                    <div class="sent-lucia__triangle"></div>
+                </div>
+                <div class="flag-title">Сент-Люсия</div>
+            </div>
 
-        </div>
+            <div class="flag-card" style="display: none;">
+                <div class="flag animated-stripes"></div>
+                <div class="flag-title">animated-stripes</div>
+            </div>
+
+        </div>       
     </div>
 </body>
 
