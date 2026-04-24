@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=star" />
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        .container {
+            display: inline-flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .favourites,
+        .feedback {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+            color: steelblue;
+        }
+
+        .material-symbols-outlined:hover {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .material-symbols-outlined.filled {
+            font-variation-settings:
+                'FILL' 1,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+            color: steelblue;
+        }
+
+        span.hinted {
+            position: relative;
+            color: blue;
+            cursor: pointer;
+            border-bottom: 2px dotted currentcolor;
+
+            &:before {
+                content: attr(aria-label);
+                opacity: 0;
+                position: absolute;
+                top: 30px;
+                right: -90px;
+                font-size: 14px;
+                width: 100px;
+                padding: 10px;
+                color: #fff;
+                background-color: #555;
+                border-radius: 3px;
+                pointer-events: none;
+                line-height: 1.4em;
+                transition: 0.5s;
+                z-index: 10;
+            }
+
+            &:hover:before {
+                opacity: 1;
+            }
+        }
+
+        p {
+            padding: 40px;
+            font-size: 1.5em;
+            font-family: sans-serif;
+            line-height: 1.4em;
+        }
+
+        .btn {
+
+            cursor: pointer;
+            position: relative;
+            padding: 10px 20px;
+            background: rgb(218, 243, 191);
+            font-size: 28px;
+            border-top-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+            transition: all 1s;
+            color: gray;
+
+            &:after,
+            &:before {
+                content: " ";
+                width: 10px;
+                height: 10px;
+                position: absolute;
+                border: 0px solid #fff;
+                transition: all 1s;
+            }
+
+            &:after {
+                top: -1px;
+                left: -1px;
+                border-top: 5px solid gray;
+                border-left: 5px solid gray;
+            }
+
+            &:before {
+                bottom: -1px;
+                right: -1px;
+                border-bottom: 5px solid gray;
+                border-right: 5px solid gray;
+            }
+
+            &:hover {
+                border-top-right-radius: 0px;
+                border-bottom-left-radius: 0px;
+
+                &:before,
+                &:after {
+
+                    width: calc(100% - 3px);
+                    height: calc(100% - 3px);
+                }
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="favourites">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                style="margin-left: -2px; color: rgb(255, 165, 0); flex: 0 0 auto;">
+                <path fill="currentColor"
+                    d="M8 2a1 1 0 0 1 .87.508l1.538 2.722 2.782.539a1 1 0 0 1 .538 1.667L11.71 9.579l.512 3.266A1 1 0 0 1 10.8 13.9L8 12.548 5.2 13.9a1 1 0 0 1-1.423-1.055l.512-3.266-2.017-2.143a1 1 0 0 1 .539-1.667l2.781-.539 1.537-2.722A1 1 0 0 1 8 2">
+                </path>
+            </svg>
+            <strong>4.9</strong>
+        </div>
+        <div class="feedback">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                style="margin-left: 4px; color: rgba(0, 26, 52, 0.4); flex: 0 0 auto;">
+                <path fill="currentColor"
+                    d="M8.546 3C11.93 3 14 4.897 14 8s-2.07 5-5.454 5c-.905 0-1.717-.136-2.42-.394a6.6 6.6 0 0 1-2.308.393c-.988 0-.988-.539-.494-1.078.235-.256.456-.563.655-.898-.577-.8-.888-1.821-.888-3.023 0-3.103 2.07-5 5.455-5">
+                </path>
+            </svg>
+            <span>512 отзывов</span>
+        </div>
+    </div>
+    <div class="favourites">
+        <span class="material-symbols-outlined">
+            star
+        </span>
+        <span class="material-symbols-outlined">
+            star
+        </span>
+        <span class="material-symbols-outlined">
+            star
+        </span>
+        <span class="material-symbols-outlined">
+            star
+        </span>
+        <span class="material-symbols-outlined">
+            star
+        </span>
+    </div>
+
+    <p>
+        При наведении курсора на <span class="hinted" aria-label="Всплывающая подсказка">Термин</span>
+        отображается всплывающая подсказка (hint)
+    </p>
+
+    <p>
+        <span class="hinted" aria-label="Indian Space Research Organisation">ISRO</span> is the space exploration body
+        of India. Its
+        vision is to "harness space technology for national development while pursuing space science research &amp;
+        planetary exploration".
+    </p>
+
+    <p>
+        <span class="hinted" aria-label="National Aeronautics and Space Administration">NASA</span> is an independent
+        agency of the
+        United States Federal Government responsible for the civilian space program, as well as aeronautics and
+        aerospace research.
+    </p>
+
+
+    <div class="data-container">
+        <span class="btn">Hover Me </span>
+    </div>
+    <br>
+    <a href="https://www.schoolsw3.com/howto/howto_css_switch.php">КАК СДЕЛАТЬ</a>
+</body>
+
+</html>
