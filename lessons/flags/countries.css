@@ -6,6 +6,8 @@
     --color-1: white;
     --color-2: blue;
     --color-3: red;
+    --color-4: transparent;
+    --color-5: transparent;
 
     --star-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
             50% 75%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
@@ -28,6 +30,10 @@
     aspect-ratio: 5 / 3;
 }
 
+.ratio-4-3 {
+    aspect-ratio: 4 / 3;
+}
+
 .ratio-5-4 {
     aspect-ratio: 5 / 4;
 }
@@ -36,8 +42,24 @@
     aspect-ratio: 8 / 5;
 }
 
+.ratio-7-6 {
+    aspect-ratio: 7 / 6;
+}
+
 .ratio-19-10 {
     aspect-ratio: 19 / 10;
+}
+
+.ratio-15-13 {
+    aspect-ratio: 15 / 13;
+}
+
+.ratio-18-11 {
+    aspect-ratio: 15 / 13;
+}
+
+.ratio-37-28 {
+    aspect-ratio: 37 / 28;
 }
 
 .horizontal-2 {
@@ -46,6 +68,26 @@
 
 .horizontal-3 {
     background: linear-gradient(var(--color-1) 33%, var(--color-2) 33%, var(--color-2) 66%, var(--color-3) 66%);
+}
+
+.horizontal-4 {
+    background: linear-gradient(var(--color-1) 25%,
+            var(--color-2) 25%,
+            var(--color-2) 50%,
+            var(--color-3) 50%,
+            var(--color-3) 75%,
+            var(--color-4) 75%);
+}
+
+.horizontal-5 {
+    background: linear-gradient(var(--color-1) 20%,
+            var(--color-2) 20%,
+            var(--color-2) 40%,
+            var(--color-3) 40%,
+            var(--color-3) 60%,
+            var(--color-4) 60%,
+            var(--color-4) 80%,
+            var(--color-5) 80%);
 }
 
 .vertical-3 {
@@ -133,6 +175,12 @@
     --color-3: red;
 }
 
+.armenia {
+    --color-1: #d90012;
+    --color-2: #0033a0;
+    --color-3: #f2a800;
+}
+
 .guinea {
     --color-1: var(--pa-red);
     --color-2: var(--pa-yellow);
@@ -151,10 +199,22 @@
     --color-3: #FF883E;
 }
 
+.belgium {
+    --color-1: black;
+    --color-2: yellow;
+    --color-3: red;
+}
+
 .bulgaria {
     --color-1: white;
     --color-2: green;
     --color-3: red;
+}
+
+.gabon {
+    --color-1: var(--pa-green);
+    --color-2: var(--pa-yellow);
+    --color-3: #0073c7;
 }
 
 .sierra-leone {
@@ -194,7 +254,6 @@
         aspect-ratio: 1;
         background-color: red;
         border-radius: 50%;
-        will-change: transform;
     }
 }
 
@@ -210,6 +269,23 @@
         width: 40%;
         aspect-ratio: 1;
         background-color: red;
+        border-radius: 50%;
+        will-change: transform;
+    }
+}
+
+.palau {
+    background: #009aff;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-60%, -50%);
+        width: 40%;
+        aspect-ratio: 1;
+        background-color: #ffff00;
         border-radius: 50%;
         will-change: transform;
     }
@@ -243,6 +319,35 @@
         top: 50%;
         transform: translate(-50%, -50%);
         background-color: white;
+        clip-path: var(--star-path);
+    }
+}
+
+.djibouti {
+    --color-1: #418FDE;
+    --color-2: #12ad2b;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        left: 0;
+        top: -0.7px;
+        border-left: 50px solid white;
+        border-top: 30px solid transparent;
+        border-bottom: 30px solid transparent;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        height: 35%;
+        aspect-ratio: 1;
+        left: 10%;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: red;
         clip-path: var(--star-path);
     }
 }
@@ -441,6 +546,29 @@
             var(--pa-red) 60%);
 }
 
+.drkongo {
+    background: linear-gradient(135deg,
+            #0073c7 36%,
+            var(--pa-yellow) 36%,
+            var(--pa-yellow) 40%,
+            var(--pa-red) 40%,
+            var(--pa-red) 60%,
+            var(--pa-yellow) 60%,
+            var(--pa-yellow) 64%,
+            #0073c7 64%);
+
+    &::after {
+        content: "";
+        position: absolute;
+        width: 25%;
+        aspect-ratio: 1;
+        left: 4%;
+        top: 4%;
+        background-color: var(--pa-yellow);
+        clip-path: var(--star-path);
+    }
+}
+
 .micronesia {
     background-color: #76b2de;
 
@@ -507,14 +635,511 @@
     }
 }
 
+.niger {
+    --color-1: #e15101;
+    --color-2: white;
+    --color-3: #04b227;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 25%;
+        aspect-ratio: 1;
+        background-color: #e15101;
+        border-radius: 50%;
+    }
+}
+
+.gambia {
+    --color-1: rgb(206, 17, 38);
+    --color-2: white;
+    --color-3: rgb(28, 119, 40);
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 38.5%;
+        left: 0%;
+        width: 100%;
+        height: 22%;
+        background-color: rgb(12, 28, 140);
+    }
+}
+
+.maldives {
+    --color-1: #d30731;
+    --color-2: #007f37;
+    --color-3: white;
+    background-color: var(--color-1);
+
+    .maldives-inner {
+        background-color: var(--color-2);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 60%;
+        height: 60%;
+    }
+
+    .maldives-circle-left {
+        background-color: var(--color-3);
+        position: absolute;
+        left: 42%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24%;
+        height: 33%;
+        border-radius: 50%;
+    }
+
+    .maldives-circle-right {
+        background-color: var(--color-2);
+        position: absolute;
+        left: 48%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24%;
+        height: 33%;
+        border-radius: 50%;
+    }
+}
+
+.denmark {
+    background-color: red;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0%;
+        left: 35%;
+        width: 11%;
+        height: 100%;
+        background-color: white;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 43%;
+        left: 0%;
+        width: 100%;
+        height: 14%;
+        background-color: white;
+    }
+}
+
+.finland {
+    background-color: white;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0%;
+        left: 28%;
+        width: 17%;
+        height: 100%;
+        background-color: #002b6c;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 37%;
+        left: 0%;
+        width: 100%;
+        height: 26%;
+        background-color: #002b6c;
+    }
+}
+
+.laos {
+    background: linear-gradient(#cf0921 25%,
+            #002368 25%,
+            #002368 75%,
+            #cf0921 75%);
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 25%;
+        aspect-ratio: 1;
+        background-color: white;
+        border-radius: 50%;
+    }
+}
+
+.panama {
+    .panama-line {
+        height: 50%;
+    }
+
+    .panama-line:nth-child(1) {
+        background: linear-gradient(90deg,
+                white 50%,
+                #db0a13 50%);
+    }
+
+    .panama-line:nth-child(2) {
+        background: linear-gradient(90deg,
+                #011e56 50%,
+                white 50%);
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 25%;
+        left: 25%;
+        transform: translate(-50%, -50%);
+        width: 20%;
+        aspect-ratio: 1;
+        background-color: #011e56;
+        clip-path: var(--star-path);
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 75%;
+        left: 75%;
+        transform: translate(-50%, -50%);
+        width: 20%;
+        aspect-ratio: 1;
+        background-color: #db0a13;
+        clip-path: var(--star-path);
+    }
+}
+
+.columbia {
+    background: linear-gradient(#FCD116 50%,
+            #003893 50%,
+            #003893 75%,
+            #CE1126 75%);
+}
+
+.thailand {
+    --color-1: #a6122d;
+    --color-2: white;
+    --color-3: #292549;
+    background: linear-gradient(var(--color-1) 16.5%,
+            var(--color-2) 16.5%,
+            var(--color-2) 33%,
+            var(--color-3) 33%,
+            var(--color-3) 67%,
+            var(--color-2) 67%,
+            var(--color-2) 83.5%,
+            var(--color-1) 83.5%);
+}
+
+.costa-rica {
+    --color-1: #002B7F;
+    --color-2: white;
+    --color-3: #CE1126;
+    background: linear-gradient(var(--color-1) 16.5%,
+            var(--color-2) 16.5%,
+            var(--color-2) 33%,
+            var(--color-3) 33%,
+            var(--color-3) 67%,
+            var(--color-2) 67%,
+            var(--color-2) 83.5%,
+            var(--color-1) 83.5%);
+}
+
+.surinam {
+    --color-1: white;
+    --color-2: #B40A2D;
+    --color-3: white;
+    --color-4: #377E3F;
+    --color-5: #ECC81D;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 22%;
+        left: 0;
+        top: 0;
+        background-color: var(--color-4);
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 22%;
+        left: 0;
+        top: 78%;
+        background-color: var(--color-4);
+    }
+
+    .surinam-star {
+        content: "";
+        position: absolute;
+        width: 22%;
+        aspect-ratio: 1;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: var(--color-5);
+        clip-path: var(--star-path);
+    }
+
+}
+
+.chile {
+    --color-1: white;
+    --color-2: #d52b1e;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        height: 50%;
+        aspect-ratio: 1;
+        background-color: #002ea1;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 8%;
+        left: 8%;
+        width: 20%;
+        aspect-ratio: 1;
+        background-color: white;
+        clip-path: var(--star-path);
+    }
+
+}
+
+.togo {
+    --color-1: #006a4d;
+    --color-2: #ffcf00;
+    --color-3: #006a4d;
+    --color-4: #ffcf00;
+    --color-5: #006a4d;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        height: 60%;
+        aspect-ratio: 1;
+        background-color: #d30731;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 15%;
+        left: 10%;
+        width: 20%;
+        aspect-ratio: 1;
+        background-color: white;
+        clip-path: var(--star-path);
+    }
+}
+
+.cuba {
+    --color-1: #002690;
+    --color-2: white;
+    --color-3: #002690;
+    --color-4: white;
+    --color-5: #002690;
+
+    &::before {
+        content: "";
+        position: absolute;
+        background-color: #D00C27;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        clip-path: polygon(0% 0%, 40% 50%, 0% 100%);
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 5%;
+        transform: translateY(-50%);
+        width: 17%;
+        aspect-ratio: 1;
+        background-color: white;
+        clip-path: var(--star-path);
+    }
+}
+
+.seychelles {
+    --color-1: #003F87;
+    --color-2: #FCD856;
+    --color-3: #D62828;
+    --color-4: white;
+    --color-5: #007A3D;
+
+    background-color: var(--color-1);
+    
+    .seychelles-layer {
+        position: absolute;
+        width: 200%;
+        height: 300%;
+        bottom: 0;
+        transform-origin: 0% 100%;
+    }
+
+    .seychelles-layer:nth-child(1) {
+        background-color: var(--color-2);
+        rotate: 36deg;
+    }
+
+    .seychelles-layer:nth-child(2) {
+        background-color: var(--color-3);
+        rotate: 54deg;
+    }
+
+    .seychelles-layer:nth-child(3) {
+        background-color: var(--color-4);
+        rotate: 72deg;
+    }
+
+    .seychelles-layer:nth-child(4) {
+        background-color: var(--color-5);
+        rotate: 82deg;
+    }
+}
+
+.mauritius {
+    --color-1: #d11619;
+    --color-2: #293058;
+    --color-3: #f7b811;
+    --color-4: #008757;
+}
+
+.principi {
+    --color-1: #009836;
+    --color-2: #ffd200;
+    --color-3: #ef303e;
+
+    background: linear-gradient(var(--color-1) 28.6%, var(--color-2) 28.6%, var(--color-2) 71.4%, var(--color-1) 71.4%);
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-3);
+        clip-path: polygon(0% 0%, 25% 50%, 0% 100%);
+    }
+
+    .principi-star {
+        position: absolute;
+        width: 18%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        aspect-ratio: 1;
+        clip-path: var(--star-path);
+        background-color: black;
+        z-index: 1;
+    }
+
+    .principi-star:nth-child(2) {
+        left: 75%;
+    }
+
+}
+
+.timor {
+    --color-1: #db2416;
+    --color-2: #ffc828;
+    --color-3: black;
+    --color-4: white;
+
+    background-color: var(--color-1);
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-2);
+        clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-3);
+        clip-path: polygon(0% 0%, 33% 50%, 0% 100%);
+    }
+
+    .timor-star {
+        position: absolute;
+        width: 12%;
+        top: 50%;
+        left: 7%;
+        transform: translateY(-50%) rotate(45deg);
+        aspect-ratio: 1;
+        clip-path: var(--star-path);
+        background-color: var(--color-4);
+        z-index: 1;
+    }
+
+}
+
+.rca {
+    --color-1: #002c83;
+    --color-2: white;
+    --color-3: #239823;
+    --color-4: #ffcf00;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 16.5%;
+        height: 100%;
+        background-color: #d30731;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 5%;
+        left: 8%;
+        width: 11%;
+        aspect-ratio: 1;
+        background-color: #ffcf00;
+        clip-path: var(--star-path);
+    }
+}
+
 .animated-stripes {
-    background: repeating-linear-gradient(
-        45deg,
-        white 0px,
-        white 10px,
-        #76b2de 10px,
-        #76b2de 20px
-    );
+    background: repeating-linear-gradient(45deg,
+            white 0px,
+            white 10px,
+            #76b2de 10px,
+            #76b2de 20px);
     background-size: 85px 85px;
     animation: moveStripes 2s linear infinite;
 }
@@ -523,6 +1148,7 @@
     0% {
         background-position: 0 0;
     }
+
     100% {
         background-position: 85px 0;
     }
