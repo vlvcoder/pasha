@@ -1,0 +1,63 @@
+.tile-1 .roof {
+    background-image: url(../images/tile-1.jpg);
+    background-size: 205px;
+    background-repeat: repeat;
+}
+
+.tile-2 .roof {
+    background-image: url(../images/tile-2.jpg);
+    background-size: 350px;
+    background-repeat: repeat;
+}
+
+.tile-3 .roof {
+    background-color: brown;
+}
+
+.tile-4 .roof {
+    background-image: url(../images/tile-4.jpg);
+    background-size: 150px;
+    background-repeat: repeat;
+}
+
+.tile-5 .roof {
+    background-image: url(../images/tile-5.jpg);
+    background-size: 200px;
+    background-repeat: repeat;
+}
+
+.tile-6 .roof {
+    background-image: url(../images/tile-6.jpg);
+    background-size: 150px;
+    background-repeat: repeat;
+}
+
+.tile-7 .roof {
+    background-image: url(../images/tile-7.jpg);
+    background-size: 300px;
+    background-repeat: repeat;
+}
+
+.tile-8 .roof {
+    background-image: url(../images/tile-8.jpg);
+    background-size: 300px;
+    background-repeat: repeat;
+}
+
+.tile-9 .roof {
+    background-image: url(../images/tile-9.jpg);
+    background-size: 100px;
+    background-repeat: repeat;
+}
+
+.tile-10 .roof {
+    background-image: url(../images/tile-10.jpg);
+    background-size: 120px;
+    background-repeat: repeat;
+}
+
+.tile-11 .roof {
+	background-image: url(../images/brick-9.jpg);
+	background-size: 250%;
+	background-repeat: repeat;
+}

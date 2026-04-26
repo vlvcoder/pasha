@@ -1,0 +1,52 @@
+.ground-face-1 {
+    background: none;
+}
+
+.ground-face-2 {
+    background-image: url(../images/snow-2.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.ground-face-3 {
+    background-image: url(../images/snow-1.jpg);
+    background-size: 500px;
+    background-position: center;
+}
+
+.ground-face-5 {
+    background-image: url(../images/ice-1.jpg);
+    background-size: 1800px;
+    background-position: center;
+}
+
+.ground-face-6 {
+    background-image: url(../images/grass-2.jpg);
+    background-size: 280px;
+    background-position: center;
+}
+
+.ground-face-7 {
+    background-image: url(../images/sand-1.jpg);
+    background-size: 600px;
+    background-position: center;
+}
+
+.ground-face-8 {
+    background-image: url(../images/sand-2.jpg);
+    background-size: 1600px;
+    background-position: center;
+}
+
+.ground-face-9 {
+    background-image: url(https://images.wallpaperscraft.com/image/single/grass_macro_blur_1311898_1280x1024.jpg);
+    background-size: contain;
+    background-position: center;
+}
+
+.ground-face-10 {
+    background-image: url(../images/sea-2.jpg);
+    background-size: 1550px;
+    background-position: 13% 0%;
+    /* background-repeat: no-repeat; */
+}

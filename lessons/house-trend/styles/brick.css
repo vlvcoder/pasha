@@ -1,0 +1,66 @@
+.brick-1 .main {
+	background-image: url(../images/brick-1.jpg);
+	background-size: 50%;
+	background-repeat: repeat;
+}
+
+.brick-2 .main {
+	background-image: url(../images/brick-2.jpg);
+	background-size: 50%;
+	background-repeat: repeat;
+}
+
+.brick-3 .main {
+	background-image: url(../images/brick-3.jpg);
+	background-size: 150%;
+	background-repeat: repeat;
+}
+
+.brick-4 .main {
+	background-image: url(../images/brick-4.jpg);
+	background-size: 100%;
+	background-repeat: repeat;
+}
+
+.brick-5 .main {
+	background-image: repeating-conic-gradient(#A1140B 0% 25%, #CA190E 0% 50%);
+	background-position: 0 0, 15px 15px;
+	background-size: 30px 30px;
+	background-color: #CA190E;
+}
+
+.brick-6 .main {
+	background:
+		radial-gradient(26px at calc(100% + calc(26px*.866)) 50%, #E59478 99%, #0000 101%) 0 calc(-5*26px/2),
+		radial-gradient(26px at calc(100% + calc(26px*.866)) 50%, #E59478 99%, #0000 101%) calc(-2*calc(26px*.866)) calc(26px/2),
+		radial-gradient(26px at 100% 50%, #EDE0D6 99%, #0000 101%) 0 calc(-2*26px),
+		radial-gradient(26px, #E59478 99%, #0000 101%) calc(26px*.866) calc(-5*26px/2),
+		radial-gradient(26px, #EDE0D6 99%, #0000 101%) calc(26px*.866) calc(5*26px/2),
+		radial-gradient(26px at 100% 100%, #E59478 99%, #0000 101%) 0 calc(-1*26px),
+		radial-gradient(26px at 0% 50%, #E59478 99%, #0000 101%) 0 calc(-4*26px),
+		radial-gradient(26px, #EDE0D6 99%, #0000 101%) calc(-1*calc(26px*.866)) calc(-7*26px/2),
+		radial-gradient(26px, #E59478 99%, #0000 101%) calc(-1*calc(26px*.866)) calc(-5*26px/2),
+		radial-gradient(26px at 100% 50%, #EDE0D6 99%, #0000 101%) calc(-2*calc(26px*.866)) 26px,
+		radial-gradient(26px, #E59478 99%, #0000 101%) calc(-1*calc(26px*.866)) calc(26px/ 2),
+		radial-gradient(26px, #EDE0D6 99%, #0000 101%) calc(-1*calc(26px*.866)) calc(26px/-2),
+		radial-gradient(26px, #E59478 99%, #0000 101%) 0 calc(-1*26px),
+		radial-gradient(26px, #EDE0D6 99%, #0000 101%) calc(26px*.866) calc(26px/-2),
+		radial-gradient(26px, #E59478 99%, #0000 101%) calc(26px*.866) calc(26px/ 2) #EDE0D6;
+	background-size: calc(4*calc(26px*.866)) calc(6*26px);
+}
+
+.brick-7 .main {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Crect width='58' height='13' x='1' y='1' fill='%23c4733a' stroke='%238b4513' stroke-width='1'/%3E%3Crect width='58' height='13' x='1' y='16' fill='%23c4733a' stroke='%238b4513' stroke-width='1'/%3E%3C/svg%3E");
+	background-size: 50px;
+	background-repeat: repeat;
+}
+
+.brick-8 .main {
+	background: repeating-linear-gradient(-60deg, transparent 0px, #555 50px, transparent 100px);
+}
+
+.brick-9 .main {
+	background-image: url(../images/brick-9.jpg);
+	background-size: 250%;
+	background-repeat: repeat;
+}

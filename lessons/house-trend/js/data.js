@@ -1,0 +1,77 @@
+export const skies = [
+    'sky-clear',
+    'sky-sunset',
+    'sky-sunrise',
+    'sky-night',
+    'sky-storm',
+    'sky-twilight',
+    'sky-atmosphere',
+    'sky-noon',
+    'sky-summer',
+    'sky-mediterranean',
+    'sky-tropical',
+    'sky-spring',
+    'sky-autumn',
+    'sky-fire-sunset',
+    'sky-pastel-dawn',
+    'sky-golden-hour',
+    'sky-pink-dusk',
+    'sky-purple-sunset',
+    'sky-after-storm',
+    'sky-foggy-morning',
+    'sky-aurora',
+    'sky-magical',
+    'sky-sun-centered',
+    'sky-sun-side',
+    'sky-sun-rays',
+    'sky-moonlight',
+    'sky-milky-way',
+    'sky-transparent',
+    'sky-none',
+];
+
+export const tiles = [
+    'tile-1',
+    'tile-2',
+    'tile-3',
+    'tile-4',
+    'tile-5',
+    'tile-6',
+    'tile-7',
+    'tile-8',
+    'tile-9',
+    'tile-10',
+    'tile-11',
+];
+
+export const bricks = [
+    'brick-1',
+    'brick-2',
+    'brick-3',
+    'brick-4',
+    'brick-5',
+    'brick-6',
+    'brick-7',
+    'brick-8',
+    'brick-9',
+];
+
+export const roofForms = [
+    'roof-form-flat',
+    'roof-form-triangle',
+    'roof-form-trapezoid',
+    'roof-form-skat',
+    'roof-form-classic',
+];
+
+export const groundFaces = [
+    'ground-face-1',
+    'ground-face-2',
+    'ground-face-3',
+    'ground-face-5',
+    'ground-face-6',
+    'ground-face-7',
+    'ground-face-8',
+    'ground-face-9',
+    'ground-face-10',
+];

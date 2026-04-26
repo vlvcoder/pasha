@@ -1,0 +1,159 @@
+:root {
+    --under-roof: 1px;
+}
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.container-universe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: lightskyblue;
+}
+
+.container-ground {
+    background-size: 280px;
+    background-position: center;
+    position: absolute;
+    height: 14000px;
+    width: 14000px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 300px;
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+.container-ground-1 {
+    background-size: 400px;
+    transform: translateX(-40%);
+    border-radius: 60%;
+    opacity: 0.4;
+    top: 200px;
+}
+
+.container-ground-2 {
+    background-size: 600px;
+    height: 14000px;
+    width: 14000px;
+    left: 50%;
+    transform: translateX(-60%);
+    top: 230px;
+    border-radius: 60%;
+    opacity: 0.5;
+}
+
+.house {
+    height: 300px;
+    aspect-ratio: 1;
+}
+
+.roof {
+    background-color: brown;
+    height: 40%;
+    clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0 100%);
+    position: relative;
+    border-radius: 5px;
+}
+
+.roof-form-classic .roof {
+    clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0 100%);
+}
+
+.roof-form-triangle .roof {
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+
+.roof-form-trapezoid .roof {
+    clip-path: polygon(0 100%, 30% 0, 70% 0, 100% 100%);
+}
+
+.roof-form-flat .roof {
+    clip-path: polygon(0 100%, 10% 80%, 90% 80%, 100% 100%);
+
+    .window {
+        display: none;
+    }
+}
+
+.roof-form-skat .roof {
+    clip-path: polygon(0 100%, 10% 50%, 30% 0, 70% 0, 90% 50%, 100% 100%);
+}
+
+.main {
+    width: 90%;
+    height: calc(60% - var(--under-roof));
+    margin: 0 auto;
+    background-color: lightslategrey;
+    margin-top: var(--under-roof);
+    position: relative;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 3px 25px 53px -1px rgba(0, 0, 0, 0.55);
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.door {
+    position: absolute;
+    width: 20%;
+    height: 60%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: rgb(52, 112, 160);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid rgb(77, 77, 77);
+    border-bottom: none;
+}
+
+.window {
+    position: absolute;
+    width: 25%;
+    aspect-ratio: 1;
+    border-radius: 20%;
+    border: 2px solid rgb(106, 106, 106);
+    background-color: transparent;
+}
+
+.left {
+    left: 5%;
+    top: 20%;
+}
+
+.right {
+    right: 5%;
+    top: 20%;
+}
+
+.top {
+    width: 15%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+
+.sky-thumbler {
+    position: fixed;
+    width: 100%;
+    height: 20%;
+    top: 0;
+    left: 0;
+}

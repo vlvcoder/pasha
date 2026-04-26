@@ -1,0 +1,224 @@
+.sky-clear {
+    background: linear-gradient(180deg,
+            #1e90ff 0%,
+            #87ceeb 50%,
+            #e0f0ff 100%);
+}
+
+.sky-sunset {
+    background: linear-gradient(180deg,
+            #1a2a6c 0%,
+            #b21f1f 50%,
+            #fdbb4d 100%);
+}
+
+.sky-sunrise {
+    background: linear-gradient(180deg,
+            #ff9a9e 0%,
+            #fad0c4 50%,
+            #fad0c4 100%);
+}
+
+.sky-night {
+    background-image: radial-gradient(ellipse at center,
+            #0a0f2a 0%,
+            #0a0a1a 100%);
+}
+
+.sky-storm {
+    background: linear-gradient(180deg,
+            #2c3e50 0%,
+            #4a627a 50%,
+            #7f8c8d 100%);
+}
+
+.sky-twilight {
+    background: linear-gradient(180deg,
+            #0f2027 0%,
+            #203a43 40%,
+            #2c5364 70%,
+            #ff6b6b 100%);
+}
+
+.sky-atmosphere {
+    background: linear-gradient(135deg,
+            #667eea 0%,
+            #764ba2 50%,
+            #f093fb 100%);
+}
+
+.sky-noon {
+    background: linear-gradient(180deg, #00a6ff 0%, #95d0ff 100%);
+}
+
+.sky-summer {
+    background: linear-gradient(180deg, #0082c8 0%, #6db3f2 100%);
+}
+
+.sky-mediterranean {
+    background: linear-gradient(135deg, #0b8793 0%, #57d2ea 100%);
+}
+
+.sky-tropical {
+    background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+}
+
+.sky-spring {
+    background: linear-gradient(180deg, #8fd3f4 0%, #c4e0fa 100%);
+}
+
+.sky-autumn {
+    background: linear-gradient(180deg, #4a90e2 0%, #a3bce6 50%, #e8d4b5 100%);
+}
+
+/* Огненный закат */
+.sky-fire-sunset {
+    background: linear-gradient(180deg,
+            #1e1e2f 0%,
+            #8b1e2c 30%,
+            #e86a2c 60%,
+            #f9c45a 100%);
+}
+
+/* Пастельный рассвет */
+.sky-pastel-dawn {
+    background: linear-gradient(180deg,
+            #fbc2eb 0%,
+            #a6c1ee 50%,
+            #fde2e4 100%);
+}
+
+/* Золотой час */
+.sky-golden-hour {
+    background: linear-gradient(180deg,
+            #ff7e5f 0%,
+            #feb47b 50%,
+            #ffe29f 100%);
+}
+
+/* Розовый закат (сумерки) */
+.sky-pink-dusk {
+    background: linear-gradient(180deg,
+            #2d1b4e 0%,
+            #9b59b6 40%,
+            #ff9a9e 70%,
+            #ffd6a5 100%);
+}
+
+/* Пурпурный закат */
+.sky-purple-sunset {
+    background: linear-gradient(180deg,
+            #4a00e0 0%,
+            #8e2de2 40%,
+            #ff6a88 70%,
+            #ff99ac 100%);
+}
+
+/* Небо после грозы */
+.sky-after-storm {
+    background: linear-gradient(180deg,
+            #2c3e50 0%,
+            #3498db 50%,
+            #87ceeb 100%);
+}
+
+/* Туманное утро */
+.sky-foggy-morning {
+    background: linear-gradient(180deg,
+            #bdc3c7 0%,
+            #dfe6e9 50%,
+            #f5f6fa 100%);
+}
+
+/* Северное сияние (аврора) */
+.sky-aurora {
+    background: linear-gradient(135deg,
+            #0f2027 0%,
+            #203a43 40%,
+            #2c5f2d 70%,
+            #97bc62 100%);
+}
+
+/* Магическое/фэнтезийное небо */
+.sky-magical {
+    background: linear-gradient(135deg,
+            #1a0b2e 0%,
+            #4a1942 40%,
+            #c84b31 70%,
+            #f5c542 100%);
+}
+
+/* Небо с солнцем в центре */
+.sky-sun-centered {
+    background: radial-gradient(circle at center,
+            #fff9d2 0%,
+            #ffe066 20%,
+            #ff8c42 40%,
+            #4a90e2 70%,
+            #2c3e66 100%);
+}
+
+/* Небо с солнцем сбоку */
+.sky-sun-side {
+    background: radial-gradient(ellipse at 80% 20%,
+            #fff8b0 0%,
+            #ffd966 15%,
+            #ffb347 30%,
+            #66b3ff 60%,
+            #3399ff 100%);
+}
+
+/* Градиент "лучи солнца" */
+.sky-sun-rays {
+    background: radial-gradient(circle at 20% 10%,
+            rgba(255, 230, 150, 0.8) 0%,
+            rgba(255, 200, 100, 0.4) 30%,
+            #5dade2 60%,
+            #2e86c1 100%);
+}
+
+/* Лунная ночь */
+.sky-moonlight {
+    background: radial-gradient(ellipse at 70% 15%,
+            #2c3e50 0%,
+            #1a2632 50%,
+            #0d131a 100%);
+}
+
+/* Млечный путь */
+.sky-milky-way {
+    background: linear-gradient(135deg,
+            #0a0b1a 0%,
+            #141c2c 40%,
+            #1e2a3a 70%,
+            #2a3a4a 100%);
+    position: relative;
+}
+
+/* Добавляем звёзды */
+.sky-milky-way::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(2px 2px at 10% 20%, white, rgba(0, 0, 0, 0)),
+        radial-gradient(2px 2px at 14% 22%, white, rgba(0, 0, 0, 0)),
+        radial-gradient(2px 2px at 24% 12%, white, rgba(0, 0, 0, 0)),
+        radial-gradient(1px 1px at 30% 28%, white, rgba(0, 0, 0, 0)),
+        radial-gradient(2px 1px at 56% 23%, white, rgba(0, 0, 0, 0)),
+        radial-gradient(2px 1px at 50% 80%, white, rgba(0, 0, 0, 0)),
+        radial-gradient(1px 2px at 70% 15%, white, rgba(0, 0, 0, 0)),
+        radial-gradient(2px 2px at 85% 60%, white, rgba(0, 0, 0, 0));
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.sky-transparent {
+    background: none;
+}
+
+.sky-none {
+    background: none !important;
+    border: none !important;
+    border-color: transparent !important;
+}
