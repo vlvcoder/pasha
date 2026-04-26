@@ -62,6 +62,7 @@ export const bricks = [
 
 export const roofForms = [
     'roof-form-flat',
+    'roof-form-pik',
     'roof-form-triangle',
     'roof-form-trapezoid',
     'roof-form-skat',
@@ -92,4 +93,16 @@ export const windowFrames = [
     'window-frame-jalousi',
     'window-frame-curtains',
     'window-frame-none',
+];
+
+export const doorStyles = [
+    'door-style-1',
+    'door-style-2',
+    'door-style-3',
+    'door-style-4',
+    'door-style-5',
+    'door-style-6',
+    'door-style-7',
+    'door-style-8',
+    'door-style-9',
 ];

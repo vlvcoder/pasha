@@ -1,4 +1,4 @@
-import { bricks, groundFaces, roofForms, skies, tiles, windowFrames } from './data.js';
+import { bricks, doorStyles, groundFaces, roofForms, skies, tiles, windowFrames } from './data.js';
 
 document
     .querySelectorAll('.main')
@@ -6,6 +6,15 @@ document
         element.addEventListener('click', function (event) {
             event.stopPropagation();
             nextClass(bricks, 'brick-', element.parentElement);
+        });
+    });
+
+document
+    .querySelectorAll('.door')
+    .forEach(element => {
+        element.addEventListener('click', function (event) {
+            event.stopPropagation();
+            nextClass(doorStyles, 'door-style-', element);
         });
     });
 

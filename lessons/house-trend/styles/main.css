@@ -80,6 +80,10 @@ body {
     clip-path: polygon(0 100%, 50% 0, 100% 100%);
 }
 
+.roof-form-pik .roof {
+    clip-path: polygon(0 100%, 30% 60%, 50% 0, 70% 60%, 100% 100%);
+}
+
 .roof-form-trapezoid .roof {
     clip-path: polygon(0 100%, 30% 0, 70% 0, 100% 100%);
 }
@@ -117,14 +121,14 @@ body {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     background-color: rgb(52, 112, 160);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     border: 4px solid rgb(77, 77, 77);
     border-bottom: none;
 }
-
-
 
 .window {
     position: absolute;

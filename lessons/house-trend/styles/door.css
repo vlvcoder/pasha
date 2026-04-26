@@ -1,0 +1,64 @@
+.door-style-1 {
+    background-image: url(../images/door-1.jpg);
+    border-radius: 0;
+    border: none;
+}
+
+.door-style-2 {
+    background-image: url(../images/door-2.jpg);
+    border-radius: 0;
+    border: none;
+}
+
+.door-style-3 {
+    background-image: url(../images/door-3.jpg);
+    border-radius: 0;
+    border: none;
+}
+
+.door-style-4 {
+    background-image: url(../images/door-4.jpg);
+    border-radius: 0;
+    border: none;
+}
+
+.door-style-5 {
+    background-image: url(../images/door-5.jpg);
+    border-radius: 0;
+    border: none;
+    width: 25%;
+    aspect-ratio: 100 / 200;
+}
+
+.door-style-6 {
+    background-image: url(../images/door-6.jpg);
+    border-radius: 0;
+    border: none;
+}
+
+.door-style-7 {
+    background-image: url(../images/door-7.jpg);
+    border-radius: 0;
+    border: none;
+}
+
+.door-style-8 {
+    background-image: url(../images/door-8.jpg);
+    border-radius: 0;
+    border: none;
+}
+
+.door-style-9 {
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border: 4px solid black;
+    border-bottom: none;
+    aspect-ratio: 1;
+
+    background: radial-gradient(circle at center,
+            #545048 0%,
+            #4e4b40 20%,
+            #4a443f 40%,
+            #2e2c2b 70%,
+            #1b1c1d 100%);
+}
