@@ -1,4 +1,4 @@
-import { bricks, groundFaces, roofForms, skies, tiles } from './data.js';
+import { bricks, groundFaces, roofForms, skies, tiles, windowFrames } from './data.js';
 
 document
     .querySelectorAll('.main')
@@ -14,7 +14,11 @@ document
     .forEach(element => {
         element.addEventListener('click', function (event) {
             event.stopPropagation();
-            nextClass(skies, 'sky-', element);
+            if (clickIsOnLeftPart(event)) {
+                nextClass(skies, 'sky-', element);
+            } else {
+                nextClass(windowFrames, 'window-frame-', element);
+            }
         });
     });
 

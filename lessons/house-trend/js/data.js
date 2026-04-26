@@ -79,3 +79,17 @@ export const groundFaces = [
     'ground-face-9',
     'ground-face-10',
 ];
+
+export const windowFrames = [
+    'window-frame-simple',
+    'window-frame-narrow',
+    'window-frame-tall',
+    'window-frame-circle',
+    'window-frame-white',
+    'window-frame-blue',
+    'window-frame-biege',
+    'window-frame-gold',
+    'window-frame-jalousi',
+    'window-frame-curtains',
+    'window-frame-none',
+];
