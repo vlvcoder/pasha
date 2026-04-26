@@ -64,3 +64,28 @@
 	background-size: 250%;
 	background-repeat: repeat;
 }
+
+.brick-10 .main {
+	background-image: url(../images/brick-10.jpg);
+	background-size: 300px;
+	background-repeat: repeat;
+}
+
+.brick-11 .main {
+	background-image: url(../images/brick-11.jpg);
+	background-size: 280px;
+	background-repeat: repeat;
+}
+
+.brick-12 .main {
+	background-image: url(../images/brick-12.jpg);
+	background-size: 120px;
+	background-repeat: repeat;
+}
+
+.brick-13 .main {
+	background-image: url(../images/brick-13.jpg);
+	background-size: 400px;
+	background-repeat: repeat;
+}
+

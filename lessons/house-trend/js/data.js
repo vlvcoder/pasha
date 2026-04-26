@@ -54,6 +54,10 @@ export const bricks = [
     'brick-7',
     'brick-8',
     'brick-9',
+    'brick-10',
+    'brick-11',
+    'brick-12',
+    'brick-13',
 ];
 
 export const roofForms = [
