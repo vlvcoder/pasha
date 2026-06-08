@@ -11,6 +11,7 @@
         * {
             box-sizing: border-box;
         }
+
         .container {
             display: inline-flex;
             gap: 20px;
@@ -44,6 +45,34 @@
                 'GRAD' 0,
                 'opsz' 24;
             color: steelblue;
+        }
+
+        span.hinted1 {
+            position: relative;
+            border-bottom: 2px dotted currentcolor;
+            cursor: help;
+
+            &::before {
+                content: attr(aria-label);
+                position: absolute;
+                top: 35px;
+                right: -150px;
+                font-size: 14px;
+                padding: 10px;
+                color: white;
+                background-color: #555;
+                border-radius: 3px;
+                pointer-events: none;
+                line-height: 1.6em;
+                transition: 0.5s;
+                z-index: 10;
+                opacity: 0;
+            }
+
+            &:hover::before {
+                opacity: 1;
+            }
+
         }
 
         span.hinted {
@@ -130,7 +159,6 @@
                 }
             }
         }
-
     </style>
 </head>
 
@@ -172,6 +200,14 @@
             star
         </span>
     </div>
+
+    <p>
+        Значения <span class="hinted1"
+            aria-label="Валентность в химии — это способность атомов химических элементов образовывать определённое число связей с атомами других элементов.">валентности</span>
+        записывают римскими цифрами над химическими символами. За единицу валентности принята
+        валентность атомов водорода
+    </p>
+
 
     <p>
         При наведении курсора на <span class="hinted" aria-label="Всплывающая подсказка">Термин</span>

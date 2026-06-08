@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            font-size: 28px;
+        }
+
+        .block {
+            color: purple;
+        }
+
+        .block::before {
+            content: "Price:";
+        }
+
+        .block:after {
+            content: "$";
+        }
+
+        .window {
+            --win-wide: 7px;
+            --frame-color: rgb(129, 93, 46);
+            margin: 20px;
+            width: 200px;
+            height: 200px;
+            background-color: lightskyblue;
+            border: var(--win-wide) solid var(--frame-color);
+            overflow: hidden;
+        }
+
+        .window-pseudo {
+            --frame-color: orangered;
+            background-color: rgb(172, 172, 255);
+            position: relative;
+        }
+
+        .window-pseudo::before {
+            content: "";
+            background-color: var(--frame-color);
+            position: absolute;
+            width: 100%;
+            top: 40%;
+            height: var(--win-wide);
+        }
+
+        .window-pseudo::after {
+            content: "";
+            background-color: var(--frame-color);
+            position: absolute;
+            width: var(--win-wide);
+            height: 60%;
+            left: 50%;
+            top: 40%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>09.06.26</h1>
+    <div class="block">
+        156
+    </div>
+    <div>
+        7645
+    </div>
+    <div class="block">
+        1564
+    </div>
+
+    <div class="window window-pseudo"></div>
+    <div class="window window-pseudo"></div>
+    <div class="window window-pseudo"></div>
+    <div class="window window-pseudo"></div>
+    <div class="window window-pseudo"></div>
+    <div class="window window-pseudo"></div>
+    <div class="window window-pseudo"></div>
+
+
+</body>
+
+</html>

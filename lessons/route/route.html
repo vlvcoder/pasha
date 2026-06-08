@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comfortaa', sans-serif;
+        }
+
+        body {
+            background-color: rgb(0, 0, 0, 0.02);
+        }
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .metro-exit {
+            background-color: #000000;
+            color: #FFD700;
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 0.6em;
+        }
+
+        .container {
+            position:relative;
+            overflow: hidden;
+            margin: 20px;
+            text-align: center;
+
+            iframe {
+                box-shadow: 0px 0px 50px 0px rgba(34, 60, 80, 0.3);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Маршрут от м. Маяковская. Выход <span class="metro-exit">1</span></h2>
+    <!-- <div style="position:relative; overflow:hidden; margin: 40px; text-align: center;"> -->
+    <div class="container"><a
+            href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps"
+            style="color:#eee;font-size:12px;position:absolute;top:0px;">Москва</a>
+        <a href="https://yandex.ru/maps/213/moscow/?ll=37.597347%2C55.772744&mode=routes&rtext=55.771468%2C37.594742~55.773712%2C37.599193&rtt=pd&ruri=~ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1NjczMjkyNRJT0KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAsIDEt0Lkg0KLQstC10YDRgdC60L7QuS3Qr9C80YHQutC-0Lkg0L_QtdGA0LXRg9C70L7QuiwgMTgiCg2SZRZCFUgYX0I%2C&source=serp_navig&utm_medium=mapframe&utm_source=maps&z=17.27"
+            style="color:#eee;font-size:12px;position:absolute;top:14px;">
+            Яндекс Карты
+        </a>
+        <iframe
+            src="https://yandex.ru/map-widget/v1/?ll=37.597347%2C55.772744&mode=routes&rtext=55.771468%2C37.594742~55.773712%2C37.599193&rtt=pd&ruri=~ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1NjczMjkyNRJT0KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAsIDEt0Lkg0KLQstC10YDRgdC60L7QuS3Qr9C80YHQutC-0Lkg0L_QtdGA0LXRg9C70L7QuiwgMTgiCg2SZRZCFUgYX0I%2C&source=serp_navig&z=17.27"
+            width="680" height="500" frameborder="0" allowfullscreen="true"
+            style="position:relative; border-radius: 10px; border: 3px solid darkkhaki;">
+        </iframe>
+    </div>
+
+</body>
+
+</html>
