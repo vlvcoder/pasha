@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid: макет страницы</title>
+    <link href="<https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap>" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: auto 1fr auto;
+            grid-template-areas:
+                "header header"
+                "sidebar main"
+                "footer footer";
+            background-color: #fff1f2;
+        }
+
+        header {
+            grid-area: header;
+            background-color: #ffffff;
+            color: #9f1239;
+            padding: 25px 40px;
+            font-weight: 800;
+            font-size: 24px;
+            border-bottom: 3px solid #fb7185;
+        }
+
+        aside {
+            grid-area: sidebar;
+            background-color: #fffafb;
+            padding: 40px;
+            border-right: 3px solid #fb7185;
+        }
+
+        main {
+            grid-area: main;
+            background-color: #ffffff;
+            padding: 50px;
+        }
+
+        footer {
+            grid-area: footer;
+            background-color: #ffffff;
+            color: #e11d48;
+            padding: 20px;
+            text-align: center;
+            font-weight: 600;
+            border-top: 3px solid #fb7185;
+        }
+
+        h1 {
+            color: #9f1239;
+            font-weight: 800;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #e11d48;
+            font-weight: 700;
+            margin-top: 0;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        p {
+            line-height: 1.7;
+            color: #4b5563;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 12px 0;
+            color: #64748b;
+            font-weight: 600;
+            border-bottom: 1px solid #ffe4e6;
+            cursor: pointer;
+        }
+
+        li:hover {
+            color: #e11d48;
+        }
+
+        .label-grid {
+            font-weight: 800;
+            color: darkgoldenrod;
+        }
+
+        .label-flex {
+            font-weight: 800;
+            color: #1e40af;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "header"
+                    "sidebar"
+                    "main"
+                    "footer";
+            }
+
+            aside {
+                border-right: none;
+                border-bottom: 3px solid #fb7185;
+            }
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 350px);
+            grid-template-rows: auto 1fr;
+            gap: 10px;
+            height: 200px;
+
+
+            .box {
+                border: 2px solid darkgoldenrod;
+                background-color: rgb(184, 134, 11, 0.1);
+                color: darkgoldenrod;
+                align-content: center;
+                text-align: center;
+                padding: 10px;
+                border-radius: 5px;
+            }
+
+            .box:hover {
+                background-color: rgb(184, 134, 11, 0.5);
+                color: white;
+            }
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+
+            .tag {
+                background-color: #eff6ff;
+                color: #2563eb;
+                padding: 10px 20px;
+                border-radius: 12px;
+                border: 2px solid #dbeafe;
+                font-size: 14px;
+                font-weight: 700;
+                white-space: nowrap;
+                transition: 0.2s;
+            }
+
+            .tag:hover {
+                border-color: #60a5fa;
+                background-color: #dbeafe;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>LOGO.DESIGN</header>
+    <aside>
+        <h3>Панель управления</h3>
+        <ul>
+            <li>Главная</li>
+            <li>Аналитика</li>
+            <li>Проекты</li>
+            <li>Настройки</li>
+        </ul>
+    </aside>
+    <main>
+        <h1>grid vs flex</h1>
+        <div>
+            <a href="https://habr.com/ru/companies/timeweb/articles/1004986/" target="_blank">
+                Flex vs Grid: объяснение разницы на практике
+            </a>
+        </div>
+        <p>
+            Используйте <span class="label-grid">Grid</span>, когда вам нужен двумерный макет, то есть управление и
+            строками, и колонками одновременно.
+            Grid отлично подходит для общего макета страницы, когда нужно создать жесткую сетку, где контейнер управляет
+            расположением элементов
+        </p>
+        <div class="grid-container">
+            <div class="box">1</div>
+            <div class="box">2</div>
+            <div class="box">3</div>
+            <div class="box">4</div>
+            <div class="box">5</div>
+            <div class="box">6</div>
+            <div class="box">7</div>
+            <div class="box">8</div>
+            <div class="box">9</div>
+        </div>
+        <br>
+        <hr>
+        <p>
+            Используйте <span class="label-flex">Flex</span>, когда элементы должны идти в одну линию — горизонтально
+            или вертикально. Flex отлично
+            подходит для компонентов, которые сами определяют свои размеры, например, для навигационного меню, где
+            каждый пункт занимает столько места, сколько нужно его тексту. Flex идеален, когда элементы должны
+            переноситься на новую строку, сохраняя свою естественную ширину, как в случае с облаком тегов.
+        </p>
+        <div class="flex-container">
+            <div class="tag">Молоко</div>
+            <div class="tag">Хлеб</div>
+            <div class="tag">Простокваша</div>
+            <div class="tag">Масло</div>
+            <div class="tag">Кефир</div>
+            <div class="tag">Топленое молоко</div>
+            <div class="tag">Сметана</div>
+            <div class="tag">Майонез</div>
+            <div class="tag">Яйца</div>
+            <div class="tag">Сгущенное молоко</div>
+            <div class="tag">Ряженка</div>
+        </div>
+    </main>
+    <footer>© 2026 Grid Layout System.</footer>
+</body>
+
+</html>
