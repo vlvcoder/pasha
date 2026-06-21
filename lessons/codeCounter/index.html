@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Comic+Relief:wght@400;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Comfortaa, Georgia, 'Times New Roman', Times, serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            --border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: rgb(62, 62, 62);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .codeblock {
+            background-color: #9ed0f2;
+            text-align: center;
+            flex-basis: 100px;
+            padding: 8px;
+
+            h3 {
+                color: rgb(188, 46, 167);
+                margin-bottom: 0;
+            }
+
+            .counter {
+                font-size: 32px;
+                margin: 10px;
+            }
+        }
+
+        .codeblock:first-child {
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
+        }
+
+        .codeblock:last-child {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Количество строк кода в проекте</h1>
+        <div class="container">
+            <div id="codeJava" class="codeblock codeJava">
+                <h3>JAVA</h3>
+                <pre class="counter">1000</pre>
+            </div>
+            <div id="codeTsx" class="codeblock codeTsx">
+                <h3>TSX</h3>
+                <pre class="counter">2000</pre>
+            </div>
+            <div id="codeTs" class="codeblock codeTs">
+                <h3>TS</h3>
+                <pre class="counter">3000</pre>
+            </div>
+            <div id="codeLess" class="codeblock codeLess">
+                <h3>LESS</h3>
+                <pre class="counter">4000</pre>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const DURATION = 1000;
+
+        const counterJava = document.querySelector('#codeJava .counter');
+        const counterTsx = document.querySelector('#codeTsx .counter');
+        const counterTs = document.querySelector('#codeTs .counter');
+        const counterLess = document.querySelector('#codeLess .counter');
+
+
+        const counters = [
+            {
+                counter: counterJava,
+                value: Number(counterJava.textContent),
+            },
+            {
+                counter: counterTsx,
+                value: Number(counterTsx.textContent),
+            },
+            {
+                counter: counterTs,
+                value: Number(counterTs.textContent),
+            },
+            {
+                counter: counterLess,
+                value: Number(counterLess.textContent),
+            },
+        ];
+
+        const animate = (timestamp) => {
+            counters.forEach(({ counter, value }) => nextValue(counter, value, timestamp ));
+            if (timestamp <= DURATION) {
+                requestAnimationFrame(animate);
+            }
+        };
+
+        const nextValue = (counter, value, timestamp) => {
+            const currentTime = Math.min(timestamp, DURATION);
+            const currentValue = Math.round(value * currentTime / DURATION);
+            counter.textContent = currentValue;
+        };
+
+        // Запуск анимации
+        requestAnimationFrame(animate);        
+    </script>
+</body>
+
+</html>
