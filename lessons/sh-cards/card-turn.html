@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Переворачивающаяся карточка</title>
+    <style>
+        /* Сброс и центрирование */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            font-family: Arial, sans-serif;
+        }
+
+        /* Контейнер для карточки с перспективой */
+        .card-container {
+            perspective: 1000px;
+            width: 300px;
+            height: 400px;
+            cursor: pointer;
+        }
+
+        /* Блок, который будет вращаться */
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Переворот по клику — добавляется класс JS */
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* Общий стиль для обеих сторон */
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            /* -webkit-backface-visibility: hidden; */
+            /* для Safari */
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Лицевая сторона (передняя) */
+        .card-front {
+            /* background: #fff; */
+            transform: rotateY(0deg);
+        }
+
+        /* Задняя сторона — развёрнута на 180 градусов */
+        .card-back {
+            background: #f0f0f0;
+            transform: rotateY(180deg);
+        }
+
+        /* Изображения занимают всю карточку */
+        .card-face img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Подпись под карточкой */
+        .hint {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            letter-spacing: 1px;
+            user-select: none;
+        }
+
+        .hint span {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <!-- Контейнер карточки -->
+        <div class="card-container" id="cardContainer">
+            <div class="card" id="card">
+                <!-- Передняя сторона -->
+                <div class="card-face card-front">
+                    <img src="../../img/avatar.png" alt="Лицевая сторона">
+                </div>
+                <!-- Задняя сторона -->
+                <div class="card-face card-back">
+                    <img src="../../img/bobrovo.jpg" alt="Задняя сторона">
+                </div>
+            </div>
+        </div>
+
+        <!-- Подсказка -->
+        <div class="hint">
+            <span>👆 Кликни по карточке</span>
+        </div>
+    </div>
+
+    <script>
+        // Получаем элементы
+        const card = document.getElementById('card');
+        const container = document.getElementById('cardContainer');
+
+        // Функция переворота
+        function toggleFlip() {
+            card.classList.toggle('flipped');
+        }
+
+        // Вешаем обработчик клика на контейнер (чтобы клик по краям тоже срабатывал)
+        container.addEventListener('click', toggleFlip);
+    </script>
+</body>
+
+</html>
