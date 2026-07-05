@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Крестики-нолики</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border-radius: 48px;
+      padding: 30px 30px 40px;
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      transition: all 0.2s ease;
+      width: 500px;
+      max-width: 96%;
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: 400;
+      letter-spacing: 2px;
+      font-size: 26px;
+      margin: 0 0 8px 0;
+      color: #e2e8f0;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .status-area {
+      background: #0b1120;
+      border-radius: 60px;
+      padding: 14px 20px;
+      margin: 12px 0 22px 0;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 500;
+      color: #f1f5f9;
+      box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.6), 0 2px 0 #334155;
+      letter-spacing: 0.3px;
+      border: 1px solid #334155;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      background: transparent;
+      margin: 10px 0 20px;
+      aspect-ratio: 1 / 1;
+    }
+
+    .cell {
+      background: #0f172a;
+      border-radius: 24px;
+      box-shadow: 0 10px 0 #020617, 0 8px 20px rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 76px;
+      font-weight: 600;
+      color: #f8fafc;
+      cursor: pointer;
+      transition: all 0.08s linear;
+      aspect-ratio: 1 / 1;
+      border: 1px solid #334155;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .cell:active {
+      transform: scale(0.94);
+      box-shadow: 0 4px 0 #020617;
+    }
+
+    .cell.x-move {
+      color: #7dd3fc;
+      text-shadow: 0 0 16px #38bdf8;
+    }
+
+    .cell.o-move {
+      color: #f9a8d4;
+      text-shadow: 0 0 16px #f472b6;
+    }
+
+    .cell.win-highlight {
+      background: #2d3a5e;
+      box-shadow: 0 0 20px #60a5fa, 0 8px 0 #1e293b;
+      border-color: #93c5fd;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .btn {
+      background: #1e293b;
+      border: none;
+      border-radius: 60px;
+      padding: 14px 28px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #e2e8f0;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #0f172a, 0 4px 12px rgba(0, 0, 0, 0.5);
+      transition: 0.08s linear;
+      flex: 1;
+      text-align: center;
+      border: 1px solid #334155;
+      letter-spacing: 0.5px;
+    }
+
+    .btn:active {
+      transform: translateY(5px);
+      box-shadow: 0 1px 0 #0f172a;
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #0f172a;
+      pointer-events: none;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      border-color: #3b82f6;
+      color: white;
+      box-shadow: 0 6px 0 #1e3a8a;
+    }
+
+    .btn-primary:active {
+      box-shadow: 0 1px 0 #1e3a8a;
+    }
+
+    .score {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      background: #0b1120;
+      border-radius: 60px;
+      padding: 8px 18px;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      font-weight: 500;
+      font-size: 18px;
+      margin-top: 6px;
+    }
+
+    .score span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .score .x-score {
+      color: #7dd3fc;
+    }
+
+    .score .o-score {
+      color: #f9a8d4;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #475569;
+      font-size: 14px;
+      margin-top: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 480px) {
+      .game-container {
+        padding: 20px 16px 28px;
+      }
+
+      .cell {
+        font-size: 56px;
+        border-radius: 20px;
+      }
+
+      .status-area {
+        font-size: 18px;
+        padding: 10px 14px;
+      }
+
+      .btn {
+        font-size: 15px;
+        padding: 12px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="game-container">
+    <h1>✧ КРЕСТИКИ-НОЛИКИ ✧</h1>
+
+    <div class="status-area" id="statusMessage">Ход: <span id="turnIndicator">X</span></div>
+
+    <div class="board" id="board">
+      <!-- 9 ячеек будут созданы через JS -->
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-primary" id="resetBtn">⟳ Новая игра</button>
+      <button class="btn" id="resetScoreBtn">↺ Сброс счёта</button>
+    </div>
+
+    <div class="score">
+      <span class="x-score">❌ X: <span id="scoreX">0</span></span>
+      <span class="o-score">⭕ O: <span id="scoreO">0</span></span>
+    </div>
+    <div class="footer-note">нажми на клетку, чтобы сделать ход</div>
+  </div>
+
+  <script>
+    (function () {
+      // ----- Игровое состояние -----
+      const boardElement = document.getElementById('board');
+      const statusMessage = document.getElementById('statusMessage');
+      const turnIndicator = document.getElementById('turnIndicator');
+      const scoreXSpan = document.getElementById('scoreX');
+      const scoreOSpan = document.getElementById('scoreO');
+      const resetBtn = document.getElementById('resetBtn');
+      const resetScoreBtn = document.getElementById('resetScoreBtn');
+
+      // Состояние
+      let board = Array(9).fill(null);          // null, 'X', 'O'
+      let currentPlayer = 'X';                  // 'X' или 'O'
+      let gameActive = true;
+      let winner = null;                       // 'X', 'O', или null (ничья/игра активна)
+      let winCombo = null;                    // массив индексов [a,b,c] или null
+
+      // Счёт
+      let scoreX = 0;
+      let scoreO = 0;
+
+      // DOM-ссылки на ячейки (заполним позже)
+      let cellElements = [];
+
+      // ----- Вспомогательные функции -----
+      function updateScoreDisplay() {
+        scoreXSpan.textContent = scoreX;
+        scoreOSpan.textContent = scoreO;
+      }
+
+      // Обновление отображения доски и статуса
+      function renderBoard() {
+        // Обновляем текст в ячейках
+        for (let i = 0; i < 9; i++) {
+          const cell = cellElements[i];
+          if (!cell) continue;
+          const value = board[i];
+          cell.textContent = value || '';
+          // Сбрасываем классы
+          cell.classList.remove('x-move', 'o-move', 'win-highlight');
+          if (value === 'X') cell.classList.add('x-move');
+          else if (value === 'O') cell.classList.add('o-move');
+        }
+
+        // Подсветка выигрышной комбинации
+        if (winCombo && winner) {
+          for (const idx of winCombo) {
+            if (cellElements[idx]) {
+              cellElements[idx].classList.add('win-highlight');
+            }
+          }
+        }
+
+        // Обновляем статус
+        updateStatusMessage();
+      }
+
+      function updateStatusMessage() {
+        let message = '';
+        if (!gameActive) {
+          if (winner === 'X') {
+            message = '🏆 Победили КРЕСТИКИ!';
+          } else if (winner === 'O') {
+            message = '🏆 Победили НОЛИКИ!';
+          } else if (winner === null && !board.includes(null)) {
+            message = '🤝 Ничья!';
+          } else {
+            // на случай если gameActive = false но победитель не определён (баг)
+            message = 'Игра завершена';
+          }
+          statusMessage.innerHTML = message;
+          turnIndicator.textContent = '';
+          return;
+        }
+
+        // Игра активна
+        if (board.includes(null)) {
+          message = `Ход: <span id="turnIndicator">${currentPlayer}</span>`;
+          statusMessage.innerHTML = message;
+          // обновляем ссылку на turnIndicator, т.к. innerHTML пересоздал элемент
+          document.getElementById('turnIndicator') && (turnIndicator.textContent = currentPlayer);
+        } else {
+          // доска заполнена, но gameActive = true (теоретически такого не бывает, но на всякий)
+          message = '🤝 Ничья!';
+          statusMessage.innerHTML = message;
+          turnIndicator.textContent = '';
+          // автоматически завершаем игру
+          gameActive = false;
+          winner = null;
+          winCombo = null;
+        }
+      }
+
+      // Проверка на победителя и обновление состояния
+      function checkWinnerAndUpdate() {
+        const winPatterns = [
+          [0, 1, 2], [3, 4, 5], [6, 7, 8],  // ряды
+          [0, 3, 6], [1, 4, 7], [2, 5, 8],  // колонки
+          [0, 4, 8], [2, 4, 6]            // диагонали
+        ];
+
+        for (const pattern of winPatterns) {
+          const [a, b, c] = pattern;
+          if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            // Есть победитель!
+            winner = board[a];
+            winCombo = pattern;
+            gameActive = false;
+
+            // Обновляем счёт
+            if (winner === 'X') scoreX++;
+            else if (winner === 'O') scoreO++;
+            updateScoreDisplay();
+
+            renderBoard(); // перерисуем с подсветкой
+            return true;   // победа найдена
+          }
+        }
+
+        // Победителя нет – проверка на ничью (все клетки заняты)
+        if (!board.includes(null)) {
+          // Ничья
+          winner = null;
+          winCombo = null;
+          gameActive = false;
+          renderBoard();
+          return true; // игра завершена (ничья)
+        }
+
+        // Игра продолжается
+        return false;
+      }
+
+      // Обработка клика по клетке
+      function handleCellClick(index) {
+        // Если игра не активна, или клетка занята – игнорируем
+        if (!gameActive) return;
+        if (board[index] !== null) return;
+
+        // Делаем ход
+        board[index] = currentPlayer;
+
+        // Проверяем победу/ничью
+        const gameEnded = checkWinnerAndUpdate();
+
+        if (!gameEnded) {
+          // Сменить игрока
+          currentPlayer = (currentPlayer === 'X' ? 'O' : 'X');
+          renderBoard(); // обновим отображение (без подсветки)
+        } else {
+          // игра завершена, перерисовываем (с подсветкой или сообщением)
+          renderBoard();
+        }
+
+        // Если игра завершена, сбрасываем активность, чтобы нельзя было кликать
+        // (но checkWinnerAndUpdate уже установил gameActive = false)
+      }
+
+      // Сброс игры (сохраняет счёт)
+      function resetGame() {
+        // Очищаем доску
+        board = Array(9).fill(null);
+        currentPlayer = 'X';
+        gameActive = true;
+        winner = null;
+        winCombo = null;
+
+        // Перерисовываем
+        renderBoard();
+      }
+
+      // Полный сброс (сброс счёта + игра)
+      function resetFull() {
+        scoreX = 0;
+        scoreO = 0;
+        updateScoreDisplay();
+        resetGame();
+      }
+
+      // Инициализация: создаём ячейки, вешаем обработчики
+      function initBoard() {
+        boardElement.innerHTML = '';
+        cellElements = [];
+        for (let i = 0; i < 9; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.dataset.index = i;
+          cell.addEventListener('click', () => handleCellClick(i));
+          boardElement.appendChild(cell);
+          cellElements.push(cell);
+        }
+      }
+
+      // ----- События кнопок -----
+      resetBtn.addEventListener('click', resetGame);
+      resetScoreBtn.addEventListener('click', resetFull);
+
+      // ----- Запуск -----
+      function initGame() {
+        initBoard();
+        // Начальное состояние
+        board = Array(9).fill(null);
+        currentPlayer = 'X';
+        gameActive = true;
+        winner = null;
+        winCombo = null;
+        scoreX = 0;
+        scoreO = 0;
+        updateScoreDisplay();
+        renderBoard();
+      }
+
+      initGame();
+    })();
+  </script>
+</body>
+
+</html>
