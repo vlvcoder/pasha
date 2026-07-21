@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>electronicWatches</title>
     <style>
         body {
             background-color: rgb(25, 25, 29);
@@ -65,19 +65,6 @@
             bottom: 0;
         }
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-
-            button {
-                padding: 10px;
-                font-size: 24px;
-                border-radius: 5px;
-                background-color: rgb(255, 255, 255, 0.8);
-            }
-        }
-
         .colon {
             width: 10px;
             transform: skew(-5deg);
@@ -106,7 +93,7 @@
 </head>
 
 <body>
-    <div id="watch" class="watch"></div>
+    <div id="watch"></div>
 
     <script>
         const createElementFromHTML = (parent, htmlString) => {
@@ -151,6 +138,7 @@
         };
 
         const makeWatch = (divWatch) => {
+            divWatch.classList.add('watch');
             const digit1 = createElementFromHTML(watch, '<div class="digit"></divd=>');
             const digit2 = createElementFromHTML(watch, '<div class="digit"></divd=>');
             const colon = createElementFromHTML(watch, '<div class="colon"></div>')
