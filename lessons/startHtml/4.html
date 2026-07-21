@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .block {
+            border: solid cadetblue 4px;
+            border-top: none;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            margin: 0 auto;
+            width: 100px;
+            height: 300px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        #water {            
+            background-color: lightblue;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="block">
+        <div id="water" style="height: 50%;"></div>
+    </div>
+    <button id="btn1">Кнопка</button>
+
+    <script>
+        const water = document.getElementById('water'); 
+        const btn1 = document.getElementById('btn1');
+
+        const btnClick = () => {
+            const height = parseInt(water.style.height);
+            if (Number.isInteger(height) && height < 100) {
+                water.style.height = `${height + 1}%`;
+            }
+        }
+
+        btn1.addEventListener('click', btnClick);
+
+</script>
+</body>
+
+</html>

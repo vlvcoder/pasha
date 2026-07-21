@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .block {
+            border: solid cadetblue 4px;
+            border-top: none;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            margin: 0 auto;
+            width: 100px;
+            height: 300px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        #water {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="block" class="block">
+        <div id="water"></div>
+    </div>
+
+    <script>
+        const water = document.getElementById('water');
+        const block = document.getElementById('block');
+
+        let height = 0;
+
+        const changeHeight = (step) => {
+            height += step;
+            water.style.height = `${height}px`;
+        }
+
+        const intervalId = setInterval(() => {
+            changeHeight(1);
+            console.log(height, block.clientHeight);
+            
+            if (height >= block.clientHeight) {
+                clearInterval(intervalId);
+            }
+        }, 100);
+
+    </script>
+</body>
+
+</html>

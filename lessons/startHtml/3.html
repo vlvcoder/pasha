@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .block {
+            padding: 20px;
+            border: solid orange 2px;
+            margin: 0 auto;
+            width: fit-content;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div id="block" class="block">
+        Hi, all!!!
+    </div>
+    <button id="btn1">Кнопка</button>
+
+    <script>
+        const block = document.getElementById('block'); 
+        const btn1 = document.getElementById('btn1');
+
+        const btnClick = () => {
+            block.textContent = 'Button is clicked';
+        }
+
+        btn1.addEventListener('click', btnClick);
+
+</script>
+</body>
+
+</html>
