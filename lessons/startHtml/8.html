@@ -9,34 +9,24 @@
         body {
             background-color: rgb(25, 25, 29);
         }
-
-        .container {
-            margin: 0 auto;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            width: fit-content;
-            margin: 10px auto;
-        }
-
         .digit {
             width: 100px;
             height: 200px;
             position: relative;
-            /* background-color: #fff; */
         }
 
         .match {
             position: absolute;
             background-color: lightblue;
             border-radius: 5px;
-            height: 20px;
-            width: 100px;
+            width: 100%;
+            height: 10%;
+            transition: 0.2s;
         }
 
         .match-ver {
-            height: 100px;
-            width: 20px;
+            width: 20%;
+            height: 50%;
         }
 
         #match2 {
@@ -70,22 +60,21 @@
                 padding: 10px;
                 font-size: 24px;
                 border-radius: 5px;
+                background-color: rgb(255, 255, 255, 0.8);
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="digit">
-            <div id="match0" class="match"></div>
-            <div id="match1" class="match match-ver"></div>
-            <div id="match2" class="match match-ver"></div>
-            <div id="match3" class="match"></div>
-            <div id="match4" class="match match-ver"></div>
-            <div id="match5" class="match match-ver"></div>
-            <div id="match6" class="match"></div>
-        </div>
+    <div class="digit">
+        <div id="match0" class="match"></div>
+        <div id="match1" class="match match-ver"></div>
+        <div id="match2" class="match match-ver"></div>
+        <div id="match3" class="match"></div>
+        <div id="match4" class="match match-ver"></div>
+        <div id="match5" class="match match-ver"></div>
+        <div id="match6" class="match"></div>
     </div>
     <div class="controls">
         <button onclick="showDigit(0)">0</button>
@@ -110,9 +99,8 @@
             document.getElementById('match5'),
             document.getElementById('match6'),
         ];
-        
+
         // const matches = Array.from({ length: 7 }, (_, i) => document.getElementById(`match${i}`));
-        
 
         const IMAGES = [
             [0, 1, 2, 4, 5, 6],
@@ -130,7 +118,7 @@
         const showDigit = (index) => {
             matches
                 .forEach(
-                    (match, ind) => match.style.display = IMAGES[index].includes(ind) ? 'block' : ' none'
+                    (match, ind) => match.style.opacity = IMAGES[index].includes(ind) ? '1' : '0'
                 );
         };
     </script>
