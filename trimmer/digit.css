@@ -1,0 +1,42 @@
+.digit {
+    width: 20px;
+    height: 40px;
+    position: relative;
+    transform: skew(-5deg);
+}
+
+.match {
+    position: absolute;
+    background-color: lightblue;
+    border-radius: 5px;
+    width: 100%;
+    height: 10%;
+    transition: 0.2s;
+}
+
+.match-ver {
+    width: 20%;
+    height: 50%;
+}
+
+.match:nth-child(3) {
+    right: 0;
+}
+
+.match:nth-child(4) {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.match:nth-child(5) {
+    top: 50%;
+}
+
+.match:nth-child(6) {
+    top: 50%;
+    right: 0;
+}
+
+.match:nth-child(7) {
+    bottom: 0;
+}

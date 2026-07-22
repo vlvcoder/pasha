@@ -139,11 +139,11 @@
 
         const makeWatch = (divWatch) => {
             divWatch.classList.add('watch');
-            const digit1 = createElementFromHTML(watch, '<div class="digit"></divd=>');
-            const digit2 = createElementFromHTML(watch, '<div class="digit"></divd=>');
-            const colon = createElementFromHTML(watch, '<div class="colon"></div>')
-            const digit3 = createElementFromHTML(watch, '<div class="digit"></divd=>');
-            const digit4 = createElementFromHTML(watch, '<div class="digit"></divd=>');
+            const digit1 = createElementFromHTML(divWatch, '<div class="digit"></divd=>');
+            const digit2 = createElementFromHTML(divWatch, '<div class="digit"></divd=>');
+            const colon = createElementFromHTML(divWatch, '<div class="colon"></div>')
+            const digit3 = createElementFromHTML(divWatch, '<div class="digit"></divd=>');
+            const digit4 = createElementFromHTML(divWatch, '<div class="digit"></divd=>');
 
             const { showDigit: showDigit1 } = makeDigit(digit1);
             const { showDigit: showDigit2 } = makeDigit(digit2);

@@ -1,0 +1,147 @@
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Comfortaa, Georgia, 'Times New Roman', Times, serif;
+    background-image: url(https://images.wallpaperscraft.com/image/single/smoke_abstraction_particles_118225_1024x768.jpg);
+    background-size: cover;
+}
+
+.sidenav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0, 0.7);
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    text-align: center;
+}
+
+.timer {
+    font-size: 36px;
+    margin-top: 10px;
+    text-align: center;
+    color: lightseagreen;
+}
+
+.legend {
+    color: #818181;
+    text-align: center;
+    font-size: 12px;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.main {
+    margin-left: 160px;
+    /* Same as the width of the sidenav */
+    font-size: 28px;
+    /* Increased text to enable scrolling */
+    padding: 0px 10px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #b6b6b6;
+}
+
+.field {
+    position: relative;
+    width: 800px;
+    height: 480px;
+    margin: 20px auto;
+    background-color: rgb(34, 59, 96, 0.9);
+    outline: none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 15px 1px rgba(119, 210, 249, 0.4);
+}
+
+.finished {
+    background-color: rgb(0, 0, 0, 0.8);
+
+    &::before {
+        content: attr(data-text);
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: lightblue;
+        font-size: 96px;
+    }
+    &::after {
+        content: 'The end.';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 48px;
+    }
+}
+
+.figure {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+}
+
+.caret {
+    background-color: #a224ad;
+    border-radius: 4px;
+}
+
+.ArrowDown {
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.ArrowUp {
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.ArrowLeft {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.ArrowRight {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.target {
+    background-color: #6c75d4;
+    border-radius: 50%;
+    top: 120px;
+    left: 200px;
+}
+
+.score {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
