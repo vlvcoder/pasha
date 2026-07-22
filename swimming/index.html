@@ -395,6 +395,17 @@
             color: orangered;
         }
 
+        .weather-wide {
+            display: block;
+            background-color: #fff;
+            border-color: #0097a7;
+
+            .weatherInformer2_co2 {
+                background: linear-gradient(to right, #0097a7, #01c2e0);
+                margin: 0 auto;
+            }
+        }
+
         @media (max-width: 700px) {
             .card-container {
                 border-radius: 16px;
@@ -613,54 +624,27 @@
 
             <!-- Информер погоды -->
             <!-- https://world-weather.ru/informers/?ysclid=mrwmp4epca678236936 -->
-            <div class="image-note">
-                <div id="c78591edcdcfcd0c35e0cba6c26b5b81" class="ww-informers-box-854753">
-                    <p class="ww-informers-box-854754"><a href="https://world-weather.ru/pogoda/russia/moscow/">Точный
-                            прогноз погоды в Москве</a><br><a href="https://world-weather.ru/informers/">Информеры
-                            погоды</a></p>
+            <!-- <div class="image-note weather-wide">
+                <div id="07c38ab103174e5f534d16e50552ab17" class="ww-informers-box-854755">
+                    <p class="ww-informers-box-854756"><a
+                            href="https://world-weather.ru/pogoda/russia/moscow/month/">Точный прогноз погоды в Москве
+                            на 30 дней</a><br><a
+                            href="https://world-weather.ru/pogoda/russia/moscow/">world-weather.ru</a></p>
                 </div>
                 <script async type="text/javascript" charset="utf-8"
-                    src="https://world-weather.ru/wwinformer.php?userid=c78591edcdcfcd0c35e0cba6c26b5b81"></script>
-                <style>
-                    .ww-informers-box-854754 {
-                        -webkit-animation-name: ww-informers54;
-                        animation-name: ww-informers54;
-                        -webkit-animation-duration: 1.5s;
-                        animation-duration: 1.5s;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        -o-text-overflow: ellipsis;
-                        text-overflow: ellipsis;
-                        font-size: 12px;
-                        font-family: Arial;
-                        line-height: 18px;
-                        text-align: center
-                    }
+                    src="https://world-weather.ru/wwinformer.php?userid=07c38ab103174e5f534d16e50552ab17"></script>
+            </div> -->
 
-                    @-webkit-keyframes ww-informers54 {
-
-                        0%,
-                        80% {
-                            opacity: 0
-                        }
-
-                        100% {
-                            opacity: 1
-                        }
-                    }
-
-                    @keyframes ww-informers54 {
-
-                        0%,
-                        80% {
-                            opacity: 0
-                        }
-
-                        100% {
-                            opacity: 1
-                        }
-                    }
-                </style>
+            <div class="image-note weather-wide">
+                <div id="49e04f5ba10f1d5d51dcc58e5c1888f8" class="ww-informers-box-854753">
+                    <p class="ww-informers-box-854754"><a
+                            href="https://world-weather.ru/pogoda/russia/moscow/14days/">Подробнее о погоде в Москве на
+                            2 недели</a><br><a
+                            href="https://world-weather.ru/pogoda/russia/moscow/">https://world-weather.ru/pogoda/russia/moscow/</a>
+                    </p>
+                </div>
+                <script async type="text/javascript" charset="utf-8"
+                    src="https://world-weather.ru/wwinformer.php?userid=49e04f5ba10f1d5d51dcc58e5c1888f8"></script>
             </div>
 
             <div class="progress-container">
