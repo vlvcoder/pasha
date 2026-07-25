@@ -47,13 +47,15 @@ body {
 
 .main {
     margin-left: 160px;
+    margin-right: 160px;
     /* Same as the width of the sidenav */
     font-size: 28px;
     /* Increased text to enable scrolling */
     padding: 0px 10px;
 }
 
-h1, h2 {
+h1,
+h2 {
     text-align: center;
     color: #b6b6b6;
 }
@@ -62,7 +64,7 @@ h1, h2 {
     position: relative;
     width: 800px;
     height: 480px;
-    margin: 20px auto;
+    margin: 40px auto;
     background-color: rgb(34, 59, 96, 0.9);
     outline: none;
     border-radius: 4px;
@@ -75,20 +77,22 @@ h1, h2 {
     &::before {
         content: attr(data-text);
         position: absolute;
-        top: 30%;
+        white-space: nowrap;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -80%);
         color: lightblue;
         font-size: 96px;
     }
+
     &::after {
         content: 'The end.';
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, 50%);
         color: white;
-        font-size: 48px;
+        font-size: 36px;
     }
 }
 
@@ -101,6 +105,14 @@ h1, h2 {
 .caret {
     background-color: #a224ad;
     border-radius: 4px;
+}
+
+.tail {
+    position: absolute;
+    background-color: #a224ad;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
 .ArrowDown {
@@ -144,4 +156,26 @@ h1, h2 {
     gap: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.scoreboard {
+    position: fixed;
+    width: 160px;
+    height: 100vh;
+    right: 0px;
+    top: 0;
+    padding-top: 15px;
+    overflow: hidden;
+    background-color: rgb(0, 0, 0, 0.7);
+
+    .title {
+        color: white;
+        text-align: center;
+        font-size: 18px;
+    }
+    ul li {
+        color: #818181;
+        font-size: 14px;
+        line-height: 1.6em;
+    }
 }
