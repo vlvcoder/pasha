@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Игральный кубик</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #1a1a2e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            user-select: none;
+        }
+
+        .scene {
+            width: 200px;
+            height: 200px;
+            perspective: 800px;
+            cursor: pointer;
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(-30deg) rotateY(45deg);
+            transition: transform 0.1s ease;
+        }
+
+        .face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: #fff;
+            border: 2px solid #333;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+            backface-visibility: visible;
+        }
+
+        .face .dots {
+            display: grid;
+            width: 80%;
+            height: 80%;
+            padding: 12px;
+        }
+
+        .dot {
+            width: 28px;
+            height: 28px;
+            background: #222;
+            border-radius: 50%;
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .face-front {
+            transform: translateZ(100px);
+        }
+
+        .face-back {
+            transform: rotateY(180deg) translateZ(100px);
+        }
+
+        .face-right {
+            transform: rotateY(90deg) translateZ(100px);
+        }
+
+        .face-left {
+            transform: rotateY(-90deg) translateZ(100px);
+        }
+
+        .face-top {
+            transform: rotateX(90deg) translateZ(100px);
+        }
+
+        .face-bottom {
+            transform: rotateX(-90deg) translateZ(100px);
+        }
+
+        /* 1 точка: центр */
+        .dots-1 {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+            place-items: center;
+        }
+
+        /* 2 точки: диагональ (левый верх — правый низ) */
+        .dots-2 {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        .dots-2 .dot:first-child {
+            grid-column: 1;
+            grid-row: 1;
+            justify-self: start;
+            align-self: start;
+        }
+
+        .dots-2 .dot:last-child {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: end;
+            align-self: end;
+        }
+
+        /* 3 точки: диагональ (левый верх — центр — правый низ) */
+        .dots-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+        }
+
+        .dots-3 .dot:nth-child(1) {
+            grid-column: 1;
+            grid-row: 1;
+            justify-self: start;
+            align-self: start;
+        }
+
+        .dots-3 .dot:nth-child(2) {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: center;
+            align-self: center;
+        }
+
+        .dots-3 .dot:nth-child(3) {
+            grid-column: 3;
+            grid-row: 3;
+            justify-self: end;
+            align-self: end;
+        }
+
+        /* 4 точки: по углам */
+        .dots-4 {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .dots-4 .dot:nth-child(1) {
+            justify-self: start;
+            align-self: start;
+        }
+
+        .dots-4 .dot:nth-child(2) {
+            justify-self: end;
+            align-self: start;
+        }
+
+        .dots-4 .dot:nth-child(3) {
+            justify-self: start;
+            align-self: end;
+        }
+
+        .dots-4 .dot:nth-child(4) {
+            justify-self: end;
+            align-self: end;
+        }
+
+        /* 5 точек: углы + центр */
+        .dots-5 {
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+        }
+
+        .dots-5 .dot:nth-child(1) {
+            grid-column: 1;
+            grid-row: 1;
+            justify-self: start;
+            align-self: start;
+        }
+
+        .dots-5 .dot:nth-child(2) {
+            grid-column: 3;
+            grid-row: 1;
+            justify-self: end;
+            align-self: start;
+        }
+
+        .dots-5 .dot:nth-child(3) {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: center;
+            align-self: center;
+        }
+
+        .dots-5 .dot:nth-child(4) {
+            grid-column: 1;
+            grid-row: 3;
+            justify-self: start;
+            align-self: end;
+        }
+
+        .dots-5 .dot:nth-child(5) {
+            grid-column: 3;
+            grid-row: 3;
+            justify-self: end;
+            align-self: end;
+        }
+
+        /* 6 точек: две колонки по 3 */
+        .dots-6 {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 6px 14px;
+        }
+
+        .dots-6 .dot:nth-child(1) {
+            justify-self: start;
+            align-self: start;
+        }
+
+        .dots-6 .dot:nth-child(2) {
+            justify-self: end;
+            align-self: start;
+        }
+
+        .dots-6 .dot:nth-child(3) {
+            justify-self: start;
+            align-self: center;
+        }
+
+        .dots-6 .dot:nth-child(4) {
+            justify-self: end;
+            align-self: center;
+        }
+
+        .dots-6 .dot:nth-child(5) {
+            justify-self: start;
+            align-self: end;
+        }
+
+        .dots-6 .dot:nth-child(6) {
+            justify-self: end;
+            align-self: end;
+        }
+
+        .info {
+            color: #aaa;
+            font-size: 18px;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 32px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s;
+        }
+
+        .info span {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .container:hover .info {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .cube.rolling {
+            pointer-events: none;
+        }
+
+        .dice-block {
+            height: 100px;            
+            background-color: yellow;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="scene" id="scene">
+            <div class="cube" id="cube">
+                <!-- Грань 1 (спереди) -->
+                <div class="face face-front">
+                    <div class="dots dots-1"><span class="dot"></span></div>
+                </div>
+                <!-- Грань 2 (сзади) -->
+                <div class="face face-back">
+                    <div class="dots dots-2"><span class="dot"></span><span class="dot"></span></div>
+                </div>
+                <!-- Грань 3 (справа) -->
+                <div class="face face-right">
+                    <div class="dots dots-3"><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                    </div>
+                </div>
+                <!-- Грань 4 (слева) -->
+                <div class="face face-left">
+                    <div class="dots dots-4"><span class="dot"></span><span class="dot"></span><span
+                            class="dot"></span><span class="dot"></span></div>
+                </div>
+                <!-- Грань 5 (верх) -->
+                <div class="face face-top">
+                    <div class="dots dots-5">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+                <!-- Грань 6 (низ) -->
+                <div class="face face-bottom">
+                    <div class="dots dots-6"><span class="dot"></span><span class="dot"></span><span
+                            class="dot"></span><span class="dot"></span><span class="dot"></span><span
+                            class="dot"></span></div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="info">🎲 Кликните по кубику · Выпало: <span id="result">—</span></div>
+    </div>
+
+    <script>
+        (function () {
+            const cube = document.getElementById('cube');
+            const resultSpan = document.getElementById('result');
+            const scene = document.getElementById('scene');
+
+            let currentX = -30;
+            let currentY = 45;
+            let isRolling = false;
+
+            // Точное определение передней грани через векторы
+            function getFrontFace(xDeg, yDeg) {
+                const xRad = xDeg * Math.PI / 180;
+                const yRad = yDeg * Math.PI / 180;
+
+                // Вектор, указывающий на зрителя (0, 0, 1) в локальных координатах
+                let vx = 0, vy = 0, vz = 1;
+
+                // Обратный поворот по Y: Ry(-yRad)
+                const cosY = Math.cos(-yRad);
+                const sinY = Math.sin(-yRad);
+                let tx = vx * cosY - vz * sinY;
+                let tz = vx * sinY + vz * cosY;
+                vx = tx;
+                vz = tz;
+
+                // Обратный поворот по X: Rx(-xRad)
+                const cosX = Math.cos(-xRad);
+                const sinX = Math.sin(-xRad);
+                let ty = vy * cosX - vz * sinX;
+                tz = vy * sinX + vz * cosX;
+                vy = ty;
+                vz = tz;
+
+                // Направления нормалей граней
+                const directions = [
+                    { face: 1, x: 0, y: 0, z: 1 },   // front
+                    { face: 2, x: 0, y: 0, z: -1 },  // back
+                    { face: 3, x: 1, y: 0, z: 0 },   // right
+                    { face: 4, x: -1, y: 0, z: 0 },  // left
+                    { face: 5, x: 0, y: 1, z: 0 },   // top
+                    { face: 6, x: 0, y: -1, z: 0 },  // bottom
+                ];
+
+                let maxDot = -Infinity;
+                let frontFace = 1;
+
+                for (const dir of directions) {
+                    const dot = vx * dir.x + vy * dir.y + vz * dir.z;
+                    if (dot > maxDot) {
+                        maxDot = dot;
+                        frontFace = dir.face;
+                    }
+                }
+
+                return frontFace;
+            }
+
+            function rollDice() {
+                if (isRolling) return;
+                isRolling = true;
+                cube.classList.add('rolling');
+
+                const value = Math.floor(Math.random() * 6) + 1;
+
+                const extraSpinsX = Math.floor(Math.random() * 3) + 2;
+                const extraSpinsY = Math.floor(Math.random() * 3) + 2;
+
+                // Для каждой грани нужно, чтобы она оказалась спереди (front)
+                // Проверено: при этих углах соответствующая грань смотрит на зрителя
+                const targetMap = {
+                    1: { x: 0, y: 0 },     // front = 1
+                    2: { x: 180, y: 0 },   // front = 2
+                    3: { x: 0, y: 270 },   // front = 3 (поворот влево)
+                    4: { x: 0, y: 90 },    // front = 4 (поворот вправо)
+                    5: { x: 270, y: 0 },   // front = 5 (поворот вверх)
+                    6: { x: 90, y: 0 },    // front = 6 (поворот вниз)
+                };
+                const target = targetMap[value];
+
+                let targetX = target.x + 360 * extraSpinsX;
+                let targetY = target.y + 360 * extraSpinsY;
+
+                let diffX = targetX - currentX;
+                let diffY = targetY - currentY;
+
+                while (diffX < 0) diffX += 360;
+                while (diffY < 0) diffY += 360;
+                diffX += 720;
+                diffY += 720;
+
+                const newX = currentX + diffX;
+                const newY = currentY + diffY;
+
+                cube.style.transition = 'transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                cube.style.transform = `rotateX(${newX}deg) rotateY(${newY}deg)`;
+
+                currentX = newX;
+                currentY = newY;
+
+                // Показываем число, которое выпало
+                resultSpan.textContent = value;
+
+                const onFinish = () => {
+                    cube.removeEventListener('transitionend', onFinish);
+                    isRolling = false;
+                    cube.classList.remove('rolling');
+                };
+                cube.addEventListener('transitionend', onFinish);
+
+                setTimeout(() => {
+                    if (isRolling) {
+                        isRolling = false;
+                        cube.classList.remove('rolling');
+                    }
+                }, 3000);
+            }
+
+            scene.addEventListener('click', rollDice);
+
+            // При загрузке определяем, какая грань спереди
+            const initialFront = getFrontFace(currentX, currentY);
+            resultSpan.textContent = initialFront;
+
+            scene.style.cursor = 'pointer';
+        })();
+    </script>
+</body>
+
+</html>
