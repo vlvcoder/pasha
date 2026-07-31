@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра Мемо</title>
+
+  <script type="module" crossorigin src="./assets/index-B4CuOpMP.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-B-6HLZKQ.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🎴 Игра Мемо</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    <span>Ходы:</span>
+                    <span id="moves">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Пары:</span>
+                    <span id="pairs">0/13</span>
+                </div>
+                <button id="restart-btn" class="btn-restart">🔄 Новая игра</button>
+            </div>
+            <div id="status" class="status idle">Нажмите на карточку, чтобы начать</div>
+        </header>
+        <main>
+            <div id="game-board" class="game-board"></div>
+        </main>
+    </div>
+
+</body>
+
+</html>
