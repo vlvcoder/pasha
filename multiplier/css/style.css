@@ -1,0 +1,129 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    user-select: none;
+    --size: 100px;
+    --lineColor: rgb(0, 0, 0, 0.5);
+    --errorColor: rgb(133, 64, 64);
+    --successColor: rgb(64, 133, 87);
+}
+
+body {
+    max-height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.material-icons {
+    font-size: 22px;
+    margin: 0;
+}
+
+.sidebar {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 16px;
+
+    a {
+        padding: 6px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 20px;
+        color: #818181;
+        display: block;
+    }
+
+    a:hover {
+        color: #f1f1f1;
+    }
+}
+
+.main {
+    margin-left: 160px;
+    background-image: url("../images/sea2.jpeg");
+    background-size: cover;
+    min-height: 100vh;
+
+    h1 {
+        font-family: 'Comfortaa', sans-serif;
+        text-align: center;
+        color: rgb(124, 192, 229);
+        padding: 20px;
+        margin: 0;
+    }
+}
+
+.line {
+    text-align: center;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: var(--lineColor);
+    backdrop-filter: blur(5px);
+    padding: 50px 80px;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 100px;
+}
+
+.tag {
+    background-color: rgb(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    font-size: 46px;
+    width: var(--size);
+    height: var(--size);
+    padding-top: 3px;
+    color: #dedede;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 2px solid silver;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 0px rgba(34, 60, 80, 0.3);
+    cursor: pointer;
+}
+
+.sign {
+    padding-top: 10px;
+    cursor: default;
+    background-color: transparent;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+}
+
+.oper {
+    background-color: lightgoldenrodyellow;
+    color: #0b462e;
+    cursor: default;
+}
+
+.pool {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 30px auto;
+    width: min-content;
+    justify-content: center;
+
+    .tag {
+        margin: 20px;
+    }
+}
+
+.empty {
+    background-color: rgb(255, 255, 255, 0.2);
+    color: pink;
+    cursor: default;
+}
+
+.hidden {
+    visibility: hidden;
+}

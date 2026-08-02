@@ -3,7 +3,8 @@ body {
     height: 100vh;
     overflow: hidden;
     font-family: Comfortaa, Georgia, 'Times New Roman', Times, serif;
-    background-image: url(https://images.wallpaperscraft.com/image/single/smoke_abstraction_particles_118225_1024x768.jpg);
+    /* background-image: url(https://images.wallpaperscraft.com/image/single/smoke_abstraction_particles_118225_1024x768.jpg); */
+    background-image: url(./smoke_abstraction.jpg);
     background-size: cover;
 }
 
