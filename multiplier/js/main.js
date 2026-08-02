@@ -3,6 +3,7 @@ import { animations } from "./animations.js";
 const TAG_COUNT = 15;
 const ANIMATION_DURATION = 300;
 const NEXT_ROUND_DURATION = 1000;
+const GAME_DURATION_SEC = 60;
 
 const NUMBERS = [2, 3, 4, 5, 6, 7, 8, 9];
 const NUMBERS_PROTOTYPE = [...NUMBERS, 6, 7, 8, 9]; // Повторяем некоторые цифры для увеличения частоты
@@ -15,12 +16,19 @@ let result = null;
 let cloud = [];
 let isRunning = false;
 let level = 1;
+let score = 0;
+let timerSec = GAME_DURATION_SEC;
+let intervalId;
 
-const firstDiv = document.getElementById('first');
-const secondDiv = document.getElementById('second');
-const resultDiv = document.getElementById('result');
-const poolDiv = document.getElementById('pool');
-const lineDiv = document.getElementById('line');
+const divFirst = document.getElementById('first');
+const divSecond = document.getElementById('second');
+const divResult = document.getElementById('result');
+const divPool = document.getElementById('pool');
+const divLine = document.getElementById('line');
+const divStarter = document.getElementById('starter');
+const divTimer = document.getElementById('timer');
+const divScore = document.getElementById('score');
+const divFinalScore = document.getElementById('finalScore');
 
 let nextRoundTimerId = null;
 const onTagClick = (event) => {
@@ -34,6 +42,7 @@ const onTagClick = (event) => {
     }
 
     if (parseInt(tag.textContent) === first * second) {
+        incrementScore();
         moveToResult(tag);
         isRunning = false;
         nextRoundTimerId = setTimeout(startRound, NEXT_ROUND_DURATION);
@@ -47,21 +56,21 @@ const insertTag = (num) => {
     tag.className = 'tag';
     tag.textContent = num;
     tag.addEventListener('click', onTagClick);
-    poolDiv.appendChild(tag);
+    divPool.appendChild(tag);
 };
 
 const render = () => {
-    firstDiv.textContent = first;
-    secondDiv.textContent = second;
-    resultDiv.classList.remove('hidden');
+    divFirst.textContent = first;
+    divSecond.textContent = second;
+    divResult.classList.remove('hidden');
     if (result > 0) {
-        resultDiv.textContent = result;
-        resultDiv.classList.remove('empty');
+        divResult.textContent = result;
+        divResult.classList.remove('empty');
     } else {
-        resultDiv.textContent = '?';
-        resultDiv.classList.add('empty');
+        divResult.textContent = '?';
+        divResult.classList.add('empty');
     }
-    poolDiv.replaceChildren();
+    divPool.replaceChildren();
     cloud.forEach(insertTag);
 }
 
@@ -158,10 +167,10 @@ function moveTo(source, target) {
 }
 
 function moveToResult(tag) {
-    const animation = moveTo(tag, resultDiv);
-    animation.onfinish = () => resultDiv.classList.add('hidden');
+    const animation = moveTo(tag, divResult);
+    animation.onfinish = () => divResult.classList.add('hidden');
 
-    poolDiv.querySelectorAll('*').forEach(el => {
+    divPool.querySelectorAll('*').forEach(el => {
         if (el !== tag) {
             hideTag(el);
         }
@@ -190,7 +199,7 @@ function moveOut(tag) {
     );
     animation.onfinish = () => tag.classList.add('hidden');
 
-    lineDiv.animate(
+    divLine.animate(
         animations.LINE_ERROR, {
         duration: ANIMATION_DURATION,
         easing: 'ease-in-out',
@@ -198,4 +207,49 @@ function moveOut(tag) {
     });
 }
 
-startRound();
+const showStart = (showScore = false) => {
+    divFinalScore.style.display = showScore ? 'block' : 'none';
+    divFinalScore.textContent = showScore ? `SCORE: ${score}` : '';
+
+    divStarter.style.display = 'flex';
+    divLine.style.display = 'none';
+};
+
+const startGame = () => {
+    timerSec = GAME_DURATION_SEC;
+    score = 0;
+    startRound();
+    divScore.textContent = String(score);
+    divTimer.textContent = String(timerSec);
+    intervalId = setInterval(onInterval, 1000);
+};
+
+const finishGame = () => {
+    clearInterval(intervalId);
+    showStart(true);
+};
+
+function onInterval() {
+    timerSec--;
+    divTimer.textContent = String(timerSec);
+
+    if (timerSec === 0) {
+        finishGame();
+    }
+}
+
+function incrementScore() {
+    score++;
+    divScore.textContent = String(score);
+};
+
+divStarter.querySelectorAll('a').forEach(element => {
+    element.addEventListener('click', function () {
+        level = Number(element.getAttribute('data-level'));
+        divStarter.style.display = 'none';
+        divLine.style.display = 'flex';
+        startGame();
+    });
+});
+
+showStart();

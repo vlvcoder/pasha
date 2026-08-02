@@ -21,6 +21,11 @@
 
 <body>
     <div class="sidebar">
+        <div id="timer" class="timer">0</div>
+        <div class="legend">Time</div>
+        <div id="score" class="timer score">0</div>
+        <div class="legend">Score</div>
+        <!-- <a href="#"><i class="fa fa-fw fa-play"></i> Start</a> -->
         <!-- <a href="#e"><i class="fa fa-fw fa-home"></i> Главная</a> -->
         <!-- <a href="#"><span class="material-icons">person</span> Главная</a>
         <a href="#"><i class="fa fa-fw fa-wrench"></i> Услуги</a>
@@ -30,7 +35,13 @@
 
     <div class="main">
         <h1>Multiplier</h1>
-        <div id="line" class="line">
+        <div id="starter" class="starter">
+            <div id="finalScore" class="final-score" style="display: none;">SCORE: 0</div>
+            <a data-level="1" href="#">START 10</a>
+            <a data-level="2" href="#">START 20</a>
+            <a data-level="3" href="#">START 30</a>
+        </div>
+        <div id="line" class="line" style="display: none;">
             <div id="first" class="tag oper">0</div>
             <div class="tag sign">*</div>
             <div id="second" class="tag oper">0</div>
