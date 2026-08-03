@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Временная шкала — Президенты США</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0ebe3;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            padding: 24px 20px 30px;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #5d6d7e;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            border-left: 4px solid #b8860b;
+            padding-left: 16px;
+            background: #faf8f5;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.5;
+        }
+
+        /* ---------- ДИАГРАММА (линия времени) ---------- */
+        .timeline-section {
+            margin: 10px 0 10px;
+            padding-top: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-title small {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #6d7b8a;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 12px 0 6px 0;
+            width: 100%;
+            overflow: visible;
+        }
+
+        /* Сама шкала времени */
+        .timeline-axis {
+            position: relative;
+            height: 4px;
+            background: #2c3e50;
+            border-radius: 4px;
+            margin: 0 10px;
+            width: calc(100% - 20px);
+        }
+
+        /* Метки на оси */
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5d6d7e;
+            width: calc(100% - 20px);
+            position: relative;
+        }
+
+        .timeline-labels span {
+            white-space: nowrap;
+            font-weight: 500;
+            position: relative;
+            text-align: left;
+            transform: translateX(0);
+            padding-left: 2px;
+        }
+
+        /* Вертикальные засечки под метками */
+        .timeline-labels span::before {
+            content: '';
+            position: absolute;
+            top: -22px;
+            left: 0;
+            width: 2px;
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 1px;
+        }
+
+        /* Ряд для каждого президента — отдельная строка */
+        .civ-row {
+            position: relative;
+            width: calc(100% - 20px);
+            height: 34px;
+            margin: 1px 10px 0 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Каждый отрезок — президент */
+        .civ-bar {
+            position: absolute;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 6px;
+            padding-right: 6px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: height 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.2px;
+            z-index: 2;
+            overflow: visible;
+        }
+
+        .civ-bar:hover {
+            height: 30px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        /* Всплывающая подсказка (tooltip) */
+        .civ-bar .tooltip {
+            display: none;
+            position: fixed;
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 450px;
+            width: max-content;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            pointer-events: none;
+            text-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: normal;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .civ-bar .tooltip .tooltip-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f1c40f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .civ-bar .tooltip .tooltip-row {
+            display: block;
+            padding: 2px 0;
+        }
+
+        .civ-bar .tooltip .tooltip-label {
+            font-weight: 600;
+            color: #bdc3c7;
+            display: inline-block;
+            min-width: 50px;
+        }
+
+        .civ-bar .tooltip .tooltip-value {
+            color: #ecf0f1;
+        }
+
+        .civ-bar .tooltip .tooltip-divider {
+            display: block;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 6px 0;
+        }
+
+        /* Показываем подсказку при наведении */
+        .civ-bar:hover .tooltip {
+            display: block;
+        }
+
+        /* Название и годы — вынесены справа (по умолчанию) */
+        .civ-bar .label {
+            display: none;
+        }
+
+        .civ-bar .label-outside {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #1e2a36;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1px 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            border: 1px solid #ddd6cb;
+            text-shadow: none;
+            z-index: 3;
+        }
+
+        .civ-bar .label-outside .years-out {
+            font-weight: 400;
+            font-size: 0.55rem;
+            color: #5d6d7e;
+            margin-left: 4px;
+        }
+
+        /* Текст справа от отрезка */
+        .civ-bar.label-right .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            left: calc(100% + 6px);
+        }
+
+        /* Текст слева от отрезка */
+        .civ-bar.label-left .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            right: calc(100% + 6px);
+            left: auto;
+        }
+
+        /* Особый класс для "Нашей эры" — текст внутри, без выноски и без подсказки */
+        .civ-bar.label-inside .label {
+            display: flex;
+        }
+
+        .civ-bar.label-inside .label-outside {
+            display: none;
+        }
+
+        .civ-bar.label-inside .tooltip {
+            display: none !important;
+        }
+
+        .civ-bar.label-inside {
+            cursor: default;
+        }
+
+        /* Цвета для президентов по партиям/эпохам */
+        .civ-color-0 { background: #2c3e50; }  /* Отцы-основатели (беспартийные/федералисты) */
+        .civ-color-1 { background: #2980b9; }  /* Демократы-республиканцы */
+        .civ-color-2 { background: #27ae60; }  /* Демократы (ранние) */
+        .civ-color-3 { background: #d4a017; }  /* Виги */
+        .civ-color-4 { background: #e67e22; }  /* Республиканцы (ранние) */
+        .civ-color-5 { background: #c0392b; }  /* Демократы (поздние) */
+        .civ-color-6 { background: #16a085; }  /* Республиканцы (XX век) */
+        .civ-color-7 { background: #8e44ad; }  /* Демократы (XX век) */
+        .civ-color-8 { background: #b03a2e; }  /* Республиканцы (современные) */
+        .civ-color-9 { background: #2ecc71; }  /* Демократы (современные) */
+
+        /* Легенда */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: #f8f6f2;
+            border-radius: 12px;
+            border: 1px solid #e0d8cd;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: #2c3e50;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 12px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            color: #6d7b8a;
+            font-size: 0.9rem;
+            text-align: right;
+            border-top: 1px solid #e0d8cd;
+            padding-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px 10px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .timeline-labels {
+                font-size: 0.6rem;
+            }
+            .timeline-labels span::before {
+                height: 8px;
+                top: -18px;
+            }
+            .civ-bar {
+                font-size: 0.5rem;
+                height: 20px;
+                padding-left: 4px;
+                padding-right: 4px;
+            }
+            .civ-bar .label-outside {
+                font-size: 0.55rem;
+                padding: 1px 6px;
+            }
+            .civ-bar .label-outside .years-out {
+                font-size: 0.45rem;
+            }
+            .civ-row {
+                height: 30px;
+            }
+            .legend-item {
+                font-size: 0.6rem;
+            }
+            .legend-color {
+                width: 12px;
+                height: 10px;
+            }
+            .civ-bar .tooltip {
+                font-size: 0.65rem;
+                padding: 8px 10px;
+                max-width: 220px;
+            }
+            .civ-bar .tooltip .tooltip-title {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇺🇸 Временная шкала — Президенты США</h1>
+        <div class="subtitle">
+            От Джорджа Вашингтона до наших дней · годы правления · наведите курсор для подробной информации
+        </div>
+
+        <!-- ====== ЛИНЕЙНАЯ ДИАГРАММА ====== -->
+        <div class="timeline-section">
+            <div class="timeline-container">
+                <!-- Ось с делениями (от 1780 до 2026 н.э.) -->
+                <div class="timeline-axis"></div>
+
+                <!-- Метки на оси -->
+                <div class="timeline-labels">
+                    <span>1780</span>
+                    <span>1800</span>
+                    <span>1820</span>
+                    <span>1840</span>
+                    <span>1860</span>
+                    <span>1880</span>
+                    <span>1900</span>
+                    <span>1920</span>
+                    <span>1940</span>
+                    <span>1960</span>
+                    <span>1980</span>
+                    <span>2000</span>
+                    <span>2020</span>
+                </div>
+
+                <!-- 
+                    Диапазон: от 1780 до 2026 н.э. = 246 лет
+                    left% = (год_начала - 1780) / 246 * 100
+                    width% = (год_конца - год_начала) / 246 * 100
+                -->
+
+                <!-- ===== 1. Джордж Вашингтон: 1789–1797 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 3.7%; width: 3.3%;"
+                         data-civ="Джордж Вашингтон"
+                         data-period="1789 – 1797"
+                         data-party="Беспартийный"
+                         data-notes="Первый президент США. Отец-основатель. Командующий Континентальной армией. Установил многие президентские традиции.">
+                        <span class="label">Вашингтон <span class="years">1789–1797</span></span>
+                        <span class="label-outside">Вашингтон <span class="years-out">1789–1797</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 2. Джон Адамс: 1797–1801 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 6.9%; width: 1.6%;"
+                         data-civ="Джон Адамс"
+                         data-period="1797 – 1801"
+                         data-party="Федералист"
+                         data-notes="Второй президент. Избежал войны с Францией. Подписал спорные Законы об иностранцах и подстрекательстве.">
+                        <span class="label">Дж. Адамс <span class="years">1797–1801</span></span>
+                        <span class="label-outside">Дж. Адамс <span class="years-out">1797–1801</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 3. Томас Джефферсон: 1801–1809 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 8.5%; width: 3.3%;"
+                         data-civ="Томас Джефферсон"
+                         data-period="1801 – 1809"
+                         data-party="Демократ-республиканец"
+                         data-notes="Автор Декларации независимости. Покупка Луизианы (1803). Отправил экспедицию Льюиса и Кларка.">
+                        <span class="label">Джефферсон <span class="years">1801–1809</span></span>
+                        <span class="label-outside">Джефферсон <span class="years-out">1801–1809</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 4. Джеймс Мэдисон: 1809–1817 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 11.8%; width: 3.3%;"
+                         data-civ="Джеймс Мэдисон"
+                         data-period="1809 – 1817"
+                         data-party="Демократ-республиканец"
+                         data-notes="«Отец Конституции». Война 1812 года с Великобританией. Сожжение Вашингтона.">
+                        <span class="label">Мэдисон <span class="years">1809–1817</span></span>
+                        <span class="label-outside">Мэдисон <span class="years-out">1809–1817</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 5. Джеймс Монро: 1817–1825 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 15.0%; width: 3.3%;"
+                         data-civ="Джеймс Монро"
+                         data-period="1817 – 1825"
+                         data-party="Демократ-республиканец"
+                         data-notes="Эра добрых чувств. Доктрина Монро (1823) — предупреждение европейским державам.">
+                        <span class="label">Монро <span class="years">1817–1825</span></span>
+                        <span class="label-outside">Монро <span class="years-out">1817–1825</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 6. Джон Куинси Адамс: 1825–1829 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 18.3%; width: 1.6%;"
+                         data-civ="Джон Куинси Адамс"
+                         data-period="1825 – 1829"
+                         data-party="Демократ-республиканец"
+                         data-notes="Сын Джона Адамса. Выступал против рабства. После президентства служил в Конгрессе.">
+                        <span class="label">Дж.К. Адамс <span class="years">1825–1829</span></span>
+                        <span class="label-outside">Дж.К. Адамс <span class="years-out">1825–1829</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 7. Эндрю Джексон: 1829–1837 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 19.9%; width: 3.3%;"
+                         data-civ="Эндрю Джексон"
+                         data-period="1829 – 1837"
+                         data-party="Демократ"
+                         data-notes="Основатель Демократической партии. Популист. Банковская война. Дело о переселении индейцев.">
+                        <span class="label">Джексон <span class="years">1829–1837</span></span>
+                        <span class="label-outside">Джексон <span class="years-out">1829–1837</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 8. Мартин Ван Бюрен: 1837–1841 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 23.2%; width: 1.6%;"
+                         data-civ="Мартин Ван Бюрен"
+                         data-period="1837 – 1841"
+                         data-party="Демократ"
+                         data-notes="Паника 1837 года — экономический кризис. Первый президент, родившийся гражданином США.">
+                        <span class="label">Ван Бюрен <span class="years">1837–1841</span></span>
+                        <span class="label-outside">Ван Бюрен <span class="years-out">1837–1841</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 9. Уильям Гаррисон: 1841 (31 день) ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 24.8%; width: 0.1%;"
+                         data-civ="Уильям Гаррисон"
+                         data-period="1841"
+                         data-party="Виг"
+                         data-notes="Самый короткий срок — 31 день. Умер от пневмонии. Первый президент, умерший в должности.">
+                        <span class="label">Гаррисон <span class="years">1841</span></span>
+                        <span class="label-outside">Гаррисон <span class="years-out">1841</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 10. Джон Тайлер: 1841–1845 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 24.8%; width: 1.6%;"
+                         data-civ="Джон Тайлер"
+                         data-period="1841 – 1845"
+                         data-party="Виг (исключён)"
+                         data-notes="Первый вице-президент, занявший пост после смерти президента. Присоединение Техаса.">
+                        <span class="label">Тайлер <span class="years">1841–1845</span></span>
+                        <span class="label-outside">Тайлер <span class="years-out">1841–1845</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 11. Джеймс Полк: 1845–1849 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 26.4%; width: 1.6%;"
+                         data-civ="Джеймс Полк"
+                         data-period="1845 – 1849"
+                         data-party="Демократ"
+                         data-notes="Американо-мексиканская война. Присоединение Калифорнии и юго-запада. Орегонский компромисс.">
+                        <span class="label">Полк <span class="years">1845–1849</span></span>
+                        <span class="label-outside">Полк <span class="years-out">1845–1849</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 12. Закари Тейлор: 1849–1850 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 28.0%; width: 0.4%;"
+                         data-civ="Закари Тейлор"
+                         data-period="1849 – 1850"
+                         data-party="Виг"
+                         data-notes="Герой Американо-мексиканской войны. Умер через 16 месяцев после вступления в должность.">
+                        <span class="label">Тейлор <span class="years">1849–1850</span></span>
+                        <span class="label-outside">Тейлор <span class="years-out">1849–1850</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 13. Миллард Филлмор: 1850–1853 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 28.5%; width: 1.2%;"
+                         data-civ="Миллард Филлмор"
+                         data-period="1850 – 1853"
+                         data-party="Виг"
+                         data-notes="Компромисс 1850 года. Открыл торговлю с Японией (экспедиция Перри).">
+                        <span class="label">Филлмор <span class="years">1850–1853</span></span>
+                        <span class="label-outside">Филлмор <span class="years-out">1850–1853</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 14. Франклин Пирс: 1853–1857 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 29.7%; width: 1.6%;"
+                         data-civ="Франклин Пирс"
+                         data-period="1853 – 1857"
+                         data-party="Демократ"
+                         data-notes="Закон Канзас-Небраска. Усиление напряжённости по вопросу рабства. Неудачная попытка покупки Кубы.">
+                        <span class="label">Пирс <span class="years">1853–1857</span></span>
+                        <span class="label-outside">Пирс <span class="years-out">1853–1857</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 15. Джеймс Бьюкенен: 1857–1861 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 31.3%; width: 1.6%;"
+                         data-civ="Джеймс Бьюкенен"
+                         data-period="1857 – 1861"
+                         data-party="Демократ"
+                         data-notes="Президент накануне Гражданской войны. Не смог предотвратить отделение южных штатов.">
+                        <span class="label">Бьюкенен <span class="years">1857–1861</span></span>
+                        <span class="label-outside">Бьюкенен <span class="years-out">1857–1861</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 16. Авраам Линкольн: 1861–1865 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 32.9%; width: 1.6%;"
+                         data-civ="Авраам Линкольн"
+                         data-period="1861 – 1865"
+                         data-party="Республиканец"
+                         data-notes="Гражданская война. Отмена рабства (Прокламация об освобождении). Убит в 1865 г.">
+                        <span class="label">Линкольн <span class="years">1861–1865</span></span>
+                        <span class="label-outside">Линкольн <span class="years-out">1861–1865</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 17. Эндрю Джонсон: 1865–1869 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 34.6%; width: 1.6%;"
+                         data-civ="Эндрю Джонсон"
+                         data-period="1865 – 1869"
+                         data-party="Демократ"
+                         data-notes="Реконструкция после Гражданской войны. Первый президент, подвергнутый импичменту (оправдан).">
+                        <span class="label">Э. Джонсон <span class="years">1865–1869</span></span>
+                        <span class="label-outside">Э. Джонсон <span class="years-out">1865–1869</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 18. Улисс Грант: 1869–1877 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 36.2%; width: 3.3%;"
+                         data-civ="Улисс Грант"
+                         data-period="1869 – 1877"
+                         data-party="Республиканец"
+                         data-notes="Герой Гражданской войны. Реконструкция. Коррупционные скандалы. Первый национальный парк (Йеллоустоун).">
+                        <span class="label">Грант <span class="years">1869–1877</span></span>
+                        <span class="label-outside">Грант <span class="years-out">1869–1877</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 19. Резерфорд Хейс: 1877–1881 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 39.4%; width: 1.6%;"
+                         data-civ="Резерфорд Хейс"
+                         data-period="1877 – 1881"
+                         data-party="Республиканец"
+                         data-notes="Спорные выборы 1876 года. Конец Реконструкции. Реформа государственной службы.">
+                        <span class="label">Хейс <span class="years">1877–1881</span></span>
+                        <span class="label-outside">Хейс <span class="years-out">1877–1881</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 20. Джеймс Гарфилд: 1881 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 41.1%; width: 0.1%;"
+                         data-civ="Джеймс Гарфилд"
+                         data-period="1881"
+                         data-party="Республиканец"
+                         data-notes="Второй президент, убитый в должности. Смерть от огнестрельного ранения через 200 дней после вступления.">
+                        <span class="label">Гарфилд <span class="years">1881</span></span>
+                        <span class="label-outside">Гарфилд <span class="years-out">1881</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 21. Честер Артур: 1881–1885 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 41.1%; width: 1.6%;"
+                         data-civ="Честер Артур"
+                         data-period="1881 – 1885"
+                         data-party="Республиканец"
+                         data-notes="Закон Пендлтона о реформе государственной службы. Внезапно стал сторонником реформ.">
+                        <span class="label">Артур <span class="years">1881–1885</span></span>
+                        <span class="label-outside">Артур <span class="years-out">1881–1885</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 22. Гровер Кливленд: 1885–1889 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 42.7%; width: 1.6%;"
+                         data-civ="Гровер Кливленд"
+                         data-period="1885 – 1889"
+                         data-party="Демократ"
+                         data-notes="Единственный президент, избранный на два непоследовательных срока. Вето на законопроекты о пенсиях.">
+                        <span class="label">Кливленд <span class="years">1885–1889</span></span>
+                        <span class="label-outside">Кливленд <span class="years-out">1885–1889</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 23. Бенджамин Гаррисон: 1889–1893 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 44.3%; width: 1.6%;"
+                         data-civ="Бенджамин Гаррисон"
+                         data-period="1889 – 1893"
+                         data-party="Республиканец"
+                         data-notes="Внук Уильяма Гаррисона. Модернизация флота. Первый президент с электричеством в Белом доме.">
+                        <span class="label">Б. Гаррисон <span class="years">1889–1893</span></span>
+                        <span class="label-outside">Б. Гаррисон <span class="years-out">1889–1893</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 24. Гровер Кливленд: 1893–1897 (второй срок) ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 45.9%; width: 1.6%;"
+                         data-civ="Гровер Кливленд"
+                         data-period="1893 – 1897"
+                         data-party="Демократ"
+                         data-notes="Единственный президент с непоследовательными сроками. Паника 1893 года.">
+                        <span class="label">Кливленд <span class="years">1893–1897</span></span>
+                        <span class="label-outside">Кливленд <span class="years-out">1893–1897</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 25. Уильям Мак-Кинли: 1897–1901 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 47.6%; width: 1.6%;"
+                         data-civ="Уильям Мак-Кинли"
+                         data-period="1897 – 1901"
+                         data-party="Республиканец"
+                         data-notes="Испано-американская война. Присоединение Пуэрто-Рико, Гуама, Филиппин. Убит в 1901 г.">
+                        <span class="label">Мак-Кинли <span class="years">1897–1901</span></span>
+                        <span class="label-outside">Мак-Кинли <span class="years-out">1897–1901</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 26. Теодор Рузвельт: 1901–1909 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 49.2%; width: 3.3%;"
+                         data-civ="Теодор Рузвельт"
+                         data-period="1901 – 1909"
+                         data-party="Республиканец"
+                         data-notes="«Большая дубинка». Панамский канал. Антимонопольные дела. Национальные парки. Нобелевская премия мира.">
+                        <span class="label">Т. Рузвельт <span class="years">1901–1909</span></span>
+                        <span class="label-outside">Т. Рузвельт <span class="years-out">1901–1909</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 27. Уильям Тафт: 1909–1913 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 52.4%; width: 1.6%;"
+                         data-civ="Уильям Тафт"
+                         data-period="1909 – 1913"
+                         data-party="Республиканец"
+                         data-notes="Единственный президент, ставший председателем Верховного суда. Раскол в Республиканской партии.">
+                        <span class="label">Тафт <span class="years">1909–1913</span></span>
+                        <span class="label-outside">Тафт <span class="years-out">1909–1913</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 28. Вудро Вильсон: 1913–1921 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-right" style="left: 54.1%; width: 3.3%;"
+                         data-civ="Вудро Вильсон"
+                         data-period="1913 – 1921"
+                         data-party="Демократ"
+                         data-notes="Первая мировая война. «Четырнадцать пунктов». Создание Лиги Наций. Нобелевская премия мира.">
+                        <span class="label">Вильсон <span class="years">1913–1921</span></span>
+                        <span class="label-outside">Вильсон <span class="years-out">1913–1921</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 29. Уоррен Гардинг: 1921–1923 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 57.3%; width: 0.8%;"
+                         data-civ="Уоррен Гардинг"
+                         data-period="1921 – 1923"
+                         data-party="Республиканец"
+                         data-notes="Скандалы в администрации (Типот-Доум). Умер от сердечного приступа в 1923 г.">
+                        <span class="label">Гардинг <span class="years">1921–1923</span></span>
+                        <span class="label-outside">Гардинг <span class="years-out">1921–1923</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 30. Калвин Кулидж: 1923–1929 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 58.1%; width: 2.4%;"
+                         data-civ="Калвин Кулидж"
+                         data-period="1923 – 1929"
+                         data-party="Республиканец"
+                         data-notes="«Молчаливый Кэл». Экономический бум 1920-х. Налоговые реформы. Индейский закон о гражданстве.">
+                        <span class="label">Кулидж <span class="years">1923–1929</span></span>
+                        <span class="label-outside">Кулидж <span class="years-out">1923–1929</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 31. Герберт Гувер: 1929–1933 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 60.6%; width: 1.6%;"
+                         data-civ="Герберт Гувер"
+                         data-period="1929 – 1933"
+                         data-party="Республиканец"
+                         data-notes="Великая депрессия. Гуманитарная помощь Европе после Первой мировой. Безуспешные попытки борьбы с кризисом.">
+                        <span class="label">Гувер <span class="years">1929–1933</span></span>
+                        <span class="label-outside">Гувер <span class="years-out">1929–1933</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 32. Франклин Рузвельт: 1933–1945 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-right" style="left: 62.2%; width: 4.9%;"
+                         data-civ="Франклин Рузвельт"
+                         data-period="1933 – 1945"
+                         data-party="Демократ"
+                         data-notes="Новый курс. Вторая мировая война. Единственный президент, избранный на 4 срока. Скончался в должности.">
+                        <span class="label">Ф. Рузвельт <span class="years">1933–1945</span></span>
+                        <span class="label-outside">Ф. Рузвельт <span class="years-out">1933–1945</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 33. Гарри Трумэн: 1945–1953 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-right" style="left: 67.1%; width: 3.3%;"
+                         data-civ="Гарри Трумэн"
+                         data-period="1945 – 1953"
+                         data-party="Демократ"
+                         data-notes="Атомные бомбардировки. Начало Холодной войны. План Маршалла. Война в Корее. Берлинский воздушный мост.">
+                        <span class="label">Трумэн <span class="years">1945–1953</span></span>
+                        <span class="label-outside">Трумэн <span class="years-out">1945–1953</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 34. Дуайт Эйзенхауэр: 1953–1961 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 70.3%; width: 3.3%;"
+                         data-civ="Дуайт Эйзенхауэр"
+                         data-period="1953 – 1961"
+                         data-party="Республиканец"
+                         data-notes="Герой Второй мировой. Межштатные магистрали. Холодная война. Космическая гонка. Предупреждение о военно-промышленном комплексе.">
+                        <span class="label">Эйзенхауэр <span class="years">1953–1961</span></span>
+                        <span class="label-outside">Эйзенхауэр <span class="years-out">1953–1961</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 35. Джон Кеннеди: 1961–1963 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-right" style="left: 73.6%; width: 0.8%;"
+                         data-civ="Джон Кеннеди"
+                         data-period="1961 – 1963"
+                         data-party="Демократ"
+                         data-notes="Карибский кризис. Аполлон-11. Гражданские права. Убит в Далласе в 1963 г.">
+                        <span class="label">Кеннеди <span class="years">1961–1963</span></span>
+                        <span class="label-outside">Кеннеди <span class="years-out">1961–1963</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 36. Линдон Джонсон: 1963–1969 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-right" style="left: 74.4%; width: 2.4%;"
+                         data-civ="Линдон Джонсон"
+                         data-period="1963 – 1969"
+                         data-party="Демократ"
+                         data-notes="«Великое общество». Война во Вьетнаме. Закон о гражданских правах 1964 г. Не баллотировался на второй полный срок.">
+                        <span class="label">Л. Джонсон <span class="years">1963–1969</span></span>
+                        <span class="label-outside">Л. Джонсон <span class="years-out">1963–1969</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 37. Ричард Никсон: 1969–1974 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 76.8%; width: 2.0%;"
+                         data-civ="Ричард Никсон"
+                         data-period="1969 – 1974"
+                         data-party="Республиканец"
+                         data-notes="Вьетнамизация. Открытие Китая. Уотергейтский скандал. Единственный президент, ушедший в отставку.">
+                        <span class="label">Никсон <span class="years">1969–1974</span></span>
+                        <span class="label-outside">Никсон <span class="years-out">1969–1974</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 38. Джеральд Форд: 1974–1977 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 78.9%; width: 1.2%;"
+                         data-civ="Джеральд Форд"
+                         data-period="1974 – 1977"
+                         data-party="Республиканец"
+                         data-notes="Единственный президент, не избранный ни президентом, ни вице-президентом. Помиловал Никсона.">
+                        <span class="label">Форд <span class="years">1974–1977</span></span>
+                        <span class="label-outside">Форд <span class="years-out">1974–1977</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 39. Джимми Картер: 1977–1981 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-right" style="left: 80.1%; width: 1.6%;"
+                         data-civ="Джимми Картер"
+                         data-period="1977 – 1981"
+                         data-party="Демократ"
+                         data-notes="Кэмп-Дэвидские соглашения. Энергетический кризис. Иранский кризис с заложниками. Нобелевская премия мира (2002).">
+                        <span class="label">Картер <span class="years">1977–1981</span></span>
+                        <span class="label-outside">Картер <span class="years-out">1977–1981</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 40. Рональд Рейган: 1981–1989 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 81.7%; width: 3.3%;"
+                         data-civ="Рональд Рейган"
+                         data-period="1981 – 1989"
+                         data-party="Республиканец"
+                         data-notes="Рейганомика. Конец Холодной войны. «Звёздные войны». Иран-контрас. Убийство Обамы? Нет, покушение на Рейгана.">
+                        <span class="label">Рейган <span class="years">1981–1989</span></span>
+                        <span class="label-outside">Рейган <span class="years-out">1981–1989</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 41. Джордж Буш-старший: 1989–1993 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 84.9%; width: 1.6%;"
+                         data-civ="Джордж Буш-старший"
+                         data-period="1989 – 1993"
+                         data-party="Республиканец"
+                         data-notes="Падение Берлинской стены. Война в Заливе. Операция «Буря в пустыне». Окончание Холодной войны.">
+                        <span class="label">Буш-ст. <span class="years">1989–1993</span></span>
+                        <span class="label-outside">Буш-ст. <span class="years-out">1989–1993</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 42. Билл Клинтон: 1993–2001 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-9 label-right" style="left: 86.6%; width: 3.3%;"
+                         data-civ="Билл Клинтон"
+                         data-period="1993 – 2001"
+                         data-party="Демократ"
+                         data-notes="Экономический рост. Североамериканское соглашение о свободной торговле. Импичмент по делу Моники Левински (оправдан).">
+                        <span class="label">Клинтон <span class="years">1993–2001</span></span>
+                        <span class="label-outside">Клинтон <span class="years-out">1993–2001</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 43. Джордж Буш-младший: 2001–2009 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-right" style="left: 89.8%; width: 3.3%;"
+                         data-civ="Джордж Буш-младший"
+                         data-period="2001 – 2009"
+                         data-party="Республиканец"
+                         data-notes="Теракты 11 сентября. Война в Афганистане. Война в Ираке. Создание Министерства внутренней безопасности.">
+                        <span class="label">Буш-мл. <span class="years">2001–2009</span></span>
+                        <span class="label-outside">Буш-мл. <span class="years-out">2001–2009</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 44. Барак Обама: 2009–2017 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-9 label-right" style="left: 93.1%; width: 3.3%;"
+                         data-civ="Барак Обама"
+                         data-period="2009 – 2017"
+                         data-party="Демократ"
+                         data-notes="Первый афроамериканский президент. Закон о доступном здравоохранении (Obamacare). Убийство бен Ладена. Иранская ядерная сделка.">
+                        <span class="label">Обама <span class="years">2009–2017</span></span>
+                        <span class="label-outside">Обама <span class="years-out">2009–2017</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 45. Дональд Трамп: 2017–2021 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 96.3%; width: 1.6%;"
+                         data-civ="Дональд Трамп"
+                         data-period="2017 – 2021"
+                         data-party="Республиканец"
+                         data-notes="Налоговые реформы. Торговые войны с Китаем. Импичмент (дважды, оправдан). Штурм Капитолия (6 января 2021).">
+                        <span class="label">Трамп <span class="years">2017–2021</span></span>
+                        <span class="label-outside">Трамп <span class="years-out">2017–2021</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 46. Джо Байден: 2021–2025 ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-9 label-left" style="left: 97.9%; width: 1.6%;"
+                         data-civ="Джо Байден"
+                         data-period="2021 – 2025"
+                         data-party="Демократ"
+                         data-notes="Выход из Афганистана. Закон об инфляции и климате. Пандемия COVID-19. Поддержка Украины.">
+                        <span class="label">Байден <span class="years">2021–2025</span></span>
+                        <span class="label-outside">Байден <span class="years-out">2021–2025</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== 47. Дональд Трамп: 2025–н.в. ===== -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 99.6%; width: 0.4%;"
+                         data-civ="Дональд Трамп"
+                         data-period="2025 – н.в."
+                         data-party="Республиканец"
+                         data-notes="Второй срок. Возвращение в Белый дом. Торговые войны. Иммиграционная политика.">
+                        <span class="label">Трамп <span class="years">2025–н.в.</span></span>
+                        <span class="label-outside">Трамп <span class="years-out">2025–н.в.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- Фоновая шкала: Наша эра -->
+                <div class="civ-row">
+                    <div class="civ-bar label-inside" style="left: 0%; width: 100%; height: 10px; background: rgba(44, 62, 80, 0.08); border: none; box-shadow: none; cursor: default;">
+                        <span class="label" style="color: #5d6d7e; font-weight: 400; font-size: 0.6rem; text-shadow: none; opacity: 0.5;">Наша эра</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Легенда -->
+            <div class="legend">
+                <span class="legend-item"><span class="legend-color" style="background:#2c3e50;"></span> Отцы-основатели</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2980b9;"></span> Демократы-республиканцы</span>
+                <span class="legend-item"><span class="legend-color" style="background:#27ae60;"></span> Демократы (ранние)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#d4a017;"></span> Виги</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e67e22;"></span> Республиканцы (ранние)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#c0392b;"></span> Демократы (поздние)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#16a085;"></span> Республиканцы (XX век)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#8e44ad;"></span> Демократы (XX век)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#b03a2e;"></span> Республиканцы (современные)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2ecc71;"></span> Демократы (современные)</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            * Даты указаны в годах н.э. Отрезки на диаграмме отражают годы правления. Наведите курсор на отрезок для просмотра полной информации.
+        </div>
+    </div>
+
+    <script>
+        // Заполнение всплывающих подсказок данными из атрибутов data-*
+        document.addEventListener('DOMContentLoaded', function() {
+            const civBars = document.querySelectorAll('.civ-bar[data-civ]');
+            
+            civBars.forEach(bar => {
+                const tooltip = bar.querySelector('.tooltip');
+                if (!tooltip) return;
+
+                const name = bar.getAttribute('data-civ') || '—';
+                const period = bar.getAttribute('data-period') || '—';
+                const party = bar.getAttribute('data-party') || '—';
+                const notes = bar.getAttribute('data-notes') || '—';
+
+                tooltip.innerHTML = `
+                    <span class="tooltip-title">${name}</span>
+                    <span class="tooltip-divider"></span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📅 Период:</span>
+                        <span class="tooltip-value">${period}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">🗳️ Партия:</span>
+                        <span class="tooltip-value">${party}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📝 О периоде:</span>
+                        <span class="tooltip-value">${notes}</span>
+                    </span>
+                `;
+
+                bar.addEventListener('mouseenter', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const tooltipEl = this.querySelector('.tooltip');
+                    if (!tooltipEl) return;
+
+                    const tooltipWidth = tooltipEl.offsetWidth || 350;
+                    let left = rect.right + 15;
+                    let top = rect.top + (rect.height / 2) - 20;
+
+                    if (left + tooltipWidth > window.innerWidth - 20) {
+                        left = rect.left - tooltipWidth - 15;
+                    }
+                    if (top + 150 > window.innerHeight - 20) {
+                        top = window.innerHeight - 170;
+                    }
+                    if (top < 20) {
+                        top = 20;
+                    }
+
+                    tooltipEl.style.left = left + 'px';
+                    tooltipEl.style.top = top + 'px';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Временная шкала — Правители России</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0ebe3;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            padding: 24px 20px 30px;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #5d6d7e;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            border-left: 4px solid #b8860b;
+            padding-left: 16px;
+            background: #faf8f5;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.5;
+        }
+
+        /* ---------- ДИАГРАММА (линия времени) ---------- */
+        .timeline-section {
+            margin: 10px 0 10px;
+            padding-top: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-title small {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #6d7b8a;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 12px 0 6px 0;
+            width: 100%;
+            overflow: visible;
+        }
+
+        /* Сама шкала времени */
+        .timeline-axis {
+            position: relative;
+            height: 4px;
+            background: #2c3e50;
+            border-radius: 4px;
+            margin: 0 10px;
+            width: calc(100% - 20px);
+        }
+
+        /* Метки на оси */
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5d6d7e;
+            width: calc(100% - 20px);
+            position: relative;
+        }
+
+        .timeline-labels span {
+            white-space: nowrap;
+            font-weight: 500;
+            position: relative;
+            text-align: left;
+            transform: translateX(0);
+            padding-left: 2px;
+        }
+
+        /* Вертикальные засечки под метками */
+        .timeline-labels span::before {
+            content: '';
+            position: absolute;
+            top: -22px;
+            left: 0;
+            width: 2px;
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 1px;
+        }
+
+        /* Ряд для каждого правителя — отдельная строка */
+        .civ-row {
+            position: relative;
+            width: calc(100% - 20px);
+            height: 40px;
+            margin: 1px 10px 0 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Каждый отрезок — правитель */
+        .civ-bar {
+            position: absolute;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            padding-right: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: height 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.2px;
+            z-index: 2;
+            overflow: visible;
+        }
+
+        .civ-bar:hover {
+            height: 34px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        /* Всплывающая подсказка (tooltip) */
+        .civ-bar .tooltip {
+            display: none;
+            position: fixed;
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 450px;
+            width: max-content;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            pointer-events: none;
+            text-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: normal;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .civ-bar .tooltip .tooltip-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f1c40f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .civ-bar .tooltip .tooltip-row {
+            display: block;
+            padding: 2px 0;
+        }
+
+        .civ-bar .tooltip .tooltip-label {
+            font-weight: 600;
+            color: #bdc3c7;
+            display: inline-block;
+            min-width: 50px;
+        }
+
+        .civ-bar .tooltip .tooltip-value {
+            color: #ecf0f1;
+        }
+
+        .civ-bar .tooltip .tooltip-divider {
+            display: block;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 6px 0;
+        }
+
+        /* Показываем подсказку при наведении */
+        .civ-bar:hover .tooltip {
+            display: block;
+        }
+
+        /* Название и годы — вынесены справа (по умолчанию) */
+        .civ-bar .label {
+            display: none;
+        }
+
+        .civ-bar .label-outside {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1e2a36;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2px 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            border: 1px solid #ddd6cb;
+            text-shadow: none;
+            z-index: 3;
+        }
+
+        .civ-bar .label-outside .years-out {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: #5d6d7e;
+            margin-left: 4px;
+        }
+
+        /* Текст справа от отрезка */
+        .civ-bar.label-right .label {
+            display: none;
+        }
+
+        .civ-bar.label-right .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            left: calc(100% + 8px);
+        }
+
+        /* Текст слева от отрезка */
+        .civ-bar.label-left .label {
+            display: none;
+        }
+
+        .civ-bar.label-left .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            right: calc(100% + 8px);
+            left: auto;
+        }
+
+        /* Особый класс для "Нашей эры" — текст внутри, без выноски и без подсказки */
+        .civ-bar.label-inside .label {
+            display: flex;
+        }
+
+        .civ-bar.label-inside .label-outside {
+            display: none;
+        }
+
+        .civ-bar.label-inside .tooltip {
+            display: none !important;
+        }
+
+        .civ-bar.label-inside {
+            cursor: default;
+        }
+
+        /* Цвета для правителей по эпохам */
+        .civ-color-0 { background: #8e44ad; }  /* Рюриковичи (ранние) */
+        .civ-color-1 { background: #2980b9; }  /* Рюриковичи (поздние) */
+        .civ-color-2 { background: #27ae60; }  /* Рюриковичи (Москва) */
+        .civ-color-3 { background: #d4a017; }  /* Смутное время */
+        .civ-color-4 { background: #e67e22; }  /* Романовы (ранние) */
+        .civ-color-5 { background: #c0392b; }  /* Романовы (имперские) */
+        .civ-color-6 { background: #16a085; }  /* Романовы (поздние) */
+        .civ-color-7 { background: #e74c3c; }  /* Советский Союз */
+        .civ-color-8 { background: #2ecc71; }  /* Российская Федерация */
+
+        /* Легенда */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: #f8f6f2;
+            border-radius: 12px;
+            border: 1px solid #e0d8cd;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            color: #2c3e50;
+        }
+
+        .legend-color {
+            width: 18px;
+            height: 14px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            color: #6d7b8a;
+            font-size: 0.9rem;
+            text-align: right;
+            border-top: 1px solid #e0d8cd;
+            padding-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px 10px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .timeline-labels {
+                font-size: 0.65rem;
+            }
+            .timeline-labels span::before {
+                height: 8px;
+                top: -18px;
+            }
+            .civ-bar {
+                font-size: 0.55rem;
+                height: 22px;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            .civ-bar .label-outside {
+                font-size: 0.6rem;
+                padding: 1px 8px;
+            }
+            .civ-bar .label-outside .years-out {
+                font-size: 0.5rem;
+            }
+            .civ-row {
+                height: 34px;
+            }
+            .legend-item {
+                font-size: 0.6rem;
+            }
+            .legend-color {
+                width: 14px;
+                height: 10px;
+            }
+            .civ-bar .tooltip {
+                font-size: 0.7rem;
+                padding: 8px 12px;
+                max-width: 250px;
+            }
+            .civ-bar .tooltip .tooltip-title {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👑 Временная шкала — Правители России</h1>
+        <div class="subtitle">
+            От Рюрика до наших дней · годы правления · наведите курсор для подробной информации
+        </div>
+
+        <!-- ====== ЛИНЕЙНАЯ ДИАГРАММА ====== -->
+        <div class="timeline-section">
+            <div class="timeline-container">
+                <!-- Ось с делениями (от 800 до 2026 н.э.) -->
+                <div class="timeline-axis"></div>
+
+                <!-- Метки на оси -->
+                <div class="timeline-labels">
+                    <span>800</span>
+                    <span>900</span>
+                    <span>1000</span>
+                    <span>1100</span>
+                    <span>1200</span>
+                    <span>1300</span>
+                    <span>1400</span>
+                    <span>1500</span>
+                    <span>1600</span>
+                    <span>1700</span>
+                    <span>1800</span>
+                    <span>1900</span>
+                    <span>2000</span>
+                </div>
+
+                <!-- 
+                    Диапазон: от 800 до 2026 н.э. = 1226 лет
+                    left% = (год_начала - 800) / 1226 * 100
+                    width% = (год_конца - год_начала) / 1226 * 100
+                    
+                    Для большинства — текст справа (label-right)
+                    Для тех, у кого отрезок близко к правому краю — текст слева (label-left)
+                -->
+
+                <!-- ===== РЮРИКОВИЧИ (КИЕВСКАЯ РУСЬ) ===== -->
+
+                <!-- 1. Рюрик: 862–879 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 5.1%; width: 1.4%;"
+                         data-civ="Рюрик"
+                         data-period="862 – 879"
+                         data-title="Князь новгородский"
+                         data-notes="Основатель династии Рюриковичей. Призван на княжение в Новгород.">
+                        <span class="label">Рюрик <span class="years">862–879</span></span>
+                        <span class="label-outside">Рюрик <span class="years-out">862–879</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 2. Олег Вещий: 879–912 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 6.4%; width: 2.7%;"
+                         data-civ="Олег Вещий"
+                         data-period="879 – 912"
+                         data-title="Князь новгородский, киевский"
+                         data-notes="Объединил Новгород и Киев. Совершил поход на Константинополь (907).">
+                        <span class="label">Олег Вещий <span class="years">879–912</span></span>
+                        <span class="label-outside">Олег Вещий <span class="years-out">879–912</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 3. Игорь Рюрикович: 912–945 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 9.1%; width: 2.7%;"
+                         data-civ="Игорь Рюрикович"
+                         data-period="912 – 945"
+                         data-title="Князь киевский"
+                         data-notes="Сын Рюрика. Погиб при сборе дани от древлян.">
+                        <span class="label">Игорь <span class="years">912–945</span></span>
+                        <span class="label-outside">Игорь <span class="years-out">912–945</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 4. Ольга: 945–962 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 11.8%; width: 1.4%;"
+                         data-civ="Ольга"
+                         data-period="945 – 962"
+                         data-title="Княгиня киевская"
+                         data-notes="Первая русская правительница, принявшая христианство. Провела налоговую реформу.">
+                        <span class="label">Ольга <span class="years">945–962</span></span>
+                        <span class="label-outside">Ольга <span class="years-out">945–962</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 5. Святослав Игоревич: 962–972 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 13.2%; width: 0.8%;"
+                         data-civ="Святослав Игоревич"
+                         data-period="962 – 972"
+                         data-title="Князь киевский"
+                         data-notes="Великий полководец. Разгромил Хазарский каганат. Погиб в бою с печенегами.">
+                        <span class="label">Святослав <span class="years">962–972</span></span>
+                        <span class="label-outside">Святослав <span class="years-out">962–972</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 6. Владимир Великий: 978–1015 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 14.5%; width: 3.0%;"
+                         data-civ="Владимир I Великий"
+                         data-period="978 – 1015"
+                         data-title="Князь киевский"
+                         data-notes="Крестил Русь в 988 г. Заложил основы древнерусской государственности.">
+                        <span class="label">Владимир Великий <span class="years">978–1015</span></span>
+                        <span class="label-outside">Владимир Великий <span class="years-out">978–1015</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 7. Ярослав Мудрый: 1019–1054 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 17.9%; width: 2.9%;"
+                         data-civ="Ярослав Мудрый"
+                         data-period="1019 – 1054"
+                         data-title="Князь киевский"
+                         data-notes="Расцвет Киевской Руси. Строительство Софийского собора. Русская Правда.">
+                        <span class="label">Ярослав Мудрый <span class="years">1019–1054</span></span>
+                        <span class="label-outside">Ярослав Мудрый <span class="years-out">1019–1054</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 8. Владимир Мономах: 1113–1125 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 25.5%; width: 1.0%;"
+                         data-civ="Владимир Мономах"
+                         data-period="1113 – 1125"
+                         data-title="Великий князь киевский"
+                         data-notes="Последний значительный правитель единой Киевской Руси. Автор «Поучения».">
+                        <span class="label">Владимир Мономах <span class="years">1113–1125</span></span>
+                        <span class="label-outside">Владимир Мономах <span class="years-out">1113–1125</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ВЛАДИМИРО-СУЗДАЛЬСКАЯ РУСЬ ===== -->
+
+                <!-- 9. Андрей Боголюбский: 1157–1174 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 29.1%; width: 1.4%;"
+                         data-civ="Андрей Боголюбский"
+                         data-period="1157 – 1174"
+                         data-title="Великий князь владимирский"
+                         data-notes="Перенёс столицу во Владимир. Убит боярами-заговорщиками.">
+                        <span class="label">Андрей Боголюбский <span class="years">1157–1174</span></span>
+                        <span class="label-outside">Андрей Боголюбский <span class="years-out">1157–1174</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 10. Всеволод Большое Гнездо: 1176–1212 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 30.7%; width: 2.9%;"
+                         data-civ="Всеволод Большое Гнездо"
+                         data-period="1176 – 1212"
+                         data-title="Великий князь владимирский"
+                         data-notes="Период расцвета Владимиро-Суздальского княжества. Имел 12 детей.">
+                        <span class="label">Всеволод Большое Гнездо <span class="years">1176–1212</span></span>
+                        <span class="label-outside">Всеволод Б.Г. <span class="years-out">1176–1212</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 11. Александр Невский: 1252–1263 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 36.9%; width: 0.9%;"
+                         data-civ="Александр Невский"
+                         data-period="1252 – 1263"
+                         data-title="Великий князь владимирский"
+                         data-notes="Победы над шведами (Невская битва) и немцами (Ледовое побоище). Канонизирован.">
+                        <span class="label">Александр Невский <span class="years">1252–1263</span></span>
+                        <span class="label-outside">Александр Невский <span class="years-out">1252–1263</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== МОСКОВСКОЕ КНЯЖЕСТВО ===== -->
+
+                <!-- 12. Даниил Московский: 1276–1303 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 38.8%; width: 2.2%;"
+                         data-civ="Даниил Александрович"
+                         data-period="1276 – 1303"
+                         data-title="Князь московский"
+                         data-notes="Основатель московской линии Рюриковичей. Сын Александра Невского.">
+                        <span class="label">Даниил Московский <span class="years">1276–1303</span></span>
+                        <span class="label-outside">Даниил Московский <span class="years-out">1276–1303</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 13. Иван Калита: 1325–1340 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 42.8%; width: 1.2%;"
+                         data-civ="Иван I Калита"
+                         data-period="1325 – 1340"
+                         data-title="Князь московский, великий князь владимирский"
+                         data-notes="Усиление Московского княжества. Получил ярлык на великое княжение.">
+                        <span class="label">Иван Калита <span class="years">1325–1340</span></span>
+                        <span class="label-outside">Иван Калита <span class="years-out">1325–1340</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 14. Дмитрий Донской: 1359–1389 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 45.6%; width: 2.4%;"
+                         data-civ="Дмитрий Иванович Донской"
+                         data-period="1359 – 1389"
+                         data-title="Великий князь московский и владимирский"
+                         data-notes="Победа в Куликовской битве (1380). Первая серьёзная победа над Золотой Ордой.">
+                        <span class="label">Дмитрий Донской <span class="years">1359–1389</span></span>
+                        <span class="label-outside">Дмитрий Донской <span class="years-out">1359–1389</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 15. Василий II Тёмный: 1425–1462 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 51.0%; width: 3.0%;"
+                         data-civ="Василий II Тёмный"
+                         data-period="1425 – 1462"
+                         data-title="Великий князь московский"
+                         data-notes="Феодальная война. Ослеплён, но сохранил власть.">
+                        <span class="label">Василий II Тёмный <span class="years">1425–1462</span></span>
+                        <span class="label-outside">Василий II Тёмный <span class="years-out">1425–1462</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 16. Иван III Великий: 1462–1505 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 54.0%; width: 3.5%;"
+                         data-civ="Иван III Великий"
+                         data-period="1462 – 1505"
+                         data-title="Государь всея Руси"
+                         data-notes="Объединение русских земель. Стояние на Угре (1480) — конец ордынского ига.">
+                        <span class="label">Иван III Великий <span class="years">1462–1505</span></span>
+                        <span class="label-outside">Иван III Великий <span class="years-out">1462–1505</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 17. Василий III: 1505–1533 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 57.5%; width: 2.3%;"
+                         data-civ="Василий III"
+                         data-period="1505 – 1533"
+                         data-title="Государь всея Руси"
+                         data-notes="Завершил объединение русских земель. Отец Ивана Грозного.">
+                        <span class="label">Василий III <span class="years">1505–1533</span></span>
+                        <span class="label-outside">Василий III <span class="years-out">1505–1533</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== РУССКОЕ ЦАРСТВО ===== -->
+
+                <!-- 18. Иван IV Грозный: 1533–1584 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 59.8%; width: 4.2%;"
+                         data-civ="Иван IV Грозный"
+                         data-period="1533 – 1584"
+                         data-title="Первый русский царь"
+                         data-notes="Венчание на царство в 1547 г. Присоединение Казани, Астрахани. Опричнина.">
+                        <span class="label">Иван IV Грозный <span class="years">1533–1584</span></span>
+                        <span class="label-outside">Иван IV Грозный <span class="years-out">1533–1584</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 19. Фёдор Иоаннович: 1584–1598 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 64.0%; width: 1.1%;"
+                         data-civ="Фёдор Иоаннович"
+                         data-period="1584 – 1598"
+                         data-title="Царь"
+                         data-notes="Последний царь из династии Рюриковичей. Сын Ивана Грозного.">
+                        <span class="label">Фёдор Иоаннович <span class="years">1584–1598</span></span>
+                        <span class="label-outside">Фёдор Иоаннович <span class="years-out">1584–1598</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 20. Борис Годунов: 1598–1605 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-left" style="left: 65.1%; width: 0.6%;"
+                         data-civ="Борис Годунов"
+                         data-period="1598 – 1605"
+                         data-title="Царь"
+                         data-notes="Избран на царство. Начало Смутного времени. Умер внезапно.">
+                        <span class="label">Борис Годунов <span class="years">1598–1605</span></span>
+                        <span class="label-outside">Борис Годунов <span class="years-out">1598–1605</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 21. Смутное время (Лжедмитрии, Шуйский): 1605–1613 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-left" style="left: 65.7%; width: 0.7%;"
+                         data-civ="Смутное время"
+                         data-period="1605 – 1613"
+                         data-title="Лжедмитрий I, Лжедмитрий II, Василий Шуйский"
+                         data-notes="Период политического кризиса. Интервенция. Окончание Смуты — избрание Михаила Романова.">
+                        <span class="label">Смутное время <span class="years">1605–1613</span></span>
+                        <span class="label-outside">Смутное время <span class="years-out">1605–1613</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ДИНАСТИЯ РОМАНОВЫХ ===== -->
+
+                <!-- 22. Михаил Фёдорович: 1613–1645 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-left" style="left: 66.3%; width: 2.6%;"
+                         data-civ="Михаил Фёдорович"
+                         data-period="1613 – 1645"
+                         data-title="Первый царь из династии Романовых"
+                         data-notes="Избран на царство Земским собором. Основатель династии.">
+                        <span class="label">Михаил Романов <span class="years">1613–1645</span></span>
+                        <span class="label-outside">Михаил Романов <span class="years-out">1613–1645</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 23. Алексей Михайлович: 1645–1676 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-left" style="left: 68.9%; width: 2.5%;"
+                         data-civ="Алексей Михайлович"
+                         data-period="1645 – 1676"
+                         data-title="Царь"
+                         data-notes="«Тишайший». Соборное уложение 1649 г. Воссоединение Украины с Россией.">
+                        <span class="label">Алексей Михайлович <span class="years">1645–1676</span></span>
+                        <span class="label-outside">Алексей Михайлович <span class="years-out">1645–1676</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 24. Пётр I Великий: 1682–1725 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-left" style="left: 71.9%; width: 3.5%;"
+                         data-civ="Пётр I Великий"
+                         data-period="1682 – 1725"
+                         data-title="Первый император Всероссийский"
+                         data-notes="Великие реформы. Окно в Европу. Российская империя с 1721 г.">
+                        <span class="label">Пётр I Великий <span class="years">1682–1725</span></span>
+                        <span class="label-outside">Пётр I Великий <span class="years-out">1682–1725</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== РОССИЙСКАЯ ИМПЕРИЯ ===== -->
+
+                <!-- 25. Екатерина II Великая: 1762–1796 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 78.5%; width: 2.8%;"
+                         data-civ="Екатерина II Великая"
+                         data-period="1762 – 1796"
+                         data-title="Императрица Всероссийская"
+                         data-notes="Просвещённый абсолютизм. Расширение границ империи. Фаворитизм.">
+                        <span class="label">Екатерина II Великая <span class="years">1762–1796</span></span>
+                        <span class="label-outside">Екатерина II <span class="years-out">1762–1796</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 26. Александр I: 1801–1825 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 81.6%; width: 2.0%;"
+                         data-civ="Александр I"
+                         data-period="1801 – 1825"
+                         data-title="Император Всероссийский"
+                         data-notes="Победа над Наполеоном. Венский конгресс. Священный союз.">
+                        <span class="label">Александр I <span class="years">1801–1825</span></span>
+                        <span class="label-outside">Александр I <span class="years-out">1801–1825</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 27. Николай I: 1825–1855 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 83.6%; width: 2.5%;"
+                         data-civ="Николай I"
+                         data-period="1825 – 1855"
+                         data-title="Император Всероссийский"
+                         data-notes="Жандарм Европы. Крымская война. Укрепление самодержавия.">
+                        <span class="label">Николай I <span class="years">1825–1855</span></span>
+                        <span class="label-outside">Николай I <span class="years-out">1825–1855</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 28. Александр II Освободитель: 1855–1881 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 86.1%; width: 2.1%;"
+                         data-civ="Александр II Освободитель"
+                         data-period="1855 – 1881"
+                         data-title="Император Всероссийский"
+                         data-notes="Отмена крепостного права (1861). Реформы. Убит народовольцами.">
+                        <span class="label">Александр II <span class="years">1855–1881</span></span>
+                        <span class="label-outside">Александр II <span class="years-out">1855–1881</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 29. Александр III: 1881–1894 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 88.2%; width: 1.1%;"
+                         data-civ="Александр III"
+                         data-period="1881 – 1894"
+                         data-title="Император Всероссийский"
+                         data-notes="Контрреформы. Миротворец. Укрепление самодержавия.">
+                        <span class="label">Александр III <span class="years">1881–1894</span></span>
+                        <span class="label-outside">Александр III <span class="years-out">1881–1894</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 30. Николай II: 1894–1917 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 89.3%; width: 1.9%;"
+                         data-civ="Николай II"
+                         data-period="1894 – 1917"
+                         data-title="Последний российский император"
+                         data-notes="Революция 1905 г. Первая мировая война. Февральская революция 1917 г. Расстрелян.">
+                        <span class="label">Николай II <span class="years">1894–1917</span></span>
+                        <span class="label-outside">Николай II <span class="years-out">1894–1917</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== СОВЕТСКИЙ СОЮЗ ===== -->
+
+                <!-- 31. Владимир Ленин: 1917–1924 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 91.3%; width: 0.6%;"
+                         data-civ="Владимир Ленин"
+                         data-period="1917 – 1924"
+                         data-title="Председатель СНК РСФСР/СССР"
+                         data-notes="Вождь Октябрьской революции. Основатель Советского государства.">
+                        <span class="label">В.И. Ленин <span class="years">1917–1924</span></span>
+                        <span class="label-outside">Ленин <span class="years-out">1917–1924</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 32. Иосиф Сталин: 1924–1953 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 91.9%; width: 2.4%;"
+                         data-civ="Иосиф Сталин"
+                         data-period="1924 – 1953"
+                         data-title="Генеральный секретарь ЦК ВКП(б)/КПСС"
+                         data-notes="Индустриализация, коллективизация. Великая Отечественная война. Культ личности.">
+                        <span class="label">И.В. Сталин <span class="years">1924–1953</span></span>
+                        <span class="label-outside">Сталин <span class="years-out">1924–1953</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 33. Никита Хрущёв: 1953–1964 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 94.3%; width: 0.9%;"
+                         data-civ="Никита Хрущёв"
+                         data-period="1953 – 1964"
+                         data-title="Первый секретарь ЦК КПСС"
+                         data-notes="«Оттепель». Разоблачение культа личности. Карибский кризис.">
+                        <span class="label">Н.С. Хрущёв <span class="years">1953–1964</span></span>
+                        <span class="label-outside">Хрущёв <span class="years-out">1953–1964</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 34. Леонид Брежнев: 1964–1982 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 95.2%; width: 1.5%;"
+                         data-civ="Леонид Брежнев"
+                         data-period="1964 – 1982"
+                         data-title="Генеральный секретарь ЦК КПСС"
+                         data-notes="Эпоха застоя. Развитие военно-промышленного комплекса. Афганская война.">
+                        <span class="label">Л.И. Брежнев <span class="years">1964–1982</span></span>
+                        <span class="label-outside">Брежнев <span class="years-out">1964–1982</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 35. Михаил Горбачёв: 1985–1991 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 96.9%; width: 0.5%;"
+                         data-civ="Михаил Горбачёв"
+                         data-period="1985 – 1991"
+                         data-title="Генеральный секретарь ЦК КПСС, Президент СССР"
+                         data-notes="Перестройка, гласность. Распад СССР в 1991 г.">
+                        <span class="label">М.С. Горбачёв <span class="years">1985–1991</span></span>
+                        <span class="label-outside">Горбачёв <span class="years-out">1985–1991</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== РОССИЙСКАЯ ФЕДЕРАЦИЯ ===== -->
+
+                <!-- 36. Борис Ельцин: 1991–1999 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 97.4%; width: 0.7%;"
+                         data-civ="Борис Ельцин"
+                         data-period="1991 – 1999"
+                         data-title="Президент Российской Федерации"
+                         data-notes="Первый президент РФ. Конституция 1993 г. Дефолт 1998 г.">
+                        <span class="label">Б.Н. Ельцин <span class="years">1991–1999</span></span>
+                        <span class="label-outside">Ельцин <span class="years-out">1991–1999</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 37. Владимир Путин: 2000–2008, 2012–н.в. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 98.1%; width: 1.8%;"
+                         data-civ="Владимир Путин"
+                         data-period="2000 – 2008, 2012 – н.в."
+                         data-title="Президент Российской Федерации"
+                         data-notes="Два срока в 2000–2008, премьер-министр в 2008–2012, с 2012 — президент.">
+                        <span class="label">В.В. Путин <span class="years">2000–2008, 2012–н.в.</span></span>
+                        <span class="label-outside">Путин <span class="years-out">2000–2008, 2012–н.в.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 38. Дмитрий Медведев: 2008–2012 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 99.1%; width: 0.3%;"
+                         data-civ="Дмитрий Медведев"
+                         data-period="2008 – 2012"
+                         data-title="Президент Российской Федерации"
+                         data-notes="Президент в 2008–2012 гг. Затем — премьер-министр.">
+                        <span class="label">Д.А. Медведев <span class="years">2008–2012</span></span>
+                        <span class="label-outside">Медведев <span class="years-out">2008–2012</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- Фоновая шкала: Наша эра -->
+                <div class="civ-row">
+                    <div class="civ-bar label-inside" style="left: 0%; width: 100%; height: 10px; background: rgba(44, 62, 80, 0.08); border: none; box-shadow: none; cursor: default;">
+                        <span class="label" style="color: #5d6d7e; font-weight: 400; font-size: 0.65rem; text-shadow: none; opacity: 0.5;">Наша эра</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Легенда -->
+            <div class="legend">
+                <span class="legend-item"><span class="legend-color" style="background:#8e44ad;"></span> Рюриковичи (ранние)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2980b9;"></span> Рюриковичи (расцвет)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#27ae60;"></span> Рюриковичи (Москва)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#d4a017;"></span> Смутное время</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e67e22;"></span> Романовы (ранние)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#c0392b;"></span> Романовы (имперские)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#16a085;"></span> Романовы (поздние)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e74c3c;"></span> Советский Союз</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2ecc71;"></span> Российская Федерация</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            * Даты указаны в годах н.э. Отрезки на диаграмме отражают годы правления. «Наша эра» показана для понимания масштаба времени. Наведите курсор на отрезок для просмотра полной информации.
+        </div>
+    </div>
+
+    <script>
+        // Заполнение всплывающих подсказок данными из атрибутов data-*
+        document.addEventListener('DOMContentLoaded', function() {
+            const civBars = document.querySelectorAll('.civ-bar[data-civ]');
+            
+            civBars.forEach(bar => {
+                const tooltip = bar.querySelector('.tooltip');
+                if (!tooltip) return;
+
+                const name = bar.getAttribute('data-civ') || '—';
+                const period = bar.getAttribute('data-period') || '—';
+                const title = bar.getAttribute('data-title') || '—';
+                const notes = bar.getAttribute('data-notes') || '—';
+
+                tooltip.innerHTML = `
+                    <span class="tooltip-title">${name}</span>
+                    <span class="tooltip-divider"></span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📅 Период:</span>
+                        <span class="tooltip-value">${period}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">👑 Титул:</span>
+                        <span class="tooltip-value">${title}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📝 О периоде:</span>
+                        <span class="tooltip-value">${notes}</span>
+                    </span>
+                `;
+
+                bar.addEventListener('mouseenter', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const tooltipEl = this.querySelector('.tooltip');
+                    if (!tooltipEl) return;
+
+                    const tooltipWidth = tooltipEl.offsetWidth || 350;
+                    let left = rect.right + 15;
+                    let top = rect.top + (rect.height / 2) - 20;
+
+                    if (left + tooltipWidth > window.innerWidth - 20) {
+                        left = rect.left - tooltipWidth - 15;
+                    }
+                    if (top + 150 > window.innerHeight - 20) {
+                        top = window.innerHeight - 170;
+                    }
+                    if (top < 20) {
+                        top = 20;
+                    }
+
+                    tooltipEl.style.left = left + 'px';
+                    tooltipEl.style.top = top + 'px';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

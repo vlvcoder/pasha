@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Хронологические диаграммы</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0ebe3;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.12);
+            padding: 40px 48px 48px;
+            transition: box-shadow 0.3s;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1e2a36;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header h1 span {
+            background: linear-gradient(135deg, #b8860b, #d4a017);
+            padding: 4px 16px;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .header .subtitle {
+            color: #5d6d7e;
+            font-size: 1.05rem;
+            margin-top: 8px;
+            border-left: 4px solid #b8860b;
+            padding-left: 18px;
+            background: #faf8f5;
+            border-radius: 0 10px 10px 0;
+            display: inline-block;
+            padding: 6px 20px 6px 18px;
+        }
+
+        .header .subtitle small {
+            font-size: 0.85rem;
+            color: #8a9aa8;
+        }
+
+        /* ===== СЕТКА МЕНЮ ===== */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 8px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 24px;
+            background: #f8f6f2;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: #1e2a36;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background: #ffffff;
+            border-color: #b8860b;
+            box-shadow: 0 8px 28px rgba(184, 134, 11, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .menu-item:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 10px rgba(184, 134, 11, 0.1);
+        }
+
+        .menu-item .icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            background: #e8e3da;
+            transition: background 0.25s;
+        }
+
+        .menu-item:hover .icon {
+            background: #ede8de;
+        }
+
+        .menu-item .icon svg {
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
+
+        .menu-item .info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .menu-item .info .label {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1e2a36;
+            letter-spacing: -0.2px;
+        }
+
+        .menu-item .info .desc {
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: #6d7b8a;
+            margin-top: 2px;
+        }
+
+        .menu-item .badge {
+            flex-shrink: 0;
+            background: #d4c9b8;
+            color: #3d2f1f;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .menu-item .arrow {
+            flex-shrink: 0;
+            color: #b0a898;
+            font-size: 1.2rem;
+            transition: transform 0.2s, color 0.2s;
+        }
+
+        .menu-item:hover .arrow {
+            transform: translateX(4px);
+            color: #b8860b;
+        }
+
+        /* ===== ЦВЕТА ИКОНОК ===== */
+        .menu-item .icon.globe {
+            background: #d4e6f1;
+            color: #1a5276;
+        }
+
+        .menu-item .icon.globe-new {
+            background: #d5f5e3;
+            color: #1e8449;
+        }
+
+        .menu-item .icon.flag-england {
+            background: #fadbd8;
+            color: #922b21;
+        }
+
+        .menu-item .icon.flag-france {
+            background: #d4e6f1;
+            color: #1a5276;
+        }
+
+        .menu-item .icon.flag-germany {
+            background: #fdebd0;
+            color: #935e38;
+        }
+
+        .menu-item .icon.flag-russia {
+            background: #d4e6f1;
+            color: #1a5276;
+        }
+
+        .menu-item .icon.flag-usa {
+            background: #d4e6f1;
+            color: #1a5276;
+        }
+
+        .menu-item .icon.flag-england svg {
+            width: 34px;
+            height: 34px;
+        }
+
+        /* ===== ФУТЕР ===== */
+        .footer {
+            margin-top: 36px;
+            padding-top: 20px;
+            border-top: 1px solid #e8e3da;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            color: #6d7b8a;
+            font-size: 0.85rem;
+        }
+
+        .footer .count {
+            background: #f0ece6;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-weight: 500;
+            color: #4a5a6a;
+        }
+
+        .footer .hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer .hint .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #b8860b;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px 16px 28px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header .subtitle {
+                font-size: 0.9rem;
+                padding: 4px 14px 4px 14px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .menu-item {
+                padding: 14px 18px;
+                font-size: 0.95rem;
+            }
+
+            .menu-item .icon {
+                width: 42px;
+                height: 42px;
+                font-size: 1.4rem;
+            }
+
+            .menu-item .icon svg {
+                width: 26px;
+                height: 26px;
+            }
+
+            .footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .header h1 span {
+                font-size: 0.7rem;
+                padding: 2px 12px;
+            }
+
+            .menu-item .info .label {
+                font-size: 0.9rem;
+            }
+
+            .menu-item .info .desc {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- ===== ЗАГОЛОВОК ===== -->
+        <div class="header">
+            <h1>
+                📅 Хронологические диаграммы
+                <span>Гант</span>
+            </h1>
+            <div class="subtitle">
+                цивилизаций, империй и правителей &nbsp;<small>· интерактивные временные шкалы</small>
+            </div>
+        </div>
+
+        <!-- ===== МЕНЮ ===== -->
+        <div class="menu-grid">
+
+            <!-- 1. Древний мир (8000–500) -->
+            <a href="./chronoOldWorld.html" target="_blank" class="menu-item" data-target="deepseek_html_ancient_world">
+                <span class="icon globe">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                </span>
+                <span class="info">
+                    <span class="label">🏛️ Древний мир</span>
+                    <span class="desc">Цивилизации и империи · Шумер, Египет, Рим, Греция</span>
+                </span>
+                <span class="badge">14</span>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- 2. Новый мир (Средневековье–Новое время) -->
+            <a href="./chronoNewWorld.html" target="_blank" class="menu-item" data-target="deepseek_html_new_world">
+                <span class="icon globe-new">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                </span>
+                <span class="info">
+                    <span class="label">🌍 Новый мир</span>
+                    <span class="desc">Средневековье и Новое время · империи и государства</span>
+                </span>
+                <span class="badge">15</span>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- 3. Англия / Великобритания -->
+            <a href="./chronoEngland.html" target="_blank" class="menu-item" data-target="deepseek_html_england">
+                <span class="icon flag-england">
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="64" height="64" fill="#fff" />
+                        <rect x="0" y="28" width="64" height="8" fill="#c8102e" />
+                        <rect x="28" y="0" width="8" height="64" fill="#c8102e" />
+                        <rect x="0" y="18" width="64" height="6" fill="#c8102e" />
+                        <rect x="18" y="0" width="6" height="64" fill="#c8102e" />
+                        <rect x="0" y="38" width="64" height="6" fill="#c8102e" />
+                        <rect x="38" y="0" width="6" height="64" fill="#c8102e" />
+                    </svg>
+                </span>
+                <span class="info">
+                    <span class="label">🇬🇧 Англия / Великобритания</span>
+                    <span class="desc">Правители Британии · от англосаксов до Карла III</span>
+                </span>
+                <span class="badge">46</span>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- 4. Франция -->
+            <a href="./chronoFrance.html" target="_blank" class="menu-item" data-target="deepseek_html_france">
+                <span class="icon flag-france">
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="64" height="64" fill="#fff" />
+                        <rect x="0" y="0" width="21" height="64" fill="#0055a4" />
+                        <rect x="43" y="0" width="21" height="64" fill="#ef4135" />
+                    </svg>
+                </span>
+                <span class="info">
+                    <span class="label">🇫🇷 Франция</span>
+                    <span class="desc">Правители Франции · от Карла Великого до Пятой республики</span>
+                </span>
+                <span class="badge">48</span>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- 5. Германия -->
+            <a href="./chronoGermany.html" target="_blank" class="menu-item" data-target="deepseek_html_germany">
+                <span class="icon flag-germany">
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="64" height="64" fill="#fff" />
+                        <rect x="0" y="0" width="64" height="21" fill="#000000" />
+                        <rect x="0" y="21" width="64" height="21" fill="#dd0000" />
+                        <rect x="0" y="42" width="64" height="22" fill="#ffce00" />
+                    </svg>
+                </span>
+                <span class="info">
+                    <span class="label">🇩🇪 Германия</span>
+                    <span class="desc">Правители Германии · от Восточно-Франкского до ФРГ</span>
+                </span>
+                <span class="badge">53</span>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- 6. Россия -->
+            <a href="./chronoRussia.html" target="_blank" class="menu-item" data-target="deepseek_html_russia">
+                <span class="icon flag-russia">
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="64" height="64" fill="#fff" />
+                        <rect x="0" y="0" width="64" height="21" fill="#ffffff" />
+                        <rect x="0" y="21" width="64" height="21" fill="#0039a6" />
+                        <rect x="0" y="42" width="64" height="22" fill="#d52b1e" />
+                    </svg>
+                </span>
+                <span class="info">
+                    <span class="label">🇷🇺 Россия</span>
+                    <span class="desc">Правители России · от Рюрика до наших дней</span>
+                </span>
+                <span class="badge">38</span>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- 7. США -->
+            <a href="./chronoUsa.html" target="_blank" class="menu-item" data-target="deepseek_html_usa">
+                <span class="icon flag-usa">
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="64" height="64" fill="#fff" />
+                        <rect x="0" y="0" width="64" height="34" fill="#b22234" />
+                        <rect x="0" y="0" width="64" height="6" fill="#fff" />
+                        <rect x="0" y="12" width="64" height="6" fill="#fff" />
+                        <rect x="0" y="24" width="64" height="6" fill="#fff" />
+                        <rect x="0" y="36" width="64" height="6" fill="#fff" />
+                        <rect x="0" y="48" width="64" height="6" fill="#fff" />
+                        <rect x="0" y="57" width="64" height="7" fill="#b22234" />
+                        <rect x="0" y="34" width="64" height="6" fill="#b22234" />
+                        <rect x="0" y="46" width="64" height="6" fill="#b22234" />
+                        <rect x="0" y="0" width="28" height="34" fill="#3c3b6e" />
+                        <circle cx="6" cy="5" r="1.5" fill="#fff" />
+                        <circle cx="12" cy="5" r="1.5" fill="#fff" />
+                        <circle cx="18" cy="5" r="1.5" fill="#fff" />
+                        <circle cx="24" cy="5" r="1.5" fill="#fff" />
+                        <circle cx="9" cy="11" r="1.5" fill="#fff" />
+                        <circle cx="15" cy="11" r="1.5" fill="#fff" />
+                        <circle cx="21" cy="11" r="1.5" fill="#fff" />
+                        <circle cx="6" cy="17" r="1.5" fill="#fff" />
+                        <circle cx="12" cy="17" r="1.5" fill="#fff" />
+                        <circle cx="18" cy="17" r="1.5" fill="#fff" />
+                        <circle cx="24" cy="17" r="1.5" fill="#fff" />
+                        <circle cx="9" cy="23" r="1.5" fill="#fff" />
+                        <circle cx="15" cy="23" r="1.5" fill="#fff" />
+                        <circle cx="21" cy="23" r="1.5" fill="#fff" />
+                        <circle cx="6" cy="29" r="1.5" fill="#fff" />
+                        <circle cx="12" cy="29" r="1.5" fill="#fff" />
+                        <circle cx="18" cy="29" r="1.5" fill="#fff" />
+                        <circle cx="24" cy="29" r="1.5" fill="#fff" />
+                    </svg>
+                </span>
+                <span class="info">
+                    <span class="label">🇺🇸 США</span>
+                    <span class="desc">Президенты США · от Вашингтона до наших дней</span>
+                </span>
+                <span class="badge">47</span>
+                <span class="arrow">→</span>
+            </a>
+
+        </div>
+
+        <!-- ===== ФУТЕР ===== -->
+        <div class="footer">
+            <span class="count">📊 7 диаграмм</span>
+            <span class="hint">
+                <span class="dot"></span>
+                кликните по пункту для открытия
+            </span>
+            <span style="color:#8a9aa8;">HTML · CSS · JavaScript</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const items = document.querySelectorAll('.menu-item');
+
+            // items.forEach(item => {
+            //     item.addEventListener('click', function (e) {
+            //         e.preventDefault();
+
+            //         const target = this.getAttribute('data-target');
+            //         if (!target) return;
+
+            //         // Карта соответствия пунктов меню и названий файлов
+            //         const fileMap = {
+            //             'deepseek_html_ancient_world': 'Древний мир',
+            //             'deepseek_html_new_world': 'Новый мир',
+            //             'deepseek_html_england': 'Англия',
+            //             'deepseek_html_france': 'Франция',
+            //             'deepseek_html_germany': 'Германия',
+            //             'deepseek_html_russia': 'Россия',
+            //             'deepseek_html_usa': 'США'
+            //         };
+
+            //         // В реальном проекте здесь был бы переход на страницу:
+            //         // window.location.href = target + '.html';
+            //         // Но поскольку файлы не загружены на сервер, показываем уведомление
+
+            //         const name = fileMap[target] || target;
+            //         showNotification(name);
+            //     });
+            // });
+
+            // Функция для отображения уведомления
+            function showNotification(name) {
+                // Удаляем предыдущее уведомление
+                const old = document.querySelector('.toast-notification');
+                if (old) old.remove();
+
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification';
+                toast.innerHTML = `
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <span style="font-size:1.8rem;">📂</span>
+                        <div>
+                            <div style="font-weight:600;font-size:1.05rem;">${name}</div>
+                            <div style="font-size:0.85rem;opacity:0.8;">Файл: ${name.replace(/\s/g, '_')}.html</div>
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;opacity:0.6;padding:0 4px;">✕</button>
+                `;
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: #1e2a36;
+                    color: #fff;
+                    padding: 16px 28px;
+                    border-radius: 16px;
+                    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 24px;
+                    min-width: 280px;
+                    max-width: 90%;
+                    font-family: 'Segoe UI', Roboto, sans-serif;
+                    animation: slideUp 0.4s ease;
+                `;
+                document.body.appendChild(toast);
+
+                // Автоматическое исчезновение через 4 секунды
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.style.opacity = '0';
+                        toast.style.transform = 'translateX(-50%) translateY(20px)';
+                        toast.style.transition = 'opacity 0.4s, transform 0.4s';
+                        setTimeout(() => toast.remove(), 400);
+                    }
+                }, 4000);
+
+                // Добавляем стиль для анимации, если его ещё нет
+                if (!document.getElementById('toast-style')) {
+                    const style = document.createElement('style');
+                    style.id = 'toast-style';
+                    style.textContent = `
+                        @keyframes slideUp {
+                            from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+                            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                // Закрытие по клику вне уведомления
+                const closeHandler = function (e) {
+                    if (!toast.contains(e.target)) {
+                        toast.remove();
+                        document.removeEventListener('click', closeHandler);
+                    }
+                };
+                // Небольшая задержка, чтобы не сработало на клике по пункту меню
+                setTimeout(() => {
+                    document.addEventListener('click', closeHandler);
+                }, 100);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

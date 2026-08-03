@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Временная шкала — Правители Британии</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0ebe3;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            padding: 24px 20px 30px;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #5d6d7e;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            border-left: 4px solid #b8860b;
+            padding-left: 16px;
+            background: #faf8f5;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.5;
+        }
+
+        /* ---------- ДИАГРАММА (линия времени) ---------- */
+        .timeline-section {
+            margin: 10px 0 10px;
+            padding-top: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-title small {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #6d7b8a;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 12px 0 6px 0;
+            width: 100%;
+            overflow: visible;
+        }
+
+        /* Сама шкала времени */
+        .timeline-axis {
+            position: relative;
+            height: 4px;
+            background: #2c3e50;
+            border-radius: 4px;
+            margin: 0 10px;
+            width: calc(100% - 20px);
+        }
+
+        /* Метки на оси */
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5d6d7e;
+            width: calc(100% - 20px);
+            position: relative;
+        }
+
+        .timeline-labels span {
+            white-space: nowrap;
+            font-weight: 500;
+            position: relative;
+            text-align: left;
+            transform: translateX(0);
+            padding-left: 2px;
+        }
+
+        /* Вертикальные засечки под метками */
+        .timeline-labels span::before {
+            content: '';
+            position: absolute;
+            top: -22px;
+            left: 0;
+            width: 2px;
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 1px;
+        }
+
+        /* Ряд для каждого правителя — отдельная строка */
+        .civ-row {
+            position: relative;
+            width: calc(100% - 20px);
+            height: 36px;
+            margin: 1px 10px 0 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Каждый отрезок — правитель */
+        .civ-bar {
+            position: absolute;
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            padding-right: 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: height 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.2px;
+            z-index: 2;
+            overflow: visible;
+        }
+
+        .civ-bar:hover {
+            height: 32px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        /* Всплывающая подсказка (tooltip) */
+        .civ-bar .tooltip {
+            display: none;
+            position: fixed;
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 450px;
+            width: max-content;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            pointer-events: none;
+            text-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: normal;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .civ-bar .tooltip .tooltip-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f1c40f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .civ-bar .tooltip .tooltip-row {
+            display: block;
+            padding: 2px 0;
+        }
+
+        .civ-bar .tooltip .tooltip-label {
+            font-weight: 600;
+            color: #bdc3c7;
+            display: inline-block;
+            min-width: 50px;
+        }
+
+        .civ-bar .tooltip .tooltip-value {
+            color: #ecf0f1;
+        }
+
+        .civ-bar .tooltip .tooltip-divider {
+            display: block;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 6px 0;
+        }
+
+        /* Показываем подсказку при наведении */
+        .civ-bar:hover .tooltip {
+            display: block;
+        }
+
+        /* Название и годы — вынесены справа (по умолчанию) */
+        .civ-bar .label {
+            display: none;
+        }
+
+        .civ-bar .label-outside {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1e2a36;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2px 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+            border: 1px solid #ddd6cb;
+            text-shadow: none;
+            z-index: 3;
+        }
+
+        .civ-bar .label-outside .years-out {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: #5d6d7e;
+            margin-left: 4px;
+        }
+
+        /* Текст справа от отрезка */
+        .civ-bar.label-right .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            left: calc(100% + 8px);
+        }
+
+        /* Текст слева от отрезка */
+        .civ-bar.label-left .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            right: calc(100% + 8px);
+            left: auto;
+        }
+
+        /* Особый класс для "Нашей эры" — текст внутри, без выноски и без подсказки */
+        .civ-bar.label-inside .label {
+            display: flex;
+        }
+
+        .civ-bar.label-inside .label-outside {
+            display: none;
+        }
+
+        .civ-bar.label-inside .tooltip {
+            display: none !important;
+        }
+
+        .civ-bar.label-inside {
+            cursor: default;
+        }
+
+        /* Цвета для правителей по эпохам */
+        .civ-color-0 {
+            background: #8e44ad;
+        }
+
+        /* Англосаксонские короли */
+        .civ-color-1 {
+            background: #2980b9;
+        }
+
+        /* Нормандская династия */
+        .civ-color-2 {
+            background: #27ae60;
+        }
+
+        /* Плантагенеты */
+        .civ-color-3 {
+            background: #d4a017;
+        }
+
+        /* Ланкастеры и Йорки */
+        .civ-color-4 {
+            background: #e67e22;
+        }
+
+        /* Тюдоры */
+        .civ-color-5 {
+            background: #c0392b;
+        }
+
+        /* Стюарты */
+        .civ-color-6 {
+            background: #16a085;
+        }
+
+        /* Ганноверская династия */
+        .civ-color-7 {
+            background: #2c3e50;
+        }
+
+        /* Саксен-Кобург-Готская */
+        .civ-color-8 {
+            background: #b03a2e;
+        }
+
+        /* Виндзоры */
+
+        /* Легенда */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: #f8f6f2;
+            border-radius: 12px;
+            border: 1px solid #e0d8cd;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            color: #2c3e50;
+        }
+
+        .legend-color {
+            width: 18px;
+            height: 14px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            color: #6d7b8a;
+            font-size: 0.9rem;
+            text-align: right;
+            border-top: 1px solid #e0d8cd;
+            padding-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px 10px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .timeline-labels {
+                font-size: 0.65rem;
+            }
+
+            .timeline-labels span::before {
+                height: 8px;
+                top: -18px;
+            }
+
+            .civ-bar {
+                font-size: 0.55rem;
+                height: 22px;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+
+            .civ-bar .label-outside {
+                font-size: 0.6rem;
+                padding: 1px 8px;
+            }
+
+            .civ-bar .label-outside .years-out {
+                font-size: 0.5rem;
+            }
+
+            .civ-row {
+                height: 32px;
+            }
+
+            .legend-item {
+                font-size: 0.6rem;
+            }
+
+            .legend-color {
+                width: 14px;
+                height: 10px;
+            }
+
+            .civ-bar .tooltip {
+                font-size: 0.7rem;
+                padding: 8px 12px;
+                max-width: 250px;
+            }
+
+            .civ-bar .tooltip .tooltip-title {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>👑 Временная шкала — Правители Британии</h1>
+        <div class="subtitle">
+            От англосаксонских королей до наших дней · годы правления · наведите курсор для подробной информации
+        </div>
+
+        <!-- ====== ЛИНЕЙНАЯ ДИАГРАММА ====== -->
+        <div class="timeline-section">
+            <div class="timeline-container">
+                <!-- Ось с делениями (от 800 до 2026 н.э.) -->
+                <div class="timeline-axis"></div>
+
+                <!-- Метки на оси -->
+                <div class="timeline-labels">
+                    <span>800</span>
+                    <span>900</span>
+                    <span>1000</span>
+                    <span>1100</span>
+                    <span>1200</span>
+                    <span>1300</span>
+                    <span>1400</span>
+                    <span>1500</span>
+                    <span>1600</span>
+                    <span>1700</span>
+                    <span>1800</span>
+                    <span>1900</span>
+                    <span>2000</span>
+                </div>
+
+                <!-- 
+                    Диапазон: от 800 до 2026 н.э. = 1226 лет
+                    left% = (год_начала - 800) / 1226 * 100
+                    width% = (год_конца - год_начала) / 1226 * 100
+                -->
+
+                <!-- ===== АНГЛОСАКСОНСКИЙ ПЕРИОД ===== -->
+
+                <!-- 1. Альфред Великий: 871–899 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 5.8%; width: 2.3%;"
+                        data-civ="Альфред Великий" data-period="871 – 899" data-title="Король Уэссекса"
+                        data-notes="Объединил англосаксонские королевства против викингов. Основатель английской государственности.">
+                        <span class="label">Альфред Великий <span class="years">871–899</span></span>
+                        <span class="label-outside">Альфред Великий <span class="years-out">871–899</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 2. Эдуард Старший: 899–924 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 8.1%; width: 2.0%;"
+                        data-civ="Эдуард Старший" data-period="899 – 924" data-title="Король Уэссекса"
+                        data-notes="Сын Альфреда. Продолжил объединение Англии.">
+                        <span class="label">Эдуард Старший <span class="years">899–924</span></span>
+                        <span class="label-outside">Эдуард Старший <span class="years-out">899–924</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 3. Этельстан: 924–939 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 10.1%; width: 1.2%;" data-civ="Этельстан"
+                        data-period="924 – 939" data-title="Первый король Англии"
+                        data-notes="Считается первым королём объединённой Англии.">
+                        <span class="label">Этельстан <span class="years">924–939</span></span>
+                        <span class="label-outside">Этельстан <span class="years-out">924–939</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 4. Эдгар Миролюбивый: 959–975 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 13.0%; width: 1.3%;"
+                        data-civ="Эдгар Миролюбивый" data-period="959 – 975" data-title="Король Англии"
+                        data-notes="Период мира и процветания. Укрепил королевскую власть.">
+                        <span class="label">Эдгар Миролюбивый <span class="years">959–975</span></span>
+                        <span class="label-outside">Эдгар <span class="years-out">959–975</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 5. Этельред II Неразумный: 978–1016 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 14.5%; width: 3.1%;"
+                        data-civ="Этельред II Неразумный" data-period="978 – 1016" data-title="Король Англии"
+                        data-notes="Период датских набегов. Дань (данегельд) викингам.">
+                        <span class="label">Этельред II <span class="years">978–1016</span></span>
+                        <span class="label-outside">Этельред II <span class="years-out">978–1016</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 6. Кнут Великий: 1016–1035 (датский король) -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 17.6%; width: 1.6%;"
+                        data-civ="Кнут Великий" data-period="1016 – 1035" data-title="Король Англии, Дании, Норвегии"
+                        data-notes="Создал Североморскую империю. Установил мир в Англии.">
+                        <span class="label">Кнут Великий <span class="years">1016–1035</span></span>
+                        <span class="label-outside">Кнут Великий <span class="years-out">1016–1035</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 7. Эдуард Исповедник: 1042–1066 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 19.7%; width: 2.0%;"
+                        data-civ="Эдуард Исповедник" data-period="1042 – 1066" data-title="Король Англии"
+                        data-notes="Покровитель церкви. Его смерть привела к кризису престолонаследия.">
+                        <span class="label">Эдуард Исповедник <span class="years">1042–1066</span></span>
+                        <span class="label-outside">Эдуард Исповедник <span class="years-out">1042–1066</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== НОРМАНДСКОЕ ЗАВОЕВАНИЕ ===== -->
+
+                <!-- 8. Вильгельм I Завоеватель: 1066–1087 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 21.7%; width: 1.7%;"
+                        data-civ="Вильгельм I Завоеватель" data-period="1066 – 1087" data-title="Король Англии"
+                        data-notes="Нормандское завоевание. Перепись «Книга Страшного суда». Феодальная система.">
+                        <span class="label">Вильгельм I <span class="years">1066–1087</span></span>
+                        <span class="label-outside">Вильгельм I <span class="years-out">1066–1087</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 9. Вильгельм II Рыжий: 1087–1100 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 23.4%; width: 1.1%;"
+                        data-civ="Вильгельм II Рыжий" data-period="1087 – 1100" data-title="Король Англии"
+                        data-notes="Сын Вильгельма I. Убит при загадочных обстоятельствах.">
+                        <span class="label">Вильгельм II <span class="years">1087–1100</span></span>
+                        <span class="label-outside">Вильгельм II <span class="years-out">1087–1100</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 10. Генрих I: 1100–1135 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 24.5%; width: 2.9%;" data-civ="Генрих I"
+                        data-period="1100 – 1135" data-title="Король Англии"
+                        data-notes="Укрепил королевскую власть. Гибель его сына привела к гражданской войне.">
+                        <span class="label">Генрих I <span class="years">1100–1135</span></span>
+                        <span class="label-outside">Генрих I <span class="years-out">1100–1135</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ПЛАНТАГЕНЕТЫ ===== -->
+
+                <!-- 11. Генрих II: 1154–1189 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 28.9%; width: 2.9%;" data-civ="Генрих II"
+                        data-period="1154 – 1189" data-title="Король Англии"
+                        data-notes="Основатель династии Плантагенетов. Анжуйская империя. Конфликт с Томасом Бекетом.">
+                        <span class="label">Генрих II <span class="years">1154–1189</span></span>
+                        <span class="label-outside">Генрих II <span class="years-out">1154–1189</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 12. Ричард I Львиное Сердце: 1189–1199 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 31.7%; width: 0.8%;"
+                        data-civ="Ричард I Львиное Сердце" data-period="1189 – 1199" data-title="Король Англии"
+                        data-notes="Участник Третьего крестового похода. Провёл в Англии всего несколько месяцев.">
+                        <span class="label">Ричард I <span class="years">1189–1199</span></span>
+                        <span class="label-outside">Ричард I <span class="years-out">1189–1199</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 13. Иоанн Безземельный: 1199–1216 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 32.5%; width: 1.4%;"
+                        data-civ="Иоанн Безземельный" data-period="1199 – 1216" data-title="Король Англии"
+                        data-notes="Подписал Великую хартию вольностей (1215). Потерял Нормандию.">
+                        <span class="label">Иоанн Безземельный <span class="years">1199–1216</span></span>
+                        <span class="label-outside">Иоанн Безземельный <span class="years-out">1199–1216</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 14. Генрих III: 1216–1272 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 34.0%; width: 4.6%;" data-civ="Генрих III"
+                        data-period="1216 – 1272" data-title="Король Англии"
+                        data-notes="Долгое правление. Создание парламента. Война с баронами.">
+                        <span class="label">Генрих III <span class="years">1216–1272</span></span>
+                        <span class="label-outside">Генрих III <span class="years-out">1216–1272</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 15. Эдуард I: 1272–1307 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 38.5%; width: 2.9%;" data-civ="Эдуард I"
+                        data-period="1272 – 1307" data-title="Король Англии"
+                        data-notes="Завоевание Уэльса. Война за независимость Шотландии. «Молот шотландцев».">
+                        <span class="label">Эдуард I <span class="years">1272–1307</span></span>
+                        <span class="label-outside">Эдуард I <span class="years-out">1272–1307</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 16. Эдуард II: 1307–1327 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 41.4%; width: 1.6%;" data-civ="Эдуард II"
+                        data-period="1307 – 1327" data-title="Король Англии"
+                        data-notes="Слабый правитель. Поражение от шотландцев при Баннокбёрне. Свергнут и убит.">
+                        <span class="label">Эдуард II <span class="years">1307–1327</span></span>
+                        <span class="label-outside">Эдуард II <span class="years-out">1307–1327</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 17. Эдуард III: 1327–1377 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 43.0%; width: 4.1%;" data-civ="Эдуард III"
+                        data-period="1327 – 1377" data-title="Король Англии"
+                        data-notes="Начало Столетней войны. Орден Подвязки. Английский стал официальным языком.">
+                        <span class="label">Эдуард III <span class="years">1327–1377</span></span>
+                        <span class="label-outside">Эдуард III <span class="years-out">1327–1377</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 18. Ричард II: 1377–1399 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 47.1%; width: 1.8%;" data-civ="Ричард II"
+                        data-period="1377 – 1399" data-title="Король Англии"
+                        data-notes="Укрепил королевскую власть. Свергнут Генрихом Болингброком. Умер в заключении.">
+                        <span class="label">Ричард II <span class="years">1377–1399</span></span>
+                        <span class="label-outside">Ричард II <span class="years-out">1377–1399</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ЛАНКАСТЕРЫ ===== -->
+
+                <!-- 19. Генрих IV: 1399–1413 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 48.9%; width: 1.1%;" data-civ="Генрих IV"
+                        data-period="1399 – 1413" data-title="Король Англии"
+                        data-notes="Основатель династии Ланкастеров. Подавление восстаний.">
+                        <span class="label">Генрих IV <span class="years">1399–1413</span></span>
+                        <span class="label-outside">Генрих IV <span class="years-out">1399–1413</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 20. Генрих V: 1413–1422 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 50.0%; width: 0.7%;" data-civ="Генрих V"
+                        data-period="1413 – 1422" data-title="Король Англии"
+                        data-notes="Победа при Азенкуре (1415). Завоевание Нормандии.">
+                        <span class="label">Генрих V <span class="years">1413–1422</span></span>
+                        <span class="label-outside">Генрих V <span class="years-out">1413–1422</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 21. Генрих VI: 1422–1461, 1470–1471 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 50.7%; width: 3.2%;" data-civ="Генрих VI"
+                        data-period="1422 – 1461, 1470–1471" data-title="Король Англии"
+                        data-notes="Война Алой и Белой розы. Психическое расстройство. Свергнут и убит.">
+                        <span class="label">Генрих VI <span class="years">1422–1461, 1470–1471</span></span>
+                        <span class="label-outside">Генрих VI <span class="years-out">1422–1461, 1470–1471</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ЙОРКИ ===== -->
+
+                <!-- 22. Эдуард IV: 1461–1470, 1471–1483 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 53.9%; width: 1.8%;" data-civ="Эдуард IV"
+                        data-period="1461 – 1470, 1471–1483" data-title="Король Англии"
+                        data-notes="Основатель династии Йорков. Война Алой и Белой розы.">
+                        <span class="label">Эдуард IV <span class="years">1461–1470, 1471–1483</span></span>
+                        <span class="label-outside">Эдуард IV <span class="years-out">1461–1470, 1471–1483</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 23. Ричард III: 1483–1485 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 55.7%; width: 0.2%;" data-civ="Ричард III"
+                        data-period="1483 – 1485" data-title="Король Англии"
+                        data-notes="Последний король из династии Йорков. Убит в битве при Босворте.">
+                        <span class="label">Ричард III <span class="years">1483–1485</span></span>
+                        <span class="label-outside">Ричард III <span class="years-out">1483–1485</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ТЮДОРЫ ===== -->
+
+                <!-- 24. Генрих VII: 1485–1509 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 55.9%; width: 2.0%;" data-civ="Генрих VII"
+                        data-period="1485 – 1509" data-title="Король Англии"
+                        data-notes="Основатель династии Тюдоров. Закончил Войну роз. Укрепил казну.">
+                        <span class="label">Генрих VII <span class="years">1485–1509</span></span>
+                        <span class="label-outside">Генрих VII <span class="years-out">1485–1509</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 25. Генрих VIII: 1509–1547 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 57.9%; width: 3.1%;"
+                        data-civ="Генрих VIII" data-period="1509 – 1547" data-title="Король Англии"
+                        data-notes="Разрыв с Римом. Создание Церкви Англии. Шесть жён. Рождение Елизаветы I.">
+                        <span class="label">Генрих VIII <span class="years">1509–1547</span></span>
+                        <span class="label-outside">Генрих VIII <span class="years-out">1509–1547</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 26. Эдуард VI: 1547–1553 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 61.0%; width: 0.5%;" data-civ="Эдуард VI"
+                        data-period="1547 – 1553" data-title="Король Англии"
+                        data-notes="Сын Генриха VIII. Протестантские реформы. Умер в юности.">
+                        <span class="label">Эдуард VI <span class="years">1547–1553</span></span>
+                        <span class="label-outside">Эдуард VI <span class="years-out">1547–1553</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 27. Мария I (Кровавая): 1553–1558 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 61.5%; width: 0.4%;"
+                        data-civ="Мария I Кровавая" data-period="1553 – 1558" data-title="Королева Англии"
+                        data-notes="Восстановила католицизм. Преследование протестантов. Замужем за Филиппом II Испанским.">
+                        <span class="label">Мария I <span class="years">1553–1558</span></span>
+                        <span class="label-outside">Мария I <span class="years-out">1553–1558</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 28. Елизавета I: 1558–1603 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 61.9%; width: 3.7%;"
+                        data-civ="Елизавета I" data-period="1558 – 1603" data-title="Королева Англии"
+                        data-notes="«Золотой век» Англии. Разгром Испанской армады. Шекспир. Англиканская церковь.">
+                        <span class="label">Елизавета I <span class="years">1558–1603</span></span>
+                        <span class="label-outside">Елизавета I <span class="years-out">1558–1603</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== СТЮАРТЫ ===== -->
+
+                <!-- 29. Яков I: 1603–1625 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 65.6%; width: 1.8%;" data-civ="Яков I"
+                        data-period="1603 – 1625" data-title="Король Англии и Шотландии"
+                        data-notes="Объединение корон Англии и Шотландии. Перевод Библии (Авторизованная версия).">
+                        <span class="label">Яков I <span class="years">1603–1625</span></span>
+                        <span class="label-outside">Яков I <span class="years-out">1603–1625</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 30. Карл I: 1625–1649 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 67.4%; width: 2.0%;" data-civ="Карл I"
+                        data-period="1625 – 1649" data-title="Король Англии и Шотландии"
+                        data-notes="Гражданская война. Казнён 30 января 1649 г.">
+                        <span class="label">Карл I <span class="years">1625–1649</span></span>
+                        <span class="label-outside">Карл I <span class="years-out">1625–1649</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 31. Карл II: 1660–1685 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 70.5%; width: 2.0%;" data-civ="Карл II"
+                        data-period="1660 – 1685" data-title="Король Англии и Шотландии"
+                        data-notes="Реставрация монархии. Великая чума и Великий пожар в Лондоне.">
+                        <span class="label">Карл II <span class="years">1660–1685</span></span>
+                        <span class="label-outside">Карл II <span class="years-out">1660–1685</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 32. Яков II: 1685–1688 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 72.5%; width: 0.3%;" data-civ="Яков II"
+                        data-period="1685 – 1688" data-title="Король Англии и Шотландии"
+                        data-notes="Католик. Свергнут в ходе «Славной революции».">
+                        <span class="label">Яков II <span class="years">1685–1688</span></span>
+                        <span class="label-outside">Яков II <span class="years-out">1685–1688</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 33. Вильгельм III и Мария II: 1689–1694 (совместно), Вильгельм III до 1702 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 72.8%; width: 1.1%;"
+                        data-civ="Вильгельм III и Мария II" data-period="1689 – 1702"
+                        data-title="Король и королева Англии и Шотландии"
+                        data-notes="Билль о правах 1689 г. Установление конституционной монархии.">
+                        <span class="label">Вильгельм III & Мария II <span class="years">1689–1702</span></span>
+                        <span class="label-outside">Вильгельм III & Мария II <span
+                                class="years-out">1689–1702</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 34. Анна: 1702–1714 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 74.2%; width: 1.0%;" data-civ="Анна"
+                        data-period="1702 – 1714" data-title="Королева Англии и Шотландии"
+                        data-notes="Акт об унии 1707 г. — создание Великобритании. Война за испанское наследство.">
+                        <span class="label">Королева Анна <span class="years">1702–1714</span></span>
+                        <span class="label-outside">Анна <span class="years-out">1702–1714</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ГАННОВЕРСКАЯ ДИНАСТИЯ ===== -->
+
+                <!-- 35. Георг I: 1714–1727 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 75.5%; width: 1.1%;" data-civ="Георг I"
+                        data-period="1714 – 1727" data-title="Король Великобритании"
+                        data-notes="Основатель Ганноверской династии. Первый премьер-министр (Роберт Уолпол).">
+                        <span class="label">Георг I <span class="years">1714–1727</span></span>
+                        <span class="label-outside">Георг I <span class="years-out">1714–1727</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 36. Георг II: 1727–1760 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 76.7%; width: 2.7%;" data-civ="Георг II"
+                        data-period="1727 – 1760" data-title="Король Великобритании"
+                        data-notes="Война за австрийское наследство. Семилетняя война. Рост Британской империи.">
+                        <span class="label">Георг II <span class="years">1727–1760</span></span>
+                        <span class="label-outside">Георг II <span class="years-out">1727–1760</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 37. Георг III: 1760–1820 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 79.5%; width: 4.9%;" data-civ="Георг III"
+                        data-period="1760 – 1820" data-title="Король Великобритании и Ирландии"
+                        data-notes="Долгое правление. Потеря американских колоний. Наполеоновские войны. Психическое расстройство.">
+                        <span class="label">Георг III <span class="years">1760–1820</span></span>
+                        <span class="label-outside">Георг III <span class="years-out">1760–1820</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 38. Георг IV: 1820–1830 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 84.4%; width: 0.8%;" data-civ="Георг IV"
+                        data-period="1820 – 1830" data-title="Король Великобритании и Ирландии"
+                        data-notes="Регентство до 1820 г. Скандальная личная жизнь.">
+                        <span class="label">Георг IV <span class="years">1820–1830</span></span>
+                        <span class="label-outside">Георг IV <span class="years-out">1820–1830</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 39. Вильгельм IV: 1830–1837 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 85.2%; width: 0.6%;"
+                        data-civ="Вильгельм IV" data-period="1830 – 1837" data-title="Король Великобритании и Ирландии"
+                        data-notes="Реформа парламента 1832 г. Отмена рабства в империи.">
+                        <span class="label">Вильгельм IV <span class="years">1830–1837</span></span>
+                        <span class="label-outside">Вильгельм IV <span class="years-out">1830–1837</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 40. Виктория: 1837–1901 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 85.7%; width: 5.2%;"
+                        data-civ="Королева Виктория" data-period="1837 – 1901"
+                        data-title="Королева Великобритании и Ирландии, императрица Индии"
+                        data-notes="Викторианская эпоха. Расцвет Британской империи. Промышленная революция.">
+                        <span class="label">Королева Виктория <span class="years">1837–1901</span></span>
+                        <span class="label-outside">Виктория <span class="years-out">1837–1901</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== САКСЕН-КОБУРГ-ГОТСКАЯ И ВИНДЗОРЫ ===== -->
+
+                <!-- 41. Эдуард VII: 1901–1910 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-right" style="left: 90.9%; width: 0.7%;" data-civ="Эдуард VII"
+                        data-period="1901 – 1910" data-title="Король Великобритании и Ирландии, император Индии"
+                        data-notes="Основатель Саксен-Кобург-Готской династии. Эдуардианская эпоха.">
+                        <span class="label">Эдуард VII <span class="years">1901–1910</span></span>
+                        <span class="label-outside">Эдуард VII <span class="years-out">1901–1910</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 42. Георг V: 1910–1936 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-right" style="left: 91.7%; width: 2.1%;" data-civ="Георг V"
+                        data-period="1910 – 1936" data-title="Король Великобритании и Ирландии, император Индии"
+                        data-notes="Первая мировая война. Смена фамилии на Виндзор (1917).">
+                        <span class="label">Георг V <span class="years">1910–1936</span></span>
+                        <span class="label-outside">Георг V <span class="years-out">1910–1936</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 43. Эдуард VIII: 1936 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 93.8%; width: 0.0%;" data-civ="Эдуард VIII"
+                        data-period="1936" data-title="Король Великобритании и Ирландии, император Индии"
+                        data-notes="Отрёкся от престола ради женитьбы на Уоллис Симпсон.">
+                        <span class="label">Эдуард VIII <span class="years">1936</span></span>
+                        <span class="label-outside">Эдуард VIII <span class="years-out">1936</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 44. Георг VI: 1936–1952 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 93.8%; width: 1.3%;" data-civ="Георг VI"
+                        data-period="1936 – 1952" data-title="Король Великобритании, доминионов и император Индии"
+                        data-notes="Вторая мировая война. Распад Британской империи (Индия — 1947).">
+                        <span class="label">Георг VI <span class="years">1936–1952</span></span>
+                        <span class="label-outside">Георг VI <span class="years-out">1936–1952</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 45. Елизавета II: 1952–2022 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 95.2%; width: 5.7%;"
+                        data-civ="Елизавета II" data-period="1952 – 2022"
+                        data-title="Королева Великобритании и Северной Ирландии, глава Содружества"
+                        data-notes="Долгоживущий британский монарх. Семь десятилетий правления. Деколонизация.">
+                        <span class="label">Елизавета II <span class="years">1952–2022</span></span>
+                        <span class="label-outside">Елизавета II <span class="years-out">1952–2022</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 46. Карл III: 2022–н.в. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 100.0%; width: 0.3%;" data-civ="Карл III"
+                        data-period="2022 – н.в."
+                        data-title="Король Великобритании и Северной Ирландии, глава Содружества"
+                        data-notes="Нынешний британский монарх. Коронация в 2023 г.">
+                        <span class="label">Карл III <span class="years">2022–н.в.</span></span>
+                        <span class="label-outside">Карл III <span class="years-out">2022–н.в.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- Фоновая шкала: Наша эра -->
+                <div class="civ-row">
+                    <div class="civ-bar label-inside"
+                        style="left: 0%; width: 100%; height: 10px; background: rgba(44, 62, 80, 0.08); border: none; box-shadow: none; cursor: default;">
+                        <span class="label"
+                            style="color: #5d6d7e; font-weight: 400; font-size: 0.65rem; text-shadow: none; opacity: 0.5;">Наша
+                            эра</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Легенда -->
+            <div class="legend">
+                <span class="legend-item"><span class="legend-color" style="background:#8e44ad;"></span>
+                    Англосаксы</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2980b9;"></span> Нормандская
+                    династия</span>
+                <span class="legend-item"><span class="legend-color" style="background:#27ae60;"></span>
+                    Плантагенеты</span>
+                <span class="legend-item"><span class="legend-color" style="background:#d4a017;"></span>
+                    Ланкастеры/Йорки</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e67e22;"></span> Тюдоры</span>
+                <span class="legend-item"><span class="legend-color" style="background:#c0392b;"></span> Стюарты</span>
+                <span class="legend-item"><span class="legend-color" style="background:#16a085;"></span>
+                    Ганноверы</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2c3e50;"></span>
+                    Саксен-Кобург-Готские</span>
+                <span class="legend-item"><span class="legend-color" style="background:#b03a2e;"></span> Виндзоры</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            * Даты указаны в годах н.э. Отрезки на диаграмме отражают годы правления. «Наша эра» показана для понимания
+            масштаба времени. Наведите курсор на отрезок для просмотра полной информации.
+        </div>
+    </div>
+
+    <script>
+        // Заполнение всплывающих подсказок данными из атрибутов data-*
+        document.addEventListener('DOMContentLoaded', function () {
+            const civBars = document.querySelectorAll('.civ-bar[data-civ]');
+
+            civBars.forEach(bar => {
+                const tooltip = bar.querySelector('.tooltip');
+                if (!tooltip) return;
+
+                const name = bar.getAttribute('data-civ') || '—';
+                const period = bar.getAttribute('data-period') || '—';
+                const title = bar.getAttribute('data-title') || '—';
+                const notes = bar.getAttribute('data-notes') || '—';
+
+                tooltip.innerHTML = `
+                    <span class="tooltip-title">${name}</span>
+                    <span class="tooltip-divider"></span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📅 Период:</span>
+                        <span class="tooltip-value">${period}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">👑 Титул:</span>
+                        <span class="tooltip-value">${title}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📝 О периоде:</span>
+                        <span class="tooltip-value">${notes}</span>
+                    </span>
+                `;
+
+                bar.addEventListener('mouseenter', function (e) {
+                    const rect = this.getBoundingClientRect();
+                    const tooltipEl = this.querySelector('.tooltip');
+                    if (!tooltipEl) return;
+
+                    const tooltipWidth = tooltipEl.offsetWidth || 350;
+                    let left = rect.right + 15;
+                    let top = rect.top + (rect.height / 2) - 20;
+
+                    if (left + tooltipWidth > window.innerWidth - 20) {
+                        left = rect.left - tooltipWidth - 15;
+                    }
+                    if (top + 150 > window.innerHeight - 20) {
+                        top = window.innerHeight - 170;
+                    }
+                    if (top < 20) {
+                        top = 20;
+                    }
+
+                    tooltipEl.style.left = left + 'px';
+                    tooltipEl.style.top = top + 'px';
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

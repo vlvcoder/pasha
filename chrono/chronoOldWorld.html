@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Временная шкала древних цивилизаций</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f4f1ea;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            padding: 24px 20px 30px;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #5d6d7e;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            border-left: 4px solid #b8860b;
+            padding-left: 16px;
+            background: #faf8f5;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.5;
+        }
+
+        /* ---------- ДИАГРАММА (линия времени) ---------- */
+        .timeline-section {
+            margin: 10px 0 10px;
+            padding-top: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-title small {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #6d7b8a;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 12px 0 6px 0;
+            width: 100%;
+            overflow: visible;
+        }
+
+        /* Сама шкала времени */
+        .timeline-axis {
+            position: relative;
+            height: 4px;
+            background: #2c3e50;
+            border-radius: 4px;
+            margin: 0 10px;
+            width: calc(100% - 20px);
+        }
+
+        /* Метки на оси (тысячелетия) — выравнивание влево от засечки */
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5d6d7e;
+            width: calc(100% - 20px);
+            position: relative;
+        }
+
+        .timeline-labels span {
+            white-space: nowrap;
+            font-weight: 500;
+            position: relative;
+            text-align: left;
+            transform: translateX(0);
+            padding-left: 2px;
+        }
+
+        /* Вертикальные засечки под метками */
+        .timeline-labels span::before {
+            content: '';
+            position: absolute;
+            top: -22px;
+            left: 0;
+            width: 2px;
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 1px;
+        }
+
+        /* Ряд для каждой цивилизации — отдельная строка */
+        .civ-row {
+            position: relative;
+            width: calc(100% - 20px);
+            height: 48px;
+            margin: 2px 10px 0 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Каждый отрезок — цивилизация */
+        .civ-bar {
+            position: absolute;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            padding-right: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: height 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.2px;
+            z-index: 2;
+            overflow: visible;
+        }
+
+        .civ-bar:hover {
+            height: 38px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        /* Всплывающая подсказка (tooltip) */
+        .civ-bar .tooltip {
+            display: none;
+            position: fixed;
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 500px;
+            width: max-content;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            pointer-events: none;
+            text-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: normal;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .civ-bar .tooltip .tooltip-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f1c40f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .civ-bar .tooltip .tooltip-row {
+            display: block;
+            padding: 2px 0;
+        }
+
+        .civ-bar .tooltip .tooltip-label {
+            font-weight: 600;
+            color: #bdc3c7;
+            display: inline-block;
+            min-width: 60px;
+        }
+
+        .civ-bar .tooltip .tooltip-value {
+            color: #ecf0f1;
+        }
+
+        .civ-bar .tooltip .tooltip-divider {
+            display: block;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 6px 0;
+        }
+
+        /* Показываем подсказку при наведении */
+        .civ-bar:hover .tooltip {
+            display: block;
+        }
+
+        /* Название и годы — внутри отрезка (только для "Нашей эры") */
+        .civ-bar .label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .civ-bar .label .name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.85rem;
+        }
+
+        .civ-bar .label .years {
+            font-weight: 400;
+            font-size: 0.7rem;
+            opacity: 0.95;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Для отрезков, у которых текст вынесен справа (все, кроме "Нашей эры") */
+        .civ-bar .label-outside {
+            display: none;
+            position: absolute;
+            left: calc(100% + 10px);
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e2a36;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3px 14px;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+            white-space: nowrap;
+            border: 1px solid #ddd6cb;
+            text-shadow: none;
+            z-index: 3;
+        }
+
+        .civ-bar .label-outside .years-out {
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: #5d6d7e;
+            margin-left: 6px;
+        }
+
+        /* Класс для отрезков с вынесенным текстом */
+        .civ-bar.label-right .label {
+            display: none;
+        }
+
+        .civ-bar.label-right .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Особый класс для "Нашей эры" — текст внутри, без выноски и без подсказки */
+        .civ-bar.label-inside .label {
+            display: flex;
+        }
+
+        .civ-bar.label-inside .label-outside {
+            display: none;
+        }
+
+        .civ-bar.label-inside .tooltip {
+            display: none !important;
+        }
+
+        .civ-bar.label-inside {
+            cursor: default;
+        }
+
+        /* Цвета для цивилизаций */
+        .civ-color-0 { background: #8e44ad; }  /* Шумер */
+        .civ-color-1 { background: #2980b9; }  /* Аккад */
+        .civ-color-2 { background: #d4a017; }  /* Египет */
+        .civ-color-3 { background: #27ae60; }  /* Хетты */
+        .civ-color-4 { background: #e67e22; }  /* Финикия */
+        .civ-color-5 { background: #2c3e50; }  /* Еврейское */
+        .civ-color-6 { background: #c0392b; }  /* Ассирия */
+        .civ-color-7 { background: #16a085; }  /* Вавилон */
+        .civ-color-8 { background: #d35400; }  /* Персия */
+        .civ-color-9 { background: #8e44ad; }  /* Индия (Маурья) */
+        .civ-color-10 { background: #b03a2e; } /* Цинь */
+        .civ-color-11 { background: #1a5276; } /* Греция */
+        .civ-color-12 { background: #7d3c98; } /* Александр */
+        .civ-color-13 { background: #b9770e; } /* Рим */
+        .civ-color-14 { background: #e74c3c; } /* Византия */
+        .civ-color-15 { background: #2ecc71; } /* Наша эра */
+
+        /* Легенда */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: #f8f6f2;
+            border-radius: 12px;
+            border: 1px solid #e0d8cd;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #2c3e50;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 16px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            color: #6d7b8a;
+            font-size: 0.9rem;
+            text-align: right;
+            border-top: 1px solid #e0d8cd;
+            padding-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px 10px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .timeline-labels {
+                font-size: 0.7rem;
+            }
+            .timeline-labels span::before {
+                height: 8px;
+                top: -18px;
+            }
+            .civ-bar {
+                font-size: 0.65rem;
+                height: 26px;
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+            .civ-bar .label .name {
+                font-size: 0.7rem;
+            }
+            .civ-bar .label .years {
+                font-size: 0.55rem;
+            }
+            .civ-bar .label-outside {
+                font-size: 0.7rem;
+                padding: 2px 10px;
+            }
+            .civ-bar .label-outside .years-out {
+                font-size: 0.55rem;
+            }
+            .civ-row {
+                height: 40px;
+            }
+            .legend-item {
+                font-size: 0.7rem;
+            }
+            .legend-color {
+                width: 16px;
+                height: 12px;
+            }
+            .civ-bar .tooltip {
+                font-size: 0.7rem;
+                padding: 10px 12px;
+                max-width: 300px;
+            }
+            .civ-bar .tooltip .tooltip-title {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📅 Временная шкала цивилизаций</h1>
+        <div class="subtitle">
+            От Шумера до наших дней · каждая цивилизация на отдельной строке · наведите курсор для подробной информации
+        </div>
+
+        <!-- ====== ЛИНЕЙНАЯ ДИАГРАММА (ВРЕМЕННАЯ ШКАЛА) ====== -->
+        <div class="timeline-section">
+            <div class="timeline-container">
+                <!-- Ось с делениями (от 4000 до н.э. до 2026 н.э.) -->
+                <div class="timeline-axis"></div>
+
+                <!-- Метки на оси (тысячелетия) с засечками, текст выровнен влево от засечки -->
+                <div class="timeline-labels">
+                    <span>4000 до н.э.</span>
+                    <span>3000</span>
+                    <span>2000</span>
+                    <span>1000</span>
+                    <span>0 (н.э.)</span>
+                    <span>1000</span>
+                    <span>2000</span>
+                </div>
+
+                <!-- 
+                    Диапазон: от 4000 до н.э. до 2026 н.э. = 6026 лет
+                    left% = (-год_до_нэ + 4000) / 6026 * 100
+                    width% = (конец - начало) / 6026 * 100
+                    Для н.э. год считается положительным
+                    
+                    Для всех, кроме "Нашей эры" — текст вынесен справа (label-right)
+                    Для "Нашей эры" — текст внутри (label-inside)
+                    
+                    Для всех отрезков (кроме "Нашей эры") добавлены data-* атрибуты 
+                    с полной информацией для всплывающих подсказок
+                -->
+
+                <!-- 1. Шумер: 3500–2000 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 8.3%; width: 24.9%;" 
+                         data-civ="Шумер"
+                         data-period="ок. 3500–2000 до н.э."
+                         data-geography="Южный Ирак"
+                         data-persons="Гильгамеш (легендарный царь Урука)"
+                         data-notes="Одна из первых цивилизаций; изобретение клинописи">
+                        <span class="label">Шумер <span class="years">ок. 3500–2000 до н.э.</span></span>
+                        <span class="label-outside">Шумер <span class="years-out">ок. 3500–2000 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 2. Аккад: 2334–2100 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 27.6%; width: 3.9%;"
+                         data-civ="Аккад"
+                         data-period="ок. 2334–2100 до н.э."
+                         data-geography="Центральный Ирак"
+                         data-persons="Саргон Великий (основатель)"
+                         data-notes="Первая настоящая империя в истории">
+                        <span class="label">Аккад <span class="years">ок. 2334–2100 до н.э.</span></span>
+                        <span class="label-outside">Аккад <span class="years-out">ок. 2334–2100 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 3. Египет: 3100–30 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 14.9%; width: 50.9%;"
+                         data-civ="Древний Египет"
+                         data-period="ок. 3100–30 до н.э."
+                         data-geography="Египет (долина и дельта Нила)"
+                         data-persons="Хеопс, Рамзес II, Тутмос III, Клеопатра VII"
+                         data-notes="Древнее царство — пирамиды · Новое царство — расцвет">
+                        <span class="label">Древний Египет <span class="years">ок. 3100–30 до н.э.</span></span>
+                        <span class="label-outside">Древний Египет <span class="years-out">ок. 3100–30 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 4. Хетты: 1800–1180 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 36.5%; width: 10.3%;"
+                         data-civ="Хетты"
+                         data-period="ок. 1800–1180 до н.э."
+                         data-geography="Центральная Турция (Анатолия)"
+                         data-persons="Суппилулиума I, Мурсили II"
+                         data-notes="Одни из первых освоили обработку железа">
+                        <span class="label">Хетты <span class="years">ок. 1800–1180 до н.э.</span></span>
+                        <span class="label-outside">Хетты <span class="years-out">ок. 1800–1180 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 5. Финикия: 1200–800 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 46.5%; width: 6.6%;"
+                         data-civ="Финикия"
+                         data-period="ок. 1200–800 до н.э."
+                         data-geography="Побережье Ливана и Сирии"
+                         data-persons="Дидона (основательница Карфагена)"
+                         data-notes="Великие мореплаватели и торговцы">
+                        <span class="label">Финикия <span class="years">ок. 1200–800 до н.э.</span></span>
+                        <span class="label-outside">Финикия <span class="years-out">ок. 1200–800 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 6. Израиль: 1000–929 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 49.8%; width: 1.2%;"
+                         data-civ="Древнееврейское царство"
+                         data-period="ок. 1000–929 до н.э."
+                         data-geography="Израиль и Палестина"
+                         data-persons="Давид, Соломон"
+                         data-notes="Объединённое царство; столица — Иерусалим">
+                        <span class="label">Израиль <span class="years">ок. 1000–929 до н.э.</span></span>
+                        <span class="label-outside">Израиль <span class="years-out">ок. 1000–929 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 7. Ассирия: 900–612 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-right" style="left: 51.4%; width: 4.8%;"
+                         data-civ="Ассирия"
+                         data-period="ок. 900–612 до н.э."
+                         data-geography="Северный Ирак, северо-восток Сирии, юго-восток Турции"
+                         data-persons="Ашшурбанипал, Саргон II, Синаххериб"
+                         data-notes="Одна из самых воинственных империй">
+                        <span class="label">Ассирия <span class="years">ок. 900–612 до н.э.</span></span>
+                        <span class="label-outside">Ассирия <span class="years-out">ок. 900–612 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 8. Вавилон: 1792–539 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-right" style="left: 36.6%; width: 20.8%;"
+                         data-civ="Вавилон"
+                         data-period="ок. 1792–539 до н.э."
+                         data-geography="Центральный и южный Ирак"
+                         data-persons="Хаммурапи, Навуходоносор II"
+                         data-notes="Старовавилонское — законы Хаммурапи · Нововавилонское — Висячие сады">
+                        <span class="label">Вавилон <span class="years">ок. 1792–539 до н.э.</span></span>
+                        <span class="label-outside">Вавилон <span class="years-out">ок. 1792–539 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 9. Персия: 550–330 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-right" style="left: 57.3%; width: 3.7%;"
+                         data-civ="Персия"
+                         data-period="550–330 до н.э."
+                         data-geography="Юго-западный Иран (Фарс)"
+                         data-persons="Кир Великий, Дарий I, Ксеркс I"
+                         data-notes="Величайшая империя древности от Греции до Индии">
+                        <span class="label">Персия <span class="years">550–330 до н.э.</span></span>
+                        <span class="label-outside">Персия <span class="years-out">550–330 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 10. Маурья: 321–185 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-9 label-right" style="left: 61.1%; width: 2.3%;"
+                         data-civ="Маурья"
+                         data-period="321–185 до н.э."
+                         data-geography="Индия, Пакистан, Бангладеш"
+                         data-persons="Чандрагупта Маурья, Ашока Великий"
+                         data-notes="Первая крупная империя на субконтиненте">
+                        <span class="label">Маурья <span class="years">321–185 до н.э.</span></span>
+                        <span class="label-outside">Маурья <span class="years-out">321–185 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 11. Цинь: 221–206 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-10 label-right" style="left: 62.7%; width: 0.3%;"
+                         data-civ="Цинь"
+                         data-period="221–206 до н.э."
+                         data-geography="Центральный и восточный Китай"
+                         data-persons="Цинь Шихуанди"
+                         data-notes="Первая империя, объединившая Китай">
+                        <span class="label">Цинь <span class="years">221–206 до н.э.</span></span>
+                        <span class="label-outside">Цинь <span class="years-out">221–206 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 12. Греция: 500–338 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-11 label-right" style="left: 58.1%; width: 2.7%;"
+                         data-civ="Древняя Греция"
+                         data-period="ок. 500–338 до н.э."
+                         data-geography="Греция, побережье Турции, острова Эгейского моря"
+                         data-persons="Перикл, Сократ, Платон, Аристотель, Леонид"
+                         data-notes="Золотой век демократии, философии и искусства">
+                        <span class="label">Греция <span class="years">ок. 500–338 до н.э.</span></span>
+                        <span class="label-outside">Греция <span class="years-out">ок. 500–338 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 13. Александр: 336–323 до н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-12 label-right" style="left: 60.8%; width: 0.2%;"
+                         data-civ="Александр Македонский"
+                         data-period="336–323 до н.э."
+                         data-geography="Северная Греция (исходная точка)"
+                         data-persons="Александр Македонский, Филипп II, Птолемей I"
+                         data-notes="Завоевания от Греции до Индии; эллинистическая культура">
+                        <span class="label">Александр <span class="years">336–323 до н.э.</span></span>
+                        <span class="label-outside">Александр <span class="years-out">336–323 до н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 14. Рим: 753 до н.э. – 476 н.э. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-13 label-right" style="left: 53.9%; width: 20.4%;"
+                         data-civ="Римская империя"
+                         data-period="753 до н.э. – 476 н.э."
+                         data-geography="Италия + Западная Европа, Средиземноморье, Сев. Африка, Балканы, Ближний Восток"
+                         data-persons="Ромул, Цезарь, Август, Траян, Марк Аврелий, Константин"
+                         data-notes="Царский период 753–509 до н.э. · Республика 509–27 до н.э. · Империя 27 до н.э. – 476 н.э.">
+                        <span class="label">Рим <span class="years">753 до н.э. – 476 н.э.</span></span>
+                        <span class="label-outside">Рим <span class="years-out">753 до н.э. – 476 н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 15. Византия: 476 – 1453 н.э.
+                     left: (4000+476)/6026*100 = 74.3%
+                     width: (1453-476)/6026*100 = 16.2% -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-14 label-right" style="left: 74.3%; width: 16.2%;"
+                         data-civ="Византия (Восточная Римская империя)"
+                         data-period="476 – 1453 н.э."
+                         data-geography="Балканы, Греция, Турция, Ближний Восток, Северная Африка"
+                         data-persons="Юстиниан I, Феодора, Велизарий, Ираклий I, Василий II"
+                         data-notes="Продолжение Римской империи на Востоке. Расцвет при Юстиниане (VI в.), падение Константинополя в 1453 г.">
+                        <span class="label">Византия <span class="years">476 – 1453 н.э.</span></span>
+                        <span class="label-outside">Византия <span class="years-out">476 – 1453 н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 16. Наша эра: 0 – 2026 н.э. — текст ВНУТРИ (label-inside), без подсказки -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-15 label-inside" style="left: 66.4%; width: 33.6%;">
+                        <span class="label"><span class="name">Наша эра</span><span class="years">0 – 2026 н.э.</span></span>
+                        <span class="label-outside">Наша эра <span class="years-out">0 – 2026 н.э.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Легенда -->
+            <div class="legend">
+                <span class="legend-item"><span class="legend-color" style="background:#8e44ad;"></span> Шумер</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2980b9;"></span> Аккад</span>
+                <span class="legend-item"><span class="legend-color" style="background:#d4a017;"></span> Египет</span>
+                <span class="legend-item"><span class="legend-color" style="background:#27ae60;"></span> Хетты</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e67e22;"></span> Финикия</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2c3e50;"></span> Израиль</span>
+                <span class="legend-item"><span class="legend-color" style="background:#c0392b;"></span> Ассирия</span>
+                <span class="legend-item"><span class="legend-color" style="background:#16a085;"></span> Вавилон</span>
+                <span class="legend-item"><span class="legend-color" style="background:#d35400;"></span> Персия</span>
+                <span class="legend-item"><span class="legend-color" style="background:#8e44ad;"></span> Маурья</span>
+                <span class="legend-item"><span class="legend-color" style="background:#b03a2e;"></span> Цинь</span>
+                <span class="legend-item"><span class="legend-color" style="background:#1a5276;"></span> Греция</span>
+                <span class="legend-item"><span class="legend-color" style="background:#7d3c98;"></span> Александр</span>
+                <span class="legend-item"><span class="legend-color" style="background:#b9770e;"></span> Рим</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e74c3c;"></span> Византия</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2ecc71;"></span> Наша эра</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            * Даты указаны в годах до н.э., если не оговорено иное (н.э. — наша эра). Отрезки на диаграмме отражают основные периоды существования. «Наша эра» показана для понимания масштаба времени. Наведите курсор на отрезок цивилизации для просмотра полной информации.
+        </div>
+    </div>
+
+    <script>
+        // Заполнение всплывающих подсказок данными из атрибутов data-*
+        document.addEventListener('DOMContentLoaded', function() {
+            const civBars = document.querySelectorAll('.civ-bar[data-civ]');
+            
+            civBars.forEach(bar => {
+                const tooltip = bar.querySelector('.tooltip');
+                if (!tooltip) return;
+
+                // Читаем данные из атрибутов                const name = bar.getAttribute('data-civ') || '—';
+                const period = bar.getAttribute('data-period') || '—';
+                const geography = bar.getAttribute('data-geography') || '—';
+                const persons = bar.getAttribute('data-persons') || '—';
+                const notes = bar.getAttribute('data-notes') || '—';
+
+                // Формируем содержимое подсказки
+                tooltip.innerHTML = `
+                    <span class="tooltip-title">${name}</span>
+                    <span class="tooltip-divider"></span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📅 Период:</span>
+                        <span class="tooltip-value">${period}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">🌍 География:</span>
+                        <span class="tooltip-value">${geography}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">👤 Личности:</span>
+                        <span class="tooltip-value">${persons}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📝 Примечания:</span>
+                        <span class="tooltip-value">${notes}</span>
+                    </span>
+                `;
+
+                // Отслеживаем положение мыши для позиционирования подсказки
+                bar.addEventListener('mouseenter', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const tooltipEl = this.querySelector('.tooltip');
+                    if (!tooltipEl) return;
+
+                    // Позиционируем подсказку рядом с отрезком
+                    const tooltipWidth = tooltipEl.offsetWidth || 400;
+                    let left = rect.right + 15;
+                    let top = rect.top + (rect.height / 2) - 20;
+
+                    // Если не помещается справа — показываем слева
+                    if (left + tooltipWidth > window.innerWidth - 20) {
+                        left = rect.left - tooltipWidth - 15;
+                    }
+
+                    // Если не помещается сверху/снизу — корректируем
+                    if (top + 200 > window.innerHeight - 20) {
+                        top = window.innerHeight - 220;
+                    }
+                    if (top < 20) {
+                        top = 20;
+                    }
+
+                    tooltipEl.style.left = left + 'px';
+                    tooltipEl.style.top = top + 'px';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

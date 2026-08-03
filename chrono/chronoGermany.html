@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Временная шкала — Правители Германии</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0ebe3;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            padding: 24px 20px 30px;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #5d6d7e;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            border-left: 4px solid #b8860b;
+            padding-left: 16px;
+            background: #faf8f5;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.5;
+        }
+
+        /* ---------- ДИАГРАММА (линия времени) ---------- */
+        .timeline-section {
+            margin: 10px 0 10px;
+            padding-top: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-title small {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #6d7b8a;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 12px 0 6px 0;
+            width: 100%;
+            overflow: visible;
+        }
+
+        /* Сама шкала времени */
+        .timeline-axis {
+            position: relative;
+            height: 4px;
+            background: #2c3e50;
+            border-radius: 4px;
+            margin: 0 10px;
+            width: calc(100% - 20px);
+        }
+
+        /* Метки на оси */
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5d6d7e;
+            width: calc(100% - 20px);
+            position: relative;
+        }
+
+        .timeline-labels span {
+            white-space: nowrap;
+            font-weight: 500;
+            position: relative;
+            text-align: left;
+            transform: translateX(0);
+            padding-left: 2px;
+        }
+
+        /* Вертикальные засечки под метками */
+        .timeline-labels span::before {
+            content: '';
+            position: absolute;
+            top: -22px;
+            left: 0;
+            width: 2px;
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 1px;
+        }
+
+        /* Ряд для каждого правителя — отдельная строка */
+        .civ-row {
+            position: relative;
+            width: calc(100% - 20px);
+            height: 36px;
+            margin: 1px 10px 0 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Каждый отрезок — правитель */
+        .civ-bar {
+            position: absolute;
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            padding-right: 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: height 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.2px;
+            z-index: 2;
+            overflow: visible;
+        }
+
+        .civ-bar:hover {
+            height: 32px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        /* Всплывающая подсказка (tooltip) */
+        .civ-bar .tooltip {
+            display: none;
+            position: fixed;
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 450px;
+            width: max-content;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            pointer-events: none;
+            text-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: normal;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .civ-bar .tooltip .tooltip-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f1c40f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .civ-bar .tooltip .tooltip-row {
+            display: block;
+            padding: 2px 0;
+        }
+
+        .civ-bar .tooltip .tooltip-label {
+            font-weight: 600;
+            color: #bdc3c7;
+            display: inline-block;
+            min-width: 50px;
+        }
+
+        .civ-bar .tooltip .tooltip-value {
+            color: #ecf0f1;
+        }
+
+        .civ-bar .tooltip .tooltip-divider {
+            display: block;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 6px 0;
+        }
+
+        /* Показываем подсказку при наведении */
+        .civ-bar:hover .tooltip {
+            display: block;
+        }
+
+        /* Название и годы — вынесены справа (по умолчанию) */
+        .civ-bar .label {
+            display: none;
+        }
+
+        .civ-bar .label-outside {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1e2a36;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2px 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            border: 1px solid #ddd6cb;
+            text-shadow: none;
+            z-index: 3;
+        }
+
+        .civ-bar .label-outside .years-out {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: #5d6d7e;
+            margin-left: 4px;
+        }
+
+        /* Текст справа от отрезка */
+        .civ-bar.label-right .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            left: calc(100% + 8px);
+        }
+
+        /* Текст слева от отрезка */
+        .civ-bar.label-left .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            right: calc(100% + 8px);
+            left: auto;
+        }
+
+        /* Особый класс для "Нашей эры" — текст внутри, без выноски и без подсказки */
+        .civ-bar.label-inside .label {
+            display: flex;
+        }
+
+        .civ-bar.label-inside .label-outside {
+            display: none;
+        }
+
+        .civ-bar.label-inside .tooltip {
+            display: none !important;
+        }
+
+        .civ-bar.label-inside {
+            cursor: default;
+        }
+
+        /* Цвета для правителей по династиям/эпохам */
+        .civ-color-0 { background: #8e44ad; }  /* Восточно-Франкское королевство */
+        .civ-color-1 { background: #2980b9; }  /* Саксонская династия */
+        .civ-color-2 { background: #27ae60; }  /* Салическая династия */
+        .civ-color-3 { background: #d4a017; }  /* Супплинбурги и Штауфены */
+        .civ-color-4 { background: #e67e22; }  /* Люксембурги и Габсбурги */
+        .civ-color-5 { background: #c0392b; }  /* Габсбурги (поздние) */
+        .civ-color-6 { background: #16a085; }  /* Германская империя (кайзеры) */
+        .civ-color-7 { background: #2c3e50; }  /* Веймарская республика */
+        .civ-color-8 { background: #b03a2e; }  /* ФРГ и современность */
+
+        /* Легенда */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: #f8f6f2;
+            border-radius: 12px;
+            border: 1px solid #e0d8cd;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: #2c3e50;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 12px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            color: #6d7b8a;
+            font-size: 0.9rem;
+            text-align: right;
+            border-top: 1px solid #e0d8cd;
+            padding-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px 10px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .timeline-labels {
+                font-size: 0.6rem;
+            }
+            .timeline-labels span::before {
+                height: 8px;
+                top: -18px;
+            }
+            .civ-bar {
+                font-size: 0.5rem;
+                height: 20px;
+                padding-left: 4px;
+                padding-right: 4px;
+            }
+            .civ-bar .label-outside {
+                font-size: 0.55rem;
+                padding: 1px 6px;
+            }
+            .civ-bar .label-outside .years-out {
+                font-size: 0.45rem;
+            }
+            .civ-row {
+                height: 30px;
+            }
+            .legend-item {
+                font-size: 0.6rem;
+            }
+            .legend-color {
+                width: 12px;
+                height: 10px;
+            }
+            .civ-bar .tooltip {
+                font-size: 0.65rem;
+                padding: 8px 10px;
+                max-width: 220px;
+            }
+            .civ-bar .tooltip .tooltip-title {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇩🇪 Временная шкала — Правители Германии</h1>
+        <div class="subtitle">
+            От Восточно-Франкского королевства до наших дней · годы правления · наведите курсор для подробной информации
+        </div>
+
+        <!-- ====== ЛИНЕЙНАЯ ДИАГРАММА ====== -->
+        <div class="timeline-section">
+            <div class="timeline-container">
+                <!-- Ось с делениями (от 800 до 2026 н.э.) -->
+                <div class="timeline-axis"></div>
+
+                <!-- Метки на оси -->
+                <div class="timeline-labels">
+                    <span>800</span>
+                    <span>900</span>
+                    <span>1000</span>
+                    <span>1100</span>
+                    <span>1200</span>
+                    <span>1300</span>
+                    <span>1400</span>
+                    <span>1500</span>
+                    <span>1600</span>
+                    <span>1700</span>
+                    <span>1800</span>
+                    <span>1900</span>
+                    <span>2000</span>
+                </div>
+
+                <!-- 
+                    Диапазон: от 800 до 2026 н.э. = 1226 лет
+                    left% = (год_начала - 800) / 1226 * 100
+                    width% = (год_конца - год_начала) / 1226 * 100
+                -->
+
+                <!-- ===== ВОСТОЧНО-ФРАНКСКОЕ КОРОЛЕВСТВО ===== -->
+
+                <!-- 1. Людовик II Немецкий: 843–876 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 3.5%; width: 2.7%;"
+                         data-civ="Людовик II Немецкий"
+                         data-period="843 – 876"
+                         data-dynasty="Каролинги"
+                         data-notes="Основатель Восточно-Франкского королевства — будущей Германии. Сын Людовика Благочестивого.">
+                        <span class="label">Людовик II <span class="years">843–876</span></span>
+                        <span class="label-outside">Людовик II Немецкий <span class="years-out">843–876</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 2. Карл III Толстый: 876–887 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 6.2%; width: 0.9%;"
+                         data-civ="Карл III Толстый"
+                         data-period="876 – 887"
+                         data-dynasty="Каролинги"
+                         data-notes="Последний Каролинг, объединивший империю Карла Великого. Свергнут в 887 г.">
+                        <span class="label">Карл III Толстый <span class="years">876–887</span></span>
+                        <span class="label-outside">Карл III <span class="years-out">876–887</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 3. Арнульф Каринтийский: 887–899 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 7.1%; width: 1.0%;"
+                         data-civ="Арнульф Каринтийский"
+                         data-period="887 – 899"
+                         data-dynasty="Каролинги"
+                         data-notes="Король Восточно-Франкского королевства. Император с 896 г.">
+                        <span class="label">Арнульф <span class="years">887–899</span></span>
+                        <span class="label-outside">Арнульф <span class="years-out">887–899</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 4. Конрад I: 911–918 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 9.1%; width: 0.6%;"
+                         data-civ="Конрад I"
+                         data-period="911 – 918"
+                         data-dynasty="Конрадины"
+                         data-notes="Первый немецкий король не из династии Каролингов. Слабый правитель.">
+                        <span class="label">Конрад I <span class="years">911–918</span></span>
+                        <span class="label-outside">Конрад I <span class="years-out">911–918</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== САКСОНСКАЯ ДИНАСТИЯ ===== -->
+
+                <!-- 5. Генрих I Птицелов: 919–936 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 9.7%; width: 1.4%;"
+                         data-civ="Генрих I Птицелов"
+                         data-period="919 – 936"
+                         data-dynasty="Саксонская"
+                         data-notes="Основатель Саксонской династии. Укрепил королевскую власть. Отражение набегов венгров.">
+                        <span class="label">Генрих I <span class="years">919–936</span></span>
+                        <span class="label-outside">Генрих I <span class="years-out">919–936</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 6. Оттон I Великий: 936–973 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 11.1%; width: 3.0%;"
+                         data-civ="Оттон I Великий"
+                         data-period="936 – 973"
+                         data-dynasty="Саксонская"
+                         data-notes="Коронация в 962 г. как императора Священной Римской империи. Победа над венграми (955).">
+                        <span class="label">Оттон I Великий <span class="years">936–973</span></span>
+                        <span class="label-outside">Оттон I <span class="years-out">936–973</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 7. Оттон II: 973–983 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 14.1%; width: 0.8%;"
+                         data-civ="Оттон II"
+                         data-period="973 – 983"
+                         data-dynasty="Саксонская"
+                         data-notes="Воевал в Италии. Поражение от арабов в Калабрии.">
+                        <span class="label">Оттон II <span class="years">973–983</span></span>
+                        <span class="label-outside">Оттон II <span class="years-out">973–983</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 8. Оттон III: 983–1002 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 14.9%; width: 1.6%;"
+                         data-civ="Оттон III"
+                         data-period="983 – 1002"
+                         data-dynasty="Саксонская"
+                         data-notes="Правил с регентшей. Мечтал о восстановлении Римской империи. Умер молодым.">
+                        <span class="label">Оттон III <span class="years">983–1002</span></span>
+                        <span class="label-outside">Оттон III <span class="years-out">983–1002</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 9. Генрих II Святой: 1002–1024 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 16.5%; width: 1.8%;"
+                         data-civ="Генрих II Святой"
+                         data-period="1002 – 1024"
+                         data-dynasty="Саксонская"
+                         data-notes="Последний император из Саксонской династии. Канонизирован.">
+                        <span class="label">Генрих II Святой <span class="years">1002–1024</span></span>
+                        <span class="label-outside">Генрих II <span class="years-out">1002–1024</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== САЛИЧЕСКАЯ ДИНАСТИЯ ===== -->
+
+                <!-- 10. Конрад II: 1024–1039 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 18.3%; width: 1.2%;"
+                         data-civ="Конрад II"
+                         data-period="1024 – 1039"
+                         data-dynasty="Салическая"
+                         data-notes="Основатель Салической династии. Присоединил Бургундию к империи.">
+                        <span class="label">Конрад II <span class="years">1024–1039</span></span>
+                        <span class="label-outside">Конрад II <span class="years-out">1024–1039</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 11. Генрих III: 1039–1056 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 19.5%; width: 1.4%;"
+                         data-civ="Генрих III"
+                         data-period="1039 – 1056"
+                         data-dynasty="Салическая"
+                         data-notes="Самый могущественный император Салической династии. Реформы церкви.">
+                        <span class="label">Генрих III <span class="years">1039–1056</span></span>
+                        <span class="label-outside">Генрих III <span class="years-out">1039–1056</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 12. Генрих IV: 1056–1105 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 20.9%; width: 4.0%;"
+                         data-civ="Генрих IV"
+                         data-period="1056 – 1105"
+                         data-dynasty="Салическая"
+                         data-notes="Конфликт с папой Григорием VII. Каносса (1077). Свергнут сыном.">
+                        <span class="label">Генрих IV <span class="years">1056–1105</span></span>
+                        <span class="label-outside">Генрих IV <span class="years-out">1056–1105</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 13. Генрих V: 1105–1125 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 24.9%; width: 1.6%;"
+                         data-civ="Генрих V"
+                         data-period="1105 – 1125"
+                         data-dynasty="Салическая"
+                         data-notes="Завершил борьбу за инвеституру (Вормсский конкордат, 1122).">
+                        <span class="label">Генрих V <span class="years">1105–1125</span></span>
+                        <span class="label-outside">Генрих V <span class="years-out">1105–1125</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ШТАУФЕНЫ ===== -->
+
+                <!-- 14. Конрад III: 1138–1152 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 27.6%; width: 1.1%;"
+                         data-civ="Конрад III"
+                         data-period="1138 – 1152"
+                         data-dynasty="Штауфены"
+                         data-notes="Первый король из династии Штауфенов. Участник Второго крестового похода.">
+                        <span class="label">Конрад III <span class="years">1138–1152</span></span>
+                        <span class="label-outside">Конрад III <span class="years-out">1138–1152</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 15. Фридрих I Барбаросса: 1152–1190 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 28.7%; width: 3.1%;"
+                         data-civ="Фридрих I Барбаросса"
+                         data-period="1152 – 1190"
+                         data-dynasty="Штауфены"
+                         data-notes="Коронован императором в 1155 г. Погиб в Третьем крестовом походе.">
+                        <span class="label">Фридрих I <span class="years">1152–1190</span></span>
+                        <span class="label-outside">Фридрих I Барбаросса <span class="years-out">1152–1190</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 16. Генрих VI: 1190–1197 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 31.8%; width: 0.6%;"
+                         data-civ="Генрих VI"
+                         data-period="1190 – 1197"
+                         data-dynasty="Штауфены"
+                         data-notes="Сын Барбароссы. Женился на наследнице Сицилийского королевства.">
+                        <span class="label">Генрих VI <span class="years">1190–1197</span></span>
+                        <span class="label-outside">Генрих VI <span class="years-out">1190–1197</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 17. Оттон IV: 1198–1215 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 32.5%; width: 1.4%;"
+                         data-civ="Оттон IV"
+                         data-period="1198 – 1215"
+                         data-dynasty="Вельфы"
+                         data-notes="Соперник Филиппа Швабского. Император с 1209 г. Конфликт с папой Иннокентием III.">
+                        <span class="label">Оттон IV <span class="years">1198–1215</span></span>
+                        <span class="label-outside">Оттон IV <span class="years-out">1198–1215</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 18. Фридрих II: 1212–1250 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 33.6%; width: 3.1%;"
+                         data-civ="Фридрих II"
+                         data-period="1212 – 1250"
+                         data-dynasty="Штауфены"
+                         data-notes="«Чудо света». Меценат и учёный. Крестовые походы. Конфликт с папством.">
+                        <span class="label">Фридрих II <span class="years">1212–1250</span></span>
+                        <span class="label-outside">Фридрих II <span class="years-out">1212–1250</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 19. Конрад IV: 1250–1254 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 36.7%; width: 0.3%;"
+                         data-civ="Конрад IV"
+                         data-period="1250 – 1254"
+                         data-dynasty="Штауфены"
+                         data-notes="Последний император из династии Штауфенов. Умер молодым.">
+                        <span class="label">Конрад IV <span class="years">1250–1254</span></span>
+                        <span class="label-outside">Конрад IV <span class="years-out">1250–1254</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== МЕЖДУЦАРСТВИЕ ===== -->
+
+                <!-- 20. Междуцарствие: 1254–1273 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 37.0%; width: 1.6%;"
+                         data-civ="Междуцарствие"
+                         data-period="1254 – 1273"
+                         data-dynasty="—"
+                         data-notes="Период без короля. Рост власти князей. Семь курфюрстов.">
+                        <span class="label">Междуцарствие <span class="years">1254–1273</span></span>
+                        <span class="label-outside">Междуцарствие <span class="years-out">1254–1273</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ЛЮКСЕМБУРГИ И ГАБСБУРГИ ===== -->
+
+                <!-- 21. Рудольф I: 1273–1291 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 38.6%; width: 1.5%;"
+                         data-civ="Рудольф I"
+                         data-period="1273 – 1291"
+                         data-dynasty="Габсбурги"
+                         data-notes="Основатель династии Габсбургов. Превратил Австрию в свою родовую вотчину.">
+                        <span class="label">Рудольф I <span class="years">1273–1291</span></span>
+                        <span class="label-outside">Рудольф I <span class="years-out">1273–1291</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 22. Адольф Нассауский: 1292–1298 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 40.1%; width: 0.5%;"
+                         data-civ="Адольф Нассауский"
+                         data-period="1292 – 1298"
+                         data-dynasty="Нассау"
+                         data-notes="Избран королём. Свергнут и убит в битве при Гёльхайме.">
+                        <span class="label">Адольф <span class="years">1292–1298</span></span>
+                        <span class="label-outside">Адольф <span class="years-out">1292–1298</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 23. Альбрехт I: 1298–1308 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 40.6%; width: 0.8%;"
+                         data-civ="Альбрехт I"
+                         data-period="1298 – 1308"
+                         data-dynasty="Габсбурги"
+                         data-notes="Сын Рудольфа I. Убит племянником Иоанном.">
+                        <span class="label">Альбрехт I <span class="years">1298–1308</span></span>
+                        <span class="label-outside">Альбрехт I <span class="years-out">1298–1308</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 24. Генрих VII: 1308–1313 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 41.4%; width: 0.4%;"
+                         data-civ="Генрих VII"
+                         data-period="1308 – 1313"
+                         data-dynasty="Люксембурги"
+                         data-notes="Первый император из династии Люксембургов. Итальянский поход.">
+                        <span class="label">Генрих VII <span class="years">1308–1313</span></span>
+                        <span class="label-outside">Генрих VII <span class="years-out">1308–1313</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 25. Людовик IV: 1314–1347 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 42.0%; width: 2.7%;"
+                         data-civ="Людовик IV Баварский"
+                         data-period="1314 – 1347"
+                         data-dynasty="Виттельсбахи"
+                         data-notes="Спор с Фридрихом Австрийским. Борьба с папством.">
+                        <span class="label">Людовик IV <span class="years">1314–1347</span></span>
+                        <span class="label-outside">Людовик IV <span class="years-out">1314–1347</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 26. Карл IV: 1346–1378 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 44.5%; width: 2.6%;"
+                         data-civ="Карл IV"
+                         data-period="1346 – 1378"
+                         data-dynasty="Люксембурги"
+                         data-notes="Золотая булла 1356 г. Установил выборы императора семью курфюрстами. Покровитель образования.">
+                        <span class="label">Карл IV <span class="years">1346–1378</span></span>
+                        <span class="label-outside">Карл IV <span class="years-out">1346–1378</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 27. Венцель I: 1378–1400 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 47.1%; width: 1.8%;"
+                         data-civ="Венцель I"
+                         data-period="1378 – 1400"
+                         data-dynasty="Люксембурги"
+                         data-notes="Сын Карла IV. Свергнут за неспособность поддерживать мир в империи.">
+                        <span class="label">Венцель I <span class="years">1378–1400</span></span>
+                        <span class="label-outside">Венцель I <span class="years-out">1378–1400</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 28. Рупрехт: 1400–1410 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 49.0%; width: 0.8%;"
+                         data-civ="Рупрехт"
+                         data-period="1400 – 1410"
+                         data-dynasty="Виттельсбахи"
+                         data-notes="Избран вместо Венцеля. Неудачный поход в Италию.">
+                        <span class="label">Рупрехт <span class="years">1400–1410</span></span>
+                        <span class="label-outside">Рупрехт <span class="years-out">1400–1410</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 29. Сигизмунд: 1410–1437 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 49.7%; width: 2.2%;"
+                         data-civ="Сигизмунд"
+                         data-period="1410 – 1437"
+                         data-dynasty="Люксембурги"
+                         data-notes="Последний император из династии Люксембургов. Организатор Констанцского собора.">
+                        <span class="label">Сигизмунд <span class="years">1410–1437</span></span>
+                        <span class="label-outside">Сигизмунд <span class="years-out">1410–1437</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ГАБСБУРГИ (ПОЗДНИЕ) ===== -->
+
+                <!-- 30. Альбрехт II: 1438–1439 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 52.0%; width: 0.1%;"
+                         data-civ="Альбрехт II"
+                         data-period="1438 – 1439"
+                         data-dynasty="Габсбурги"
+                         data-notes="Короткое правление. Умер во время похода против турок.">
+                        <span class="label">Альбрехт II <span class="years">1438–1439</span></span>
+                        <span class="label-outside">Альбрехт II <span class="years-out">1438–1439</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 31. Фридрих III: 1440–1493 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 52.2%; width: 4.3%;"
+                         data-civ="Фридрих III"
+                         data-period="1440 – 1493"
+                         data-dynasty="Габсбурги"
+                         data-notes="Долгое правление. Сохранил империю во время кризисов. Девиз: «AEIOU».">
+                        <span class="label">Фридрих III <span class="years">1440–1493</span></span>
+                        <span class="label-outside">Фридрих III <span class="years-out">1440–1493</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 32. Максимилиан I: 1493–1519 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 56.5%; width: 2.1%;"
+                         data-civ="Максимилиан I"
+                         data-period="1493 – 1519"
+                         data-dynasty="Габсбурги"
+                         data-notes="«Последний рыцарь». Реформы империи. Брак с Марией Бургундской.">
+                        <span class="label">Максимилиан I <span class="years">1493–1519</span></span>
+                        <span class="label-outside">Максимилиан I <span class="years-out">1493–1519</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 33. Карл V: 1519–1556 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 58.6%; width: 3.0%;"
+                         data-civ="Карл V"
+                         data-period="1519 – 1556"
+                         data-dynasty="Габсбурги"
+                         data-notes="Огромная империя, где никогда не заходило солнце. Противостояние с Реформацией и Лютером.">
+                        <span class="label">Карл V <span class="years">1519–1556</span></span>
+                        <span class="label-outside">Карл V <span class="years-out">1519–1556</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 34. Фердинанд I: 1556–1564 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 61.7%; width: 0.7%;"
+                         data-civ="Фердинанд I"
+                         data-period="1556 – 1564"
+                         data-dynasty="Габсбурги"
+                         data-notes="Аугсбургский религиозный мир (1555). Установление мира в империи.">
+                        <span class="label">Фердинанд I <span class="years">1556–1564</span></span>
+                        <span class="label-outside">Фердинанд I <span class="years-out">1556–1564</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 35. Максимилиан II: 1564–1576 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 62.3%; width: 1.0%;"
+                         data-civ="Максимилиан II"
+                         data-period="1564 – 1576"
+                         data-dynasty="Габсбурги"
+                         data-notes="Терпимость к протестантам. Поддержка Контрреформации.">
+                        <span class="label">Максимилиан II <span class="years">1564–1576</span></span>
+                        <span class="label-outside">Максимилиан II <span class="years-out">1564–1576</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 36. Рудольф II: 1576–1612 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 63.3%; width: 2.9%;"
+                         data-civ="Рудольф II"
+                         data-period="1576 – 1612"
+                         data-dynasty="Габсбурги"
+                         data-notes="Меценат, покровитель алхимии и астрономии (Тихо Браге, Кеплер). Утрата власти.">
+                        <span class="label">Рудольф II <span class="years">1576–1612</span></span>
+                        <span class="label-outside">Рудольф II <span class="years-out">1576–1612</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 37. Матвей: 1612–1619 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 66.2%; width: 0.6%;"
+                         data-civ="Матвей"
+                         data-period="1612 – 1619"
+                         data-dynasty="Габсбурги"
+                         data-notes="Начало Тридцатилетней войны (1618). Слабый правитель.">
+                        <span class="label">Матвей <span class="years">1612–1619</span></span>
+                        <span class="label-outside">Матвей <span class="years-out">1612–1619</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 38. Фердинанд II: 1619–1637 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 66.8%; width: 1.5%;"
+                         data-civ="Фердинанд II"
+                         data-period="1619 – 1637"
+                         data-dynasty="Габсбурги"
+                         data-notes="Решительный католик. Разгром протестантов в Чехии. Датский этап войны.">
+                        <span class="label">Фердинанд II <span class="years">1619–1637</span></span>
+                        <span class="label-outside">Фердинанд II <span class="years-out">1619–1637</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 39. Фердинанд III: 1637–1657 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 68.3%; width: 1.6%;"
+                         data-civ="Фердинанд III"
+                         data-period="1637 – 1657"
+                         data-dynasty="Габсбурги"
+                         data-notes="Тридцатилетняя война. Вестфальский мир 1648 г. Распад империи.">
+                        <span class="label">Фердинанд III <span class="years">1637–1657</span></span>
+                        <span class="label-outside">Фердинанд III <span class="years-out">1637–1657</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 40. Леопольд I: 1658–1705 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 70.0%; width: 3.8%;"
+                         data-civ="Леопольд I"
+                         data-period="1658 – 1705"
+                         data-dynasty="Габсбурги"
+                         data-notes="Долгое правление. Войны с Людовиком XIV. Оборона Вены от турок (1683).">
+                        <span class="label">Леопольд I <span class="years">1658–1705</span></span>
+                        <span class="label-outside">Леопольд I <span class="years-out">1658–1705</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 41. Иосиф I: 1705–1711 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 73.8%; width: 0.5%;"
+                         data-civ="Иосиф I"
+                         data-period="1705 – 1711"
+                         data-dynasty="Габсбурги"
+                         data-notes="Война за испанское наследство. Реформы.">
+                        <span class="label">Иосиф I <span class="years">1705–1711</span></span>
+                        <span class="label-outside">Иосиф I <span class="years-out">1705–1711</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 42. Карл VI: 1711–1740 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 74.3%; width: 2.4%;"
+                         data-civ="Карл VI"
+                         data-period="1711 – 1740"
+                         data-dynasty="Габсбурги"
+                         data-notes="Прагматическая санкция. Война за польское наследство. Последний Габсбург по мужской линии.">
+                        <span class="label">Карл VI <span class="years">1711–1740</span></span>
+                        <span class="label-outside">Карл VI <span class="years-out">1711–1740</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 43. Карл VII: 1742–1745 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 76.8%; width: 0.2%;"
+                         data-civ="Карл VII"
+                         data-period="1742 – 1745"
+                         data-dynasty="Виттельсбахи"
+                         data-notes="Единственный не-Габсбург после 1438 г. Война за австрийское наследство.">
+                        <span class="label">Карл VII <span class="years">1742–1745</span></span>
+                        <span class="label-outside">Карл VII <span class="years-out">1742–1745</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 44. Франц I: 1745–1765 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 77.0%; width: 1.6%;"
+                         data-civ="Франц I"
+                         data-period="1745 – 1765"
+                         data-dynasty="Габсбурги (Лотарингские)"
+                         data-notes="Муж Марии Терезии. Семилетняя война.">
+                        <span class="label">Франц I <span class="years">1745–1765</span></span>
+                        <span class="label-outside">Франц I <span class="years-out">1745–1765</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 45. Иосиф II: 1765–1790 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 78.7%; width: 2.0%;"
+                         data-civ="Иосиф II"
+                         data-period="1765 – 1790"
+                         data-dynasty="Габсбурги (Лотарингские)"
+                         data-notes="Просвещённый абсолютизм. Реформы. Указ о веротерпимости.">
+                        <span class="label">Иосиф II <span class="years">1765–1790</span></span>
+                        <span class="label-outside">Иосиф II <span class="years-out">1765–1790</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 46. Леопольд II: 1790–1792 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 80.7%; width: 0.2%;"
+                         data-civ="Леопольд II"
+                         data-period="1790 – 1792"
+                         data-dynasty="Габсбурги (Лотарингские)"
+                         data-notes="Короткое правление. Французская революция.">
+                        <span class="label">Леопольд II <span class="years">1790–1792</span></span>
+                        <span class="label-outside">Леопольд II <span class="years-out">1790–1792</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 47. Франц II: 1792–1806 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-left" style="left: 80.9%; width: 1.1%;"
+                         data-civ="Франц II"
+                         data-period="1792 – 1806"
+                         data-dynasty="Габсбурги (Лотарингские)"
+                         data-notes="Последний император Священной Римской империи. Распустил империю после поражения от Наполеона.">
+                        <span class="label">Франц II <span class="years">1792–1806</span></span>
+                        <span class="label-outside">Франц II <span class="years-out">1792–1806</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ГЕРМАНСКАЯ ИМПЕРИЯ ===== -->
+
+                <!-- 48. Вильгельм I: 1871–1888 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 85.0%; width: 1.4%;"
+                         data-civ="Вильгельм I"
+                         data-period="1871 – 1888"
+                         data-dynasty="Гогенцоллерны"
+                         data-notes="Первый император объединённой Германии. Эпоха Бисмарка. Объединение 1871 г.">
+                        <span class="label">Вильгельм I <span class="years">1871–1888</span></span>
+                        <span class="label-outside">Вильгельм I <span class="years-out">1871–1888</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 49. Фридрих III: 1888 (99 дней) -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 86.4%; width: 0.0%;"
+                         data-civ="Фридрих III"
+                         data-period="1888"
+                         data-dynasty="Гогенцоллерны"
+                         data-notes="Правил 99 дней. Умер от рака горла.">
+                        <span class="label">Фридрих III <span class="years">1888</span></span>
+                        <span class="label-outside">Фридрих III <span class="years-out">1888</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 50. Вильгельм II: 1888–1918 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 86.4%; width: 2.4%;"
+                         data-civ="Вильгельм II"
+                         data-period="1888 – 1918"
+                         data-dynasty="Гогенцоллерны"
+                         data-notes="Последний германский император. Первая мировая война. Отрекся после Ноябрьской революции 1918 г.">
+                        <span class="label">Вильгельм II <span class="years">1888–1918</span></span>
+                        <span class="label-outside">Вильгельм II <span class="years-out">1888–1918</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ВЕЙМАРСКАЯ РЕСПУБЛИКА И ФРГ ===== -->
+
+                <!-- 51. Веймарская республика (президенты): 1919–1933 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 88.8%; width: 1.1%;"
+                         data-civ="Веймарская республика"
+                         data-period="1919 – 1933"
+                         data-dynasty="Республика"
+                         data-notes="Первая немецкая демократия. Гиперинфляция. Кризисы. Приход Гитлера к власти.">
+                        <span class="label">Веймарская республика <span class="years">1919–1933</span></span>
+                        <span class="label-outside">Веймарская республика <span class="years-out">1919–1933</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 52. Третий рейх (Гитлер): 1933–1945 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 89.9%; width: 1.0%;"
+                         data-civ="Третий рейх"
+                         data-period="1933 – 1945"
+                         data-dynasty="Нацистская диктатура"
+                         data-notes="Адольф Гитлер. Вторая мировая война. Холокост. Окончание войны и капитуляция в 1945 г.">
+                        <span class="label">Третий рейх <span class="years">1933–1945</span></span>
+                        <span class="label-outside">Третий рейх <span class="years-out">1933–1945</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 53. ФРГ (президенты/канцлеры): 1949–н.в. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 91.0%; width: 4.0%;"
+                         data-civ="ФРГ (Федеративная Республика Германия)"
+                         data-period="1949 – н.в."
+                         data-dynasty="Республика"
+                         data-notes="Разделение Германии. Объединение 1990 г. Современная Германия. Канцлеры: Аденауэр, Брандт, Коль, Меркель, Шольц.">
+                        <span class="label">ФРГ <span class="years">1949–н.в.</span></span>
+                        <span class="label-outside">ФРГ <span class="years-out">1949–н.в.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- Фоновая шкала: Наша эра -->
+                <div class="civ-row">
+                    <div class="civ-bar label-inside" style="left: 0%; width: 100%; height: 10px; background: rgba(44, 62, 80, 0.08); border: none; box-shadow: none; cursor: default;">
+                        <span class="label" style="color: #5d6d7e; font-weight: 400; font-size: 0.6rem; text-shadow: none; opacity: 0.5;">Наша эра</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Легенда -->
+            <div class="legend">
+                <span class="legend-item"><span class="legend-color" style="background:#8e44ad;"></span> Вост.-Франкское королевство</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2980b9;"></span> Саксонская династия</span>
+                <span class="legend-item"><span class="legend-color" style="background:#27ae60;"></span> Салическая династия</span>
+                <span class="legend-item"><span class="legend-color" style="background:#d4a017;"></span> Штауфены и ранние Габсбурги</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e67e22;"></span> Люксембурги/Виттельсбахи</span>
+                <span class="legend-item"><span class="legend-color" style="background:#c0392b;"></span> Габсбурги (поздние)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#16a085;"></span> Германская империя</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2c3e50;"></span> Веймарская республика/Третий рейх</span>
+                <span class="legend-item"><span class="legend-color" style="background:#b03a2e;"></span> ФРГ</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            * Даты указаны в годах н.э. Отрезки на диаграмме отражают годы правления. Наведите курсор на отрезок для просмотра полной информации.
+        </div>
+    </div>
+
+    <script>
+        // Заполнение всплывающих подсказок данными из атрибутов data-*
+        document.addEventListener('DOMContentLoaded', function() {
+            const civBars = document.querySelectorAll('.civ-bar[data-civ]');
+            
+            civBars.forEach(bar => {
+                const tooltip = bar.querySelector('.tooltip');
+                if (!tooltip) return;
+
+                const name = bar.getAttribute('data-civ') || '—';
+                const period = bar.getAttribute('data-period') || '—';
+                const dynasty = bar.getAttribute('data-dynasty') || '—';
+                const notes = bar.getAttribute('data-notes') || '—';
+
+                tooltip.innerHTML = `
+                    <span class="tooltip-title">${name}</span>
+                    <span class="tooltip-divider"></span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📅 Период:</span>
+                        <span class="tooltip-value">${period}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">👑 Династия:</span>
+                        <span class="tooltip-value">${dynasty}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📝 О периоде:</span>
+                        <span class="tooltip-value">${notes}</span>
+                    </span>
+                `;
+
+                bar.addEventListener('mouseenter', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const tooltipEl = this.querySelector('.tooltip');
+                    if (!tooltipEl) return;
+
+                    const tooltipWidth = tooltipEl.offsetWidth || 350;
+                    let left = rect.right + 15;
+                    let top = rect.top + (rect.height / 2) - 20;
+
+                    if (left + tooltipWidth > window.innerWidth - 20) {
+                        left = rect.left - tooltipWidth - 15;
+                    }
+                    if (top + 150 > window.innerHeight - 20) {
+                        top = window.innerHeight - 170;
+                    }
+                    if (top < 20) {
+                        top = 20;
+                    }
+
+                    tooltipEl.style.left = left + 'px';
+                    tooltipEl.style.top = top + 'px';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

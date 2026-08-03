@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Временная шкала — Средневековье и Новое время</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0ebe3;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            padding: 24px 20px 30px;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #5d6d7e;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            border-left: 4px solid #b8860b;
+            padding-left: 16px;
+            background: #faf8f5;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.5;
+        }
+
+        /* ---------- ДИАГРАММА (линия времени) ---------- */
+        .timeline-section {
+            margin: 10px 0 10px;
+            padding-top: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-title small {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #6d7b8a;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 12px 0 6px 0;
+            width: 100%;
+            overflow: visible;
+        }
+
+        /* Сама шкала времени */
+        .timeline-axis {
+            position: relative;
+            height: 4px;
+            background: #2c3e50;
+            border-radius: 4px;
+            margin: 0 10px;
+            width: calc(100% - 20px);
+        }
+
+        /* Метки на оси */
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5d6d7e;
+            width: calc(100% - 20px);
+            position: relative;
+        }
+
+        .timeline-labels span {
+            white-space: nowrap;
+            font-weight: 500;
+            position: relative;
+            text-align: left;
+            transform: translateX(0);
+            padding-left: 2px;
+        }
+
+        /* Вертикальные засечки под метками */
+        .timeline-labels span::before {
+            content: '';
+            position: absolute;
+            top: -22px;
+            left: 0;
+            width: 2px;
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 1px;
+        }
+
+        /* Ряд для каждой цивилизации — отдельная строка */
+        .civ-row {
+            position: relative;
+            width: calc(100% - 20px);
+            height: 46px;
+            margin: 2px 10px 0 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Каждый отрезок — цивилизация */
+        .civ-bar {
+            position: absolute;
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: height 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.2px;
+            z-index: 2;
+            overflow: visible;
+        }
+
+        .civ-bar:hover {
+            height: 36px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        /* Всплывающая подсказка (tooltip) */
+        .civ-bar .tooltip {
+            display: none;
+            position: fixed;
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 500px;
+            width: max-content;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            pointer-events: none;
+            text-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: normal;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .civ-bar .tooltip .tooltip-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f1c40f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .civ-bar .tooltip .tooltip-row {
+            display: block;
+            padding: 2px 0;
+        }
+
+        .civ-bar .tooltip .tooltip-label {
+            font-weight: 600;
+            color: #bdc3c7;
+            display: inline-block;
+            min-width: 60px;
+        }
+
+        .civ-bar .tooltip .tooltip-value {
+            color: #ecf0f1;
+        }
+
+        .civ-bar .tooltip .tooltip-divider {
+            display: block;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 6px 0;
+        }
+
+        /* Показываем подсказку при наведении */
+        .civ-bar:hover .tooltip {
+            display: block;
+        }
+
+        /* Название и годы — вынесены справа (по умолчанию) */
+        .civ-bar .label {
+            display: none;
+        }
+
+        .civ-bar .label-outside {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1e2a36;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2px 12px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            border: 1px solid #ddd6cb;
+            text-shadow: none;
+            z-index: 3;
+        }
+
+        .civ-bar .label-outside .years-out {
+            font-weight: 400;
+            font-size: 0.65rem;
+            color: #5d6d7e;
+            margin-left: 5px;
+        }
+
+        /* Текст справа от отрезка */
+        .civ-bar.label-right .label {
+            display: none;
+        }
+
+        .civ-bar.label-right .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            left: calc(100% + 10px);
+        }
+
+        /* Текст слева от отрезка */
+        .civ-bar.label-left .label {
+            display: none;
+        }
+
+        .civ-bar.label-left .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            right: calc(100% + 10px);
+            left: auto;
+        }
+
+        /* Особый класс для "Нашей эры" — текст внутри, без выноски и без подсказки */
+        .civ-bar.label-inside .label {
+            display: flex;
+        }
+
+        .civ-bar.label-inside .label-outside {
+            display: none;
+        }
+
+        .civ-bar.label-inside .tooltip {
+            display: none !important;
+        }
+
+        .civ-bar.label-inside {
+            cursor: default;
+        }
+
+        /* Цвета для цивилизаций */
+        .civ-color-0 { background: #8e44ad; }  /* Византия */
+        .civ-color-1 { background: #2980b9; }  /* Арабский халифат */
+        .civ-color-2 { background: #27ae60; }  /* Империя Карла Великого */
+        .civ-color-3 { background: #d4a017; }  /* Священная Римская империя */
+        .civ-color-4 { background: #e67e22; }  /* Киевская Русь */
+        .civ-color-5 { background: #c0392b; }  /* Монгольская империя */
+        .civ-color-6 { background: #16a085; }  /* Османская империя */
+        .civ-color-7 { background: #8e44ad; }  /* Империя Мин */
+        .civ-color-8 { background: #d35400; }  /* Империя Великих Моголов */
+        .civ-color-9 { background: #2980b9; }  /* Русское царство */
+        .civ-color-10 { background: #b03a2e; } /* Британская империя */
+        .civ-color-11 { background: #1a5276; } /* Французская империя */
+        .civ-color-12 { background: #7d3c98; } /* Германия (кайзеровская) */
+        .civ-color-13 { background: #b9770e; } /* Япония (Мэйдзи) */
+        .civ-color-14 { background: #e74c3c; } /* Российская империя */
+        .civ-color-15 { background: #2ecc71; } /* Наша эра */
+
+        /* Легенда */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: #f8f6f2;
+            border-radius: 12px;
+            border: 1px solid #e0d8cd;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            color: #2c3e50;
+        }
+
+        .legend-color {
+            width: 18px;
+            height: 14px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            color: #6d7b8a;
+            font-size: 0.9rem;
+            text-align: right;
+            border-top: 1px solid #e0d8cd;
+            padding-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px 10px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .timeline-labels {
+                font-size: 0.65rem;
+            }
+            .timeline-labels span::before {
+                height: 8px;
+                top: -18px;
+            }
+            .civ-bar {
+                font-size: 0.6rem;
+                height: 24px;
+                padding-left: 6px;
+                padding-right: 6px;
+            }
+            .civ-bar .label-outside {
+                font-size: 0.65rem;
+                padding: 2px 8px;
+            }
+            .civ-bar .label-outside .years-out {
+                font-size: 0.55rem;
+            }
+            .civ-row {
+                height: 38px;
+            }
+            .legend-item {
+                font-size: 0.65rem;
+            }
+            .legend-color {
+                width: 14px;
+                height: 10px;
+            }
+            .civ-bar .tooltip {
+                font-size: 0.7rem;
+                padding: 10px 12px;
+                max-width: 280px;
+            }
+            .civ-bar .tooltip .tooltip-title {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Временная шкала — Средневековье и Новое время</h1>
+        <div class="subtitle">
+            От падения Рима до наших дней · основные империи и государства · наведите курсор для подробной информации
+        </div>
+
+        <!-- ====== ЛИНЕЙНАЯ ДИАГРАММА ====== -->
+        <div class="timeline-section">
+            <div class="timeline-container">
+                <!-- Ось с делениями (от 500 до 2026 н.э.) -->
+                <div class="timeline-axis"></div>
+
+                <!-- Метки на оси -->
+                <div class="timeline-labels">
+                    <span>500</span>
+                    <span>750</span>
+                    <span>1000</span>
+                    <span>1250</span>
+                    <span>1500</span>
+                    <span>1750</span>
+                    <span>2000</span>
+                </div>
+
+                <!-- 
+                    Диапазон: от 500 до 2026 н.э. = 1526 лет
+                    left% = (год_начала - 500) / 1526 * 100
+                    width% = (год_конца - год_начала) / 1526 * 100
+                    
+                    label-right — текст справа (только для Византии и Арабского халифата)
+                    label-left — текст слева (для всех остальных)
+                -->
+
+                <!-- 1. Византия: 476–1453 — текст СПРАВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 0%; width: 64.0%;"
+                         data-civ="Византийская империя"
+                         data-period="476 – 1453 н.э."
+                         data-geography="Балканы, Греция, Турция, Ближний Восток, Египет, Северная Африка"
+                         data-persons="Юстиниан I, Феодора, Велизарий, Ираклий I, Василий II"
+                         data-notes="Продолжение Римской империи на Востоке. Расцвет при Юстиниане (VI в.), падение Константинополя в 1453 г.">
+                        <span class="label">Византия <span class="years">476–1453</span></span>
+                        <span class="label-outside">Византия <span class="years-out">476–1453</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 2. Арабский халифат: 632–1258 — текст СПРАВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 8.7%; width: 41.0%;"
+                         data-civ="Арабский халифат"
+                         data-period="632 – 1258 н.э."
+                         data-geography="Аравия, Ближний Восток, Северная Африка, Испания, Персия, Средняя Азия"
+                         data-persons="Мухаммад, Абу Бакр, Умар, Харун ар-Рашид, Аль-Мамун"
+                         data-notes="Возник после смерти пророка Мухаммада. Золотой век исламской науки и культуры (VIII–XIII вв.). Падение Багдада в 1258 г.">
+                        <span class="label">Арабский халифат <span class="years">632–1258</span></span>
+                        <span class="label-outside">Арабский халифат <span class="years-out">632–1258</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 3. Империя Карла Великого: 800–888 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-left" style="left: 19.7%; width: 5.8%;"
+                         data-civ="Империя Карла Великого"
+                         data-period="800 – 888 н.э."
+                         data-geography="Франция, Германия, Италия, Бенилюкс, Северная Испания"
+                         data-persons="Карл Великий, Людовик I Благочестивый"
+                         data-notes="Восстановление империи на Западе. Коронован как император в 800 г. Распалась после Верденского договора 843 г.">
+                        <span class="label">Империя Карла Великого <span class="years">800–888</span></span>
+                        <span class="label-outside">Карл Великий <span class="years-out">800–888</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 4. Священная Римская империя: 962–1806 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-left" style="left: 30.3%; width: 55.3%;"
+                         data-civ="Священная Римская империя"
+                         data-period="962 – 1806 н.э."
+                         data-geography="Германия, Австрия, Италия, Чехия, Бенилюкс, Швейцария"
+                         data-persons="Оттон I, Фридрих I Барбаросса, Фридрих II, Карл V"
+                         data-notes="Федеративное государство в Центральной Европе. Существовало более 800 лет. Распущена Наполеоном в 1806 г.">
+                        <span class="label">Священная Римская империя <span class="years">962–1806</span></span>
+                        <span class="label-outside">Священная Римская империя <span class="years-out">962–1806</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 5. Киевская Русь: 882–1240 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-left" style="left: 25.0%; width: 23.5%;"
+                         data-civ="Киевская Русь"
+                         data-period="882 – 1240 н.э."
+                         data-geography="Восточная Европа: Украина, Беларусь, запад России"
+                         data-persons="Олег Вещий, Владимир Великий, Ярослав Мудрый"
+                         data-notes="Первое восточнославянское государство. Принятие христианства в 988 г. Разорена монгольским нашествием в 1240 г.">
+                        <span class="label">Киевская Русь <span class="years">882–1240</span></span>
+                        <span class="label-outside">Киевская Русь <span class="years-out">882–1240</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 6. Монгольская империя: 1206–1368 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-left" style="left: 46.3%; width: 10.6%;"
+                         data-civ="Монгольская империя"
+                         data-period="1206 – 1368 н.э."
+                         data-geography="Монголия, Китай, Средняя Азия, Персия, Русь, Восточная Европа"
+                         data-persons="Чингисхан, Угэдэй, Хубилай, Батый"
+                         data-notes="Крупнейшая континентальная империя в истории. От Тихого океана до Европы. Распалась на несколько государств (Золотая Орда, империя Юань и др.).">
+                        <span class="label">Монгольская империя <span class="years">1206–1368</span></span>
+                        <span class="label-outside">Монгольская империя <span class="years-out">1206–1368</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 7. Османская империя: 1299–1922 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 52.4%; width: 40.8%;"
+                         data-civ="Османская империя"
+                         data-period="1299 – 1922 н.э."
+                         data-geography="Турция, Балканы, Ближний Восток, Египет, Северная Африка, Кавказ"
+                         data-persons="Осман I, Мехмед II, Сулейман Великолепный, Абдул-Хамид II"
+                         data-notes="Одно из крупнейших государств в истории. Захват Константинополя в 1453 г. Распалась после Первой мировой войны.">
+                        <span class="label">Османская империя <span class="years">1299–1922</span></span>
+                        <span class="label-outside">Османская империя <span class="years-out">1299–1922</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 8. Империя Мин: 1368–1644 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 56.9%; width: 18.1%;"
+                         data-civ="Империя Мин"
+                         data-period="1368 – 1644 н.э."
+                         data-geography="Китай (от Монголии до Южно-Китайского моря)"
+                         data-persons="Чжу Юаньчжан, Чжу Ди (Юнлэ), Ван Янмин"
+                         data-notes="Правление китайской династии Мин. Восстановление Китая после монгольского владычества. Великие морские экспедиции Чжэн Хэ.">
+                        <span class="label">Империя Мин <span class="years">1368–1644</span></span>
+                        <span class="label-outside">Империя Мин <span class="years-out">1368–1644</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 9. Империя Великих Моголов: 1526–1858 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 67.2%; width: 21.8%;"
+                         data-civ="Империя Великих Моголов"
+                         data-period="1526 – 1858 н.э."
+                         data-geography="Индия, Пакистан, Бангладеш, Афганистан"
+                         data-persons="Бабур, Акбар, Шах-Джахан, Аурангзеб"
+                         data-notes="Мусульманская империя в Индии. Строительство Тадж-Махала. Пик могущества при Акбаре. Ликвидирована британцами в 1858 г.">
+                        <span class="label">Великие Моголы <span class="years">1526–1858</span></span>
+                        <span class="label-outside">Великие Моголы <span class="years-out">1526–1858</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 10. Русское царство: 1547–1721 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-9 label-left" style="left: 68.5%; width: 11.4%;"
+                         data-civ="Русское царство"
+                         data-period="1547 – 1721 н.э."
+                         data-geography="Россия (от Балтики до Сибири, от Белого до Чёрного моря)"
+                         data-persons="Иван IV Грозный, Борис Годунов, Пётр I Великий"
+                         data-notes="Объединение русских земель после Золотой Орды. Принятие царского титула. Преобразовано в Российскую империю Петром I в 1721 г.">
+                        <span class="label">Русское царство <span class="years">1547–1721</span></span>
+                        <span class="label-outside">Русское царство <span class="years-out">1547–1721</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 11. Британская империя: 1583–1947 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-10 label-left" style="left: 70.9%; width: 23.9%;"
+                         data-civ="Британская империя"
+                         data-period="1583 – 1947 н.э."
+                         data-geography="Великобритания, Канада, Австралия, Индия, Африка, Карибы, Азия"
+                         data-persons="Елизавета I, Виктория, Уинстон Черчилль, Клайв, Кук"
+                         data-notes="Крупнейшая империя в истории. «Империя, над которой никогда не заходит солнце». Пик могущества в XIX в. Распад после Второй мировой войны.">
+                        <span class="label">Британская империя <span class="years">1583–1947</span></span>
+                        <span class="label-outside">Британская империя <span class="years-out">1583–1947</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 12. Империя Наполеона: 1804–1815 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-11 label-left" style="left: 85.3%; width: 0.7%;"
+                         data-civ="Империя Наполеона"
+                         data-period="1804 – 1815 н.э."
+                         data-geography="Франция, Италия, Германия, Испания, Польша (континентальная Европа)"
+                         data-persons="Наполеон I Бонапарт, Жозефина, Талейран"
+                         data-notes="Короткая, но эпохальная империя. Кодекс Наполеона. Войны с коалициями. Падение после битвы при Ватерлоо (1815).">
+                        <span class="label">Наполеоновская империя <span class="years">1804–1815</span></span>
+                        <span class="label-outside">Наполеон <span class="years-out">1804–1815</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 13. Германская империя: 1871–1918 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-12 label-left" style="left: 89.8%; width: 3.1%;"
+                         data-civ="Германская империя"
+                         data-period="1871 – 1918 н.э."
+                         data-geography="Германия, часть Польши, Эльзас-Лотарингия, колонии в Африке и Азии"
+                         data-persons="Вильгельм I, Отто фон Бисмарк, Вильгельм II"
+                         data-notes="Объединение Германии под руководством Пруссии. Индустриальный рывок. Участие в Первой мировой войне. Распад в 1918 г.">
+                        <span class="label">Германская империя <span class="years">1871–1918</span></span>
+                        <span class="label-outside">Германская империя <span class="years-out">1871–1918</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 14. Имперская Япония: 1868–1945 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-13 label-left" style="left: 89.3%; width: 5.0%;"
+                         data-civ="Имперская Япония"
+                         data-period="1868 – 1945 н.э."
+                         data-geography="Япония, Корея, Тайвань, Маньчжурия, острова Тихого океана"
+                         data-persons="Император Мэйдзи, Тоётоми Хидэёси, Ямамото Исороку"
+                         data-notes="Бурная модернизация по западному образцу. Колониальные захваты. Участие во Второй мировой войне. Капитуляция в 1945 г.">
+                        <span class="label">Имперская Япония <span class="years">1868–1945</span></span>
+                        <span class="label-outside">Япония (Мэйдзи) <span class="years-out">1868–1945</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 15. Российская империя: 1721–1917 — текст СЛЕВА -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-14 label-left" style="left: 79.9%; width: 12.9%;"
+                         data-civ="Российская империя"
+                         data-period="1721 – 1917 н.э."
+                         data-geography="Россия, Финляндия, Польша, Кавказ, Средняя Азия, Аляска"
+                         data-persons="Пётр I, Екатерина II, Александр II, Николай II"
+                         data-notes="Преемница Русского царства. Российская империя — одно из крупнейших государств в истории. Падение в результате Февральской революции 1917 г.">
+                        <span class="label">Российская империя <span class="years">1721–1917</span></span>
+                        <span class="label-outside">Российская империя <span class="years-out">1721–1917</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 16. Наша эра: 0 – 2026 — текст ВНУТРИ (label-inside), без подсказки -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-15 label-inside" style="left: 0%; width: 100%;">
+                        <span class="label"><span class="name">Наша эра</span><span class="years">0 – 2026 н.э.</span></span>
+                        <span class="label-outside">Наша эра <span class="years-out">0–2026</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Легенда -->
+            <div class="legend">
+                <span class="legend-item"><span class="legend-color" style="background:#8e44ad;"></span> Византия</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2980b9;"></span> Арабский халифат</span>
+                <span class="legend-item"><span class="legend-color" style="background:#27ae60;"></span> Карл Великий</span>
+                <span class="legend-item"><span class="legend-color" style="background:#d4a017;"></span> Священная Римская империя</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e67e22;"></span> Киевская Русь</span>
+                <span class="legend-item"><span class="legend-color" style="background:#c0392b;"></span> Монгольская империя</span>
+                <span class="legend-item"><span class="legend-color" style="background:#16a085;"></span> Османская империя</span>
+                <span class="legend-item"><span class="legend-color" style="background:#8e44ad;"></span> Империя Мин</span>
+                <span class="legend-item"><span class="legend-color" style="background:#d35400;"></span> Великие Моголы</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2980b9;"></span> Русское царство</span>
+                <span class="legend-item"><span class="legend-color" style="background:#b03a2e;"></span> Британская империя</span>
+                <span class="legend-item"><span class="legend-color" style="background:#1a5276;"></span> Наполеон</span>
+                <span class="legend-item"><span class="legend-color" style="background:#7d3c98;"></span> Германская империя</span>
+                <span class="legend-item"><span class="legend-color" style="background:#b9770e;"></span> Япония (Мэйдзи)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e74c3c;"></span> Российская империя</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2ecc71;"></span> Наша эра</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            * Даты указаны в годах н.э. Отрезки на диаграмме отражают основные периоды существования государств. «Наша эра» показана для понимания масштаба времени. Наведите курсор на отрезок для просмотра полной информации.
+        </div>
+    </div>
+
+    <script>
+        // Заполнение всплывающих подсказок данными из атрибутов data-*
+        document.addEventListener('DOMContentLoaded', function() {
+            const civBars = document.querySelectorAll('.civ-bar[data-civ]');
+            
+            civBars.forEach(bar => {
+                const tooltip = bar.querySelector('.tooltip');
+                if (!tooltip) return;
+
+                const name = bar.getAttribute('data-civ') || '—';
+                const period = bar.getAttribute('data-period') || '—';
+                const geography = bar.getAttribute('data-geography') || '—';
+                const persons = bar.getAttribute('data-persons') || '—';
+                const notes = bar.getAttribute('data-notes') || '—';
+
+                tooltip.innerHTML = `
+                    <span class="tooltip-title">${name}</span>
+                    <span class="tooltip-divider"></span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📅 Период:</span>
+                        <span class="tooltip-value">${period}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">🌍 География:</span>
+                        <span class="tooltip-value">${geography}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">👤 Личности:</span>
+                        <span class="tooltip-value">${persons}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📝 Примечания:</span>
+                        <span class="tooltip-value">${notes}</span>
+                    </span>
+                `;
+
+                bar.addEventListener('mouseenter', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const tooltipEl = this.querySelector('.tooltip');
+                    if (!tooltipEl) return;
+
+                    const tooltipWidth = tooltipEl.offsetWidth || 400;
+                    let left = rect.right + 15;
+                    let top = rect.top + (rect.height / 2) - 20;
+
+                    if (left + tooltipWidth > window.innerWidth - 20) {
+                        left = rect.left - tooltipWidth - 15;
+                    }
+                    if (top + 200 > window.innerHeight - 20) {
+                        top = window.innerHeight - 220;
+                    }
+                    if (top < 20) {
+                        top = 20;
+                    }
+
+                    tooltipEl.style.left = left + 'px';
+                    tooltipEl.style.top = top + 'px';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

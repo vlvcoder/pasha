@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Временная шкала — Правители Франции</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0ebe3;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            padding: 24px 20px 30px;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #5d6d7e;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            border-left: 4px solid #b8860b;
+            padding-left: 16px;
+            background: #faf8f5;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.5;
+        }
+
+        /* ---------- ДИАГРАММА (линия времени) ---------- */
+        .timeline-section {
+            margin: 10px 0 10px;
+            padding-top: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-title small {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #6d7b8a;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 12px 0 6px 0;
+            width: 100%;
+            overflow: visible;
+        }
+
+        /* Сама шкала времени */
+        .timeline-axis {
+            position: relative;
+            height: 4px;
+            background: #2c3e50;
+            border-radius: 4px;
+            margin: 0 10px;
+            width: calc(100% - 20px);
+        }
+
+        /* Метки на оси */
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5d6d7e;
+            width: calc(100% - 20px);
+            position: relative;
+        }
+
+        .timeline-labels span {
+            white-space: nowrap;
+            font-weight: 500;
+            position: relative;
+            text-align: left;
+            transform: translateX(0);
+            padding-left: 2px;
+        }
+
+        /* Вертикальные засечки под метками */
+        .timeline-labels span::before {
+            content: '';
+            position: absolute;
+            top: -22px;
+            left: 0;
+            width: 2px;
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 1px;
+        }
+
+        /* Ряд для каждого правителя — отдельная строка */
+        .civ-row {
+            position: relative;
+            width: calc(100% - 20px);
+            height: 36px;
+            margin: 1px 10px 0 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Каждый отрезок — правитель */
+        .civ-bar {
+            position: absolute;
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            padding-right: 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: height 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.2px;
+            z-index: 2;
+            overflow: visible;
+        }
+
+        .civ-bar:hover {
+            height: 32px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        /* Всплывающая подсказка (tooltip) */
+        .civ-bar .tooltip {
+            display: none;
+            position: fixed;
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 450px;
+            width: max-content;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            pointer-events: none;
+            text-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: normal;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .civ-bar .tooltip .tooltip-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f1c40f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .civ-bar .tooltip .tooltip-row {
+            display: block;
+            padding: 2px 0;
+        }
+
+        .civ-bar .tooltip .tooltip-label {
+            font-weight: 600;
+            color: #bdc3c7;
+            display: inline-block;
+            min-width: 50px;
+        }
+
+        .civ-bar .tooltip .tooltip-value {
+            color: #ecf0f1;
+        }
+
+        .civ-bar .tooltip .tooltip-divider {
+            display: block;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 6px 0;
+        }
+
+        /* Показываем подсказку при наведении */
+        .civ-bar:hover .tooltip {
+            display: block;
+        }
+
+        /* Название и годы — вынесены справа (по умолчанию) */
+        .civ-bar .label {
+            display: none;
+        }
+
+        .civ-bar .label-outside {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1e2a36;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2px 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            border: 1px solid #ddd6cb;
+            text-shadow: none;
+            z-index: 3;
+        }
+
+        .civ-bar .label-outside .years-out {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: #5d6d7e;
+            margin-left: 4px;
+        }
+
+        /* Текст справа от отрезка */
+        .civ-bar.label-right .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            left: calc(100% + 8px);
+        }
+
+        /* Текст слева от отрезка */
+        .civ-bar.label-left .label-outside {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            right: calc(100% + 8px);
+            left: auto;
+        }
+
+        /* Особый класс для "Нашей эры" — текст внутри, без выноски и без подсказки */
+        .civ-bar.label-inside .label {
+            display: flex;
+        }
+
+        .civ-bar.label-inside .label-outside {
+            display: none;
+        }
+
+        .civ-bar.label-inside .tooltip {
+            display: none !important;
+        }
+
+        .civ-bar.label-inside {
+            cursor: default;
+        }
+
+        /* Цвета для правителей по династиям/эпохам */
+        .civ-color-0 { background: #8e44ad; }  /* Каролинги */
+        .civ-color-1 { background: #2980b9; }  /* Капетинги */
+        .civ-color-2 { background: #27ae60; }  /* Валуа */
+        .civ-color-3 { background: #d4a017; }  /* Валуа-Орлеан */
+        .civ-color-4 { background: #e67e22; }  /* Валуа-Ангулем */
+        .civ-color-5 { background: #c0392b; }  /* Бурбоны */
+        .civ-color-6 { background: #16a085; }  /* Бурбоны-Орлеан */
+        .civ-color-7 { background: #2c3e50; }  /* Бонапарты */
+        .civ-color-8 { background: #b03a2e; }  /* Республики/Империи */
+
+        /* Легенда */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: #f8f6f2;
+            border-radius: 12px;
+            border: 1px solid #e0d8cd;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: #2c3e50;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 12px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            color: #6d7b8a;
+            font-size: 0.9rem;
+            text-align: right;
+            border-top: 1px solid #e0d8cd;
+            padding-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px 10px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .timeline-labels {
+                font-size: 0.6rem;
+            }
+            .timeline-labels span::before {
+                height: 8px;
+                top: -18px;
+            }
+            .civ-bar {
+                font-size: 0.5rem;
+                height: 20px;
+                padding-left: 4px;
+                padding-right: 4px;
+            }
+            .civ-bar .label-outside {
+                font-size: 0.55rem;
+                padding: 1px 6px;
+            }
+            .civ-bar .label-outside .years-out {
+                font-size: 0.45rem;
+            }
+            .civ-row {
+                height: 30px;
+            }
+            .legend-item {
+                font-size: 0.6rem;
+            }
+            .legend-color {
+                width: 12px;
+                height: 10px;
+            }
+            .civ-bar .tooltip {
+                font-size: 0.65rem;
+                padding: 8px 10px;
+                max-width: 220px;
+            }
+            .civ-bar .tooltip .tooltip-title {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇫🇷 Временная шкала — Правители Франции</h1>
+        <div class="subtitle">
+            От Карла Великого до наших дней · годы правления · наведите курсор для подробной информации
+        </div>
+
+        <!-- ====== ЛИНЕЙНАЯ ДИАГРАММА ====== -->
+        <div class="timeline-section">
+            <div class="timeline-container">
+                <!-- Ось с делениями (от 750 до 2026 н.э.) -->
+                <div class="timeline-axis"></div>
+
+                <!-- Метки на оси -->
+                <div class="timeline-labels">
+                    <span>750</span>
+                    <span>850</span>
+                    <span>950</span>
+                    <span>1050</span>
+                    <span>1150</span>
+                    <span>1250</span>
+                    <span>1350</span>
+                    <span>1450</span>
+                    <span>1550</span>
+                    <span>1650</span>
+                    <span>1750</span>
+                    <span>1850</span>
+                    <span>1950</span>
+                    <span>2000</span>
+                </div>
+
+                <!-- 
+                    Диапазон: от 750 до 2026 н.э. = 1276 лет
+                    left% = (год_начала - 750) / 1276 * 100
+                    width% = (год_конца - год_начала) / 1276 * 100
+                -->
+
+                <!-- ===== КАРОЛИНГИ ===== -->
+
+                <!-- 1. Карл Великий: 768–814 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 1.4%; width: 3.6%;"
+                         data-civ="Карл Великий"
+                         data-period="768 – 814"
+                         data-dynasty="Каролинги"
+                         data-notes="Коронация в 800 г. Создатель империи Каролингов. Покровитель образования и культуры (Каролингское возрождение).">
+                        <span class="label">Карл Великий <span class="years">768–814</span></span>
+                        <span class="label-outside">Карл Великий <span class="years-out">768–814</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 2. Карл Лысый: 843–877 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 7.3%; width: 2.7%;"
+                         data-civ="Карл Лысый"
+                         data-period="843 – 877"
+                         data-dynasty="Каролинги"
+                         data-notes="По Верденскому договору 843 г. получил Западно-Франкское королевство — будущую Францию.">
+                        <span class="label">Карл Лысый <span class="years">843–877</span></span>
+                        <span class="label-outside">Карл Лысый <span class="years-out">843–877</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 3. Людовик II Заика: 877–879 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 10.0%; width: 0.2%;"
+                         data-civ="Людовик II Заика"
+                         data-period="877 – 879"
+                         data-dynasty="Каролинги"
+                         data-notes="Короткое правление. Король Западно-Франкского королевства.">
+                        <span class="label">Людовик II <span class="years">877–879</span></span>
+                        <span class="label-outside">Людовик II <span class="years-out">877–879</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 4. Карл Простоватый: 898–922 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 11.6%; width: 1.9%;"
+                         data-civ="Карл Простоватый"
+                         data-period="898 – 922"
+                         data-dynasty="Каролинги"
+                         data-notes="Уступил земли викингам (Нормандия). Потерял корону.">
+                        <span class="label">Карл Простоватый <span class="years">898–922</span></span>
+                        <span class="label-outside">Карл Простоватый <span class="years-out">898–922</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 5. Людовик IV Заморский: 936–954 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 14.6%; width: 1.4%;"
+                         data-civ="Людовик IV Заморский"
+                         data-period="936 – 954"
+                         data-dynasty="Каролинги"
+                         data-notes="Провёл детство в Англии. Восстановил королевскую власть.">
+                        <span class="label">Людовик IV <span class="years">936–954</span></span>
+                        <span class="label-outside">Людовик IV <span class="years-out">936–954</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 6. Лотарь: 954–986 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 16.0%; width: 2.5%;"
+                         data-civ="Лотарь"
+                         data-period="954 – 986"
+                         data-dynasty="Каролинги"
+                         data-notes="Последний сильный Каролинг. Воевал с германскими императорами.">
+                        <span class="label">Лотарь <span class="years">954–986</span></span>
+                        <span class="label-outside">Лотарь <span class="years-out">954–986</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 7. Людовик V Ленивый: 986–987 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-0 label-right" style="left: 18.5%; width: 0.1%;"
+                         data-civ="Людовик V Ленивый"
+                         data-period="986 – 987"
+                         data-dynasty="Каролинги"
+                         data-notes="Последний король из династии Каролингов. Умер без наследников.">
+                        <span class="label">Людовик V <span class="years">986–987</span></span>
+                        <span class="label-outside">Людовик V <span class="years-out">986–987</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== КАПЕТИНГИ ===== -->
+
+                <!-- 8. Гуго Капет: 987–996 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 18.6%; width: 0.7%;"
+                         data-civ="Гуго Капет"
+                         data-period="987 – 996"
+                         data-dynasty="Капетинги"
+                         data-notes="Основатель династии Капетингов. Избран королём после смерти Людовика V.">
+                        <span class="label">Гуго Капет <span class="years">987–996</span></span>
+                        <span class="label-outside">Гуго Капет <span class="years-out">987–996</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 9. Роберт II Благочестивый: 996–1031 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 19.3%; width: 2.7%;"
+                         data-civ="Роберт II Благочестивый"
+                         data-period="996 – 1031"
+                         data-dynasty="Капетинги"
+                         data-notes="Укрепил королевскую власть. Был отлучён от церкви за брак с кузиной.">
+                        <span class="label">Роберт II <span class="years">996–1031</span></span>
+                        <span class="label-outside">Роберт II <span class="years-out">996–1031</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 10. Генрих I: 1031–1060 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 22.0%; width: 2.3%;"
+                         data-civ="Генрих I"
+                         data-period="1031 – 1060"
+                         data-dynasty="Капетинги"
+                         data-notes="Воевал с феодалами. Обращался за помощью к нормандскому герцогу Вильгельму.">
+                        <span class="label">Генрих I <span class="years">1031–1060</span></span>
+                        <span class="label-outside">Генрих I <span class="years-out">1031–1060</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 11. Филипп I: 1060–1108 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 24.3%; width: 3.8%;"
+                         data-civ="Филипп I"
+                         data-period="1060 – 1108"
+                         data-dynasty="Капетинги"
+                         data-notes="Долгое правление. Участвовал в Первом крестовом походе (хотя и неофициально).">
+                        <span class="label">Филипп I <span class="years">1060–1108</span></span>
+                        <span class="label-outside">Филипп I <span class="years-out">1060–1108</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 12. Людовик VI Толстый: 1108–1137 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 28.1%; width: 2.3%;"
+                         data-civ="Людовик VI Толстый"
+                         data-period="1108 – 1137"
+                         data-dynasty="Капетинги"
+                         data-notes="Укрепил королевский домен. Боролся с баронами. Получил прозвище за свою полноту.">
+                        <span class="label">Людовик VI <span class="years">1108–1137</span></span>
+                        <span class="label-outside">Людовик VI <span class="years-out">1108–1137</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 13. Людовик VII: 1137–1180 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 30.3%; width: 3.4%;"
+                         data-civ="Людовик VII"
+                         data-period="1137 – 1180"
+                         data-dynasty="Капетинги"
+                         data-notes="Участник Второго крестового похода. Развод с Алиенорой Аквитанской привёл к потере земель.">
+                        <span class="label">Людовик VII <span class="years">1137–1180</span></span>
+                        <span class="label-outside">Людовик VII <span class="years-out">1137–1180</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 14. Филипп II Август: 1180–1223 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 33.7%; width: 3.4%;"
+                         data-civ="Филипп II Август"
+                         data-period="1180 – 1223"
+                         data-dynasty="Капетинги"
+                         data-notes="Значительно расширил королевский домен. Участник Третьего крестового похода. Победа при Бувине (1214).">
+                        <span class="label">Филипп II Август <span class="years">1180–1223</span></span>
+                        <span class="label-outside">Филипп II Август <span class="years-out">1180–1223</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 15. Людовик VIII Лев: 1223–1226 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 37.1%; width: 0.2%;"
+                         data-civ="Людовик VIII Лев"
+                         data-period="1223 – 1226"
+                         data-dynasty="Капетинги"
+                         data-notes="Короткое правление. Участвовал в Альбигойском крестовом походе.">
+                        <span class="label">Людовик VIII <span class="years">1223–1226</span></span>
+                        <span class="label-outside">Людовик VIII <span class="years-out">1223–1226</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 16. Людовик IX Святой: 1226–1270 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 37.3%; width: 3.5%;"
+                         data-civ="Людовик IX Святой"
+                         data-period="1226 – 1270"
+                         data-dynasty="Капетинги"
+                         data-notes="Канонизирован. Участник Седьмого и Восьмого крестовых походов. Реформатор.">
+                        <span class="label">Людовик IX Святой <span class="years">1226–1270</span></span>
+                        <span class="label-outside">Людовик IX Святой <span class="years-out">1226–1270</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 17. Филипп III Смелый: 1270–1285 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 40.8%; width: 1.2%;"
+                         data-civ="Филипп III Смелый"
+                         data-period="1270 – 1285"
+                         data-dynasty="Капетинги"
+                         data-notes="Погиб в Арагонском походе. Присоединил к Франции графство Тулузу.">
+                        <span class="label">Филипп III <span class="years">1270–1285</span></span>
+                        <span class="label-outside">Филипп III <span class="years-out">1270–1285</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 18. Филипп IV Красивый: 1285–1314 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 41.9%; width: 2.3%;"
+                         data-civ="Филипп IV Красивый"
+                         data-period="1285 – 1314"
+                         data-dynasty="Капетинги"
+                         data-notes="Разгромил тамплиеров. Укрепил королевскую власть. Начало Генеральных штатов.">
+                        <span class="label">Филипп IV Красивый <span class="years">1285–1314</span></span>
+                        <span class="label-outside">Филипп IV <span class="years-out">1285–1314</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 19. Людовик X Сварливый: 1314–1316 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 44.2%; width: 0.2%;"
+                         data-civ="Людовик X Сварливый"
+                         data-period="1314 – 1316"
+                         data-dynasty="Капетинги"
+                         data-notes="Сын Филиппа IV. Умер от болезни после короткого правления.">
+                        <span class="label">Людовик X <span class="years">1314–1316</span></span>
+                        <span class="label-outside">Людовик X <span class="years-out">1314–1316</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 20. Филипп V Длинный: 1316–1322 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 44.4%; width: 0.5%;"
+                         data-civ="Филипп V Длинный"
+                         data-period="1316 – 1322"
+                         data-dynasty="Капетинги"
+                         data-notes="Утвердил закон, исключавший женщин из наследования престола (салический закон).">
+                        <span class="label">Филипп V <span class="years">1316–1322</span></span>
+                        <span class="label-outside">Филипп V <span class="years-out">1316–1322</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 21. Карл IV Красивый: 1322–1328 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-1 label-right" style="left: 44.8%; width: 0.5%;"
+                         data-civ="Карл IV Красивый"
+                         data-period="1322 – 1328"
+                         data-dynasty="Капетинги"
+                         data-notes="Последний король из старшей линии Капетингов. Умер без сыновей.">
+                        <span class="label">Карл IV <span class="years">1322–1328</span></span>
+                        <span class="label-outside">Карл IV <span class="years-out">1322–1328</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== ВАЛУА ===== -->
+
+                <!-- 22. Филипп VI: 1328–1350 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 45.3%; width: 1.7%;"
+                         data-civ="Филипп VI"
+                         data-period="1328 – 1350"
+                         data-dynasty="Валуа"
+                         data-notes="Основатель династии Валуа. Начало Столетней войны с Англией.">
+                        <span class="label">Филипп VI <span class="years">1328–1350</span></span>
+                        <span class="label-outside">Филипп VI <span class="years-out">1328–1350</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 23. Иоанн II Добрый: 1350–1364 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 47.0%; width: 1.1%;"
+                         data-civ="Иоанн II Добрый"
+                         data-period="1350 – 1364"
+                         data-dynasty="Валуа"
+                         data-notes="Пленён англичанами в битве при Пуатье (1356). Умер в плену в Лондоне.">
+                        <span class="label">Иоанн II <span class="years">1350–1364</span></span>
+                        <span class="label-outside">Иоанн II <span class="years-out">1350–1364</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 24. Карл V Мудрый: 1364–1380 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 48.1%; width: 1.3%;"
+                         data-civ="Карл V Мудрый"
+                         data-period="1364 – 1380"
+                         data-dynasty="Валуа"
+                         data-notes="Восстановил королевский авторитет. Отвоевал у англичан большую часть земель.">
+                        <span class="label">Карл V Мудрый <span class="years">1364–1380</span></span>
+                        <span class="label-outside">Карл V <span class="years-out">1364–1380</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 25. Карл VI Безумный: 1380–1422 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 49.4%; width: 3.3%;"
+                         data-civ="Карл VI Безумный"
+                         data-period="1380 – 1422"
+                         data-dynasty="Валуа"
+                         data-notes="Психическое расстройство. Война с Англией и гражданская война между арманьяками и бургиньонами.">
+                        <span class="label">Карл VI <span class="years">1380–1422</span></span>
+                        <span class="label-outside">Карл VI <span class="years-out">1380–1422</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 26. Карл VII Победоносный: 1422–1461 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 52.7%; width: 3.1%;"
+                         data-civ="Карл VII Победоносный"
+                         data-period="1422 – 1461"
+                         data-dynasty="Валуа"
+                         data-notes="Жанна д'Арк. Завершение Столетней войны (1453). Объединение Франции.">
+                        <span class="label">Карл VII <span class="years">1422–1461</span></span>
+                        <span class="label-outside">Карл VII <span class="years-out">1422–1461</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 27. Людовик XI: 1461–1483 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-2 label-right" style="left: 55.7%; width: 1.7%;"
+                         data-civ="Людовик XI"
+                         data-period="1461 – 1483"
+                         data-dynasty="Валуа"
+                         data-notes="«Паук». Укрепил королевскую власть. Присоединил Бургундию, Анжу и Прованс.">
+                        <span class="label">Людовик XI <span class="years">1461–1483</span></span>
+                        <span class="label-outside">Людовик XI <span class="years-out">1461–1483</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 28. Карл VIII: 1483–1498 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 57.4%; width: 1.2%;"
+                         data-civ="Карл VIII"
+                         data-period="1483 – 1498"
+                         data-dynasty="Валуа-Орлеан"
+                         data-notes="Итальянские походы. Начало Итальянских войн. Умер от удара головой.">
+                        <span class="label">Карл VIII <span class="years">1483–1498</span></span>
+                        <span class="label-outside">Карл VIII <span class="years-out">1483–1498</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 29. Людовик XII: 1498–1515 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-3 label-right" style="left: 58.6%; width: 1.3%;"
+                         data-civ="Людовик XII"
+                         data-period="1498 – 1515"
+                         data-dynasty="Валуа-Орлеан"
+                         data-notes="«Отец народа». Итальянские войны. Объединил Францию с Миланом.">
+                        <span class="label">Людовик XII <span class="years">1498–1515</span></span>
+                        <span class="label-outside">Людовик XII <span class="years-out">1498–1515</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 30. Франциск I: 1515–1547 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 60.0%; width: 2.5%;"
+                         data-civ="Франциск I"
+                         data-period="1515 – 1547"
+                         data-dynasty="Валуа-Ангулем"
+                         data-notes="Покровитель искусств (Леонардо да Винчи). Битва при Мариньяно. Соперничество с Карлом V.">
+                        <span class="label">Франциск I <span class="years">1515–1547</span></span>
+                        <span class="label-outside">Франциск I <span class="years-out">1515–1547</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 31. Генрих II: 1547–1559 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 62.5%; width: 0.9%;"
+                         data-civ="Генрих II"
+                         data-period="1547 – 1559"
+                         data-dynasty="Валуа-Ангулем"
+                         data-notes="Войны с Габсбургами. Погиб на турнире от случайного удара копьём.">
+                        <span class="label">Генрих II <span class="years">1547–1559</span></span>
+                        <span class="label-outside">Генрих II <span class="years-out">1547–1559</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 32. Франциск II: 1559–1560 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 63.4%; width: 0.1%;"
+                         data-civ="Франциск II"
+                         data-period="1559 – 1560"
+                         data-dynasty="Валуа-Ангулем"
+                         data-notes="Муж Марии Стюарт. Умер от ушной инфекции в возрасте 16 лет.">
+                        <span class="label">Франциск II <span class="years">1559–1560</span></span>
+                        <span class="label-outside">Франциск II <span class="years-out">1559–1560</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 33. Карл IX: 1560–1574 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 63.5%; width: 1.1%;"
+                         data-civ="Карл IX"
+                         data-period="1560 – 1574"
+                         data-dynasty="Валуа-Ангулем"
+                         data-notes="Варфоломеевская ночь (1572). Религиозные войны (гугеноты против католиков).">
+                        <span class="label">Карл IX <span class="years">1560–1574</span></span>
+                        <span class="label-outside">Карл IX <span class="years-out">1560–1574</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 34. Генрих III: 1574–1589 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-4 label-right" style="left: 64.6%; width: 1.2%;"
+                         data-civ="Генрих III"
+                         data-period="1574 – 1589"
+                         data-dynasty="Валуа-Ангулем"
+                         data-notes="Последний король из династии Валуа. Убит монахом-фанатиком. Переход к Бурбонам.">
+                        <span class="label">Генрих III <span class="years">1574–1589</span></span>
+                        <span class="label-outside">Генрих III <span class="years-out">1574–1589</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- ===== БУРБОНЫ ===== -->
+
+                <!-- 35. Генрих IV: 1589–1610 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 65.8%; width: 1.6%;"
+                         data-civ="Генрих IV"
+                         data-period="1589 – 1610"
+                         data-dynasty="Бурбоны"
+                         data-notes="Основатель династии Бурбонов. Нантский эдикт (1598). Убит в 1610 г.">
+                        <span class="label">Генрих IV <span class="years">1589–1610</span></span>
+                        <span class="label-outside">Генрих IV <span class="years-out">1589–1610</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 36. Людовик XIII: 1610–1643 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 67.4%; width: 2.6%;"
+                         data-civ="Людовик XIII"
+                         data-period="1610 – 1643"
+                         data-dynasty="Бурбоны"
+                         data-notes="Регентство Марии Медичи. Правление кардинала Ришелье. Участие в Тридцатилетней войне.">
+                        <span class="label">Людовик XIII <span class="years">1610–1643</span></span>
+                        <span class="label-outside">Людовик XIII <span class="years-out">1610–1643</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 37. Людовик XIV: 1643–1715 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 70.0%; width: 5.6%;"
+                         data-civ="Людовик XIV"
+                         data-period="1643 – 1715"
+                         data-dynasty="Бурбоны"
+                         data-notes="«Король-Солнце». Долгое правление. Версаль. Войны за расширение Франции. Отмена Нантского эдикта.">
+                        <span class="label">Людовик XIV <span class="years">1643–1715</span></span>
+                        <span class="label-outside">Людовик XIV <span class="years-out">1643–1715</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 38. Людовик XV: 1715–1774 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-right" style="left: 75.6%; width: 4.6%;"
+                         data-civ="Людовик XV"
+                         data-period="1715 – 1774"
+                         data-dynasty="Бурбоны"
+                         data-notes="Семилетняя война. Потеря колоний. Ухудшение финансового положения.">
+                        <span class="label">Людовик XV <span class="years">1715–1774</span></span>
+                        <span class="label-outside">Людовик XV <span class="years-out">1715–1774</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 39. Людовик XVI: 1774–1792 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-left" style="left: 80.3%; width: 1.4%;"
+                         data-civ="Людовик XVI"
+                         data-period="1774 – 1792"
+                         data-dynasty="Бурбоны"
+                         data-notes="Свергнут в ходе Французской революции. Казнён на гильотине 21 января 1793 г.">
+                        <span class="label">Людовик XVI <span class="years">1774–1792</span></span>
+                        <span class="label-outside">Людовик XVI <span class="years-out">1774–1792</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 40. Наполеон I Бонапарт: 1804–1814, 1815 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 85.0%; width: 0.8%;"
+                         data-civ="Наполеон I Бонапарт"
+                         data-period="1804 – 1814, 1815"
+                         data-dynasty="Бонапарты"
+                         data-notes="Император французов. Завоевания Европы. Войны с коалициями. Отречение, возвращение («Сто дней»), ссылка.">
+                        <span class="label">Наполеон I <span class="years">1804–1814, 1815</span></span>
+                        <span class="label-outside">Наполеон I <span class="years-out">1804–1814, 1815</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 41. Людовик XVIII: 1814–1824 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-left" style="left: 85.4%; width: 0.8%;"
+                         data-civ="Людовик XVIII"
+                         data-period="1814 – 1824"
+                         data-dynasty="Бурбоны"
+                         data-notes="Реставрация Бурбонов. Конституционная Хартия 1814 г.">
+                        <span class="label">Людовик XVIII <span class="years">1814–1824</span></span>
+                        <span class="label-outside">Людовик XVIII <span class="years-out">1814–1824</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 42. Карл X: 1824–1830 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-5 label-left" style="left: 86.2%; width: 0.5%;"
+                         data-civ="Карл X"
+                         data-period="1824 – 1830"
+                         data-dynasty="Бурбоны"
+                         data-notes="Свергнут в ходе Июльской революции 1830 г. Ультрароялист.">
+                        <span class="label">Карл X <span class="years">1824–1830</span></span>
+                        <span class="label-outside">Карл X <span class="years-out">1824–1830</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 43. Луи-Филипп: 1830–1848 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-6 label-left" style="left: 86.6%; width: 1.4%;"
+                         data-civ="Луи-Филипп I"
+                         data-period="1830 – 1848"
+                         data-dynasty="Бурбоны-Орлеан"
+                         data-notes="«Король-гражданин». Июльская монархия. Свергнут в ходе Революции 1848 г.">
+                        <span class="label">Луи-Филипп <span class="years">1830–1848</span></span>
+                        <span class="label-outside">Луи-Филипп <span class="years-out">1830–1848</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 44. Наполеон III: 1852–1870 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-7 label-left" style="left: 88.0%; width: 1.4%;"
+                         data-civ="Наполеон III"
+                         data-period="1852 – 1870"
+                         data-dynasty="Бонапарты"
+                         data-notes="Вторая империя. Модернизация Франции. Франко-прусская война. Пленён при Седане.">
+                        <span class="label">Наполеон III <span class="years">1852–1870</span></span>
+                        <span class="label-outside">Наполеон III <span class="years-out">1852–1870</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 45. Третья республика (президенты): 1870–1940 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 89.4%; width: 5.5%;"
+                         data-civ="Третья республика"
+                         data-period="1870 – 1940"
+                         data-dynasty="Республика"
+                         data-notes="После падения Наполеона III. Политическая нестабильность. Дело Дрейфуса. Первая мировая война.">
+                        <span class="label">Третья республика <span class="years">1870–1940</span></span>
+                        <span class="label-outside">Третья республика <span class="years-out">1870–1940</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 46. Вишистский режим (Петен): 1940–1944 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 94.9%; width: 0.3%;"
+                         data-civ="Вишистский режим"
+                         data-period="1940 – 1944"
+                         data-dynasty="Коллаборационистский"
+                         data-notes="Филипп Петен. Коллаборация с нацистской Германией. Париж освобождён в 1944 г.">
+                        <span class="label">Виши <span class="years">1940–1944</span></span>
+                        <span class="label-outside">Виши <span class="years-out">1940–1944</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 47. Четвёртая республика: 1946–1958 -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 95.3%; width: 0.9%;"
+                         data-civ="Четвёртая республика"
+                         data-period="1946 – 1958"
+                         data-dynasty="Республика"
+                         data-notes="После Второй мировой войны. Деколонизация (Индокитай, Алжир). Политическая нестабильность.">
+                        <span class="label">Четвёртая республика <span class="years">1946–1958</span></span>
+                        <span class="label-outside">Четвёртая республика <span class="years-out">1946–1958</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- 48. Пятая республика (президенты): 1958–н.в. -->
+                <div class="civ-row">
+                    <div class="civ-bar civ-color-8 label-left" style="left: 96.2%; width: 3.8%;"
+                         data-civ="Пятая республика"
+                         data-period="1958 – н.в."
+                         data-dynasty="Республика"
+                         data-notes="Основана Шарлем де Голлем. Сильная президентская власть. Евросоюз. Современная Франция.">
+                        <span class="label">Пятая республика <span class="years">1958–н.в.</span></span>
+                        <span class="label-outside">Пятая республика <span class="years-out">1958–н.в.</span></span>
+                        <div class="tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- Фоновая шкала: Наша эра -->
+                <div class="civ-row">
+                    <div class="civ-bar label-inside" style="left: 0%; width: 100%; height: 10px; background: rgba(44, 62, 80, 0.08); border: none; box-shadow: none; cursor: default;">
+                        <span class="label" style="color: #5d6d7e; font-weight: 400; font-size: 0.6rem; text-shadow: none; opacity: 0.5;">Наша эра</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Легенда -->
+            <div class="legend">
+                <span class="legend-item"><span class="legend-color" style="background:#8e44ad;"></span> Каролинги</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2980b9;"></span> Капетинги</span>
+                <span class="legend-item"><span class="legend-color" style="background:#27ae60;"></span> Валуа</span>
+                <span class="legend-item"><span class="legend-color" style="background:#d4a017;"></span> Валуа-Орлеан</span>
+                <span class="legend-item"><span class="legend-color" style="background:#e67e22;"></span> Валуа-Ангулем</span>
+                <span class="legend-item"><span class="legend-color" style="background:#c0392b;"></span> Бурбоны</span>
+                <span class="legend-item"><span class="legend-color" style="background:#16a085;"></span> Бурбоны-Орлеан</span>
+                <span class="legend-item"><span class="legend-color" style="background:#2c3e50;"></span> Бонапарты</span>
+                <span class="legend-item"><span class="legend-color" style="background:#b03a2e;"></span> Республики</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            * Даты указаны в годах н.э. Отрезки на диаграмме отражают годы правления. Наведите курсор на отрезок для просмотра полной информации.
+        </div>
+    </div>
+
+    <script>
+        // Заполнение всплывающих подсказок данными из атрибутов data-*
+        document.addEventListener('DOMContentLoaded', function() {
+            const civBars = document.querySelectorAll('.civ-bar[data-civ]');
+            
+            civBars.forEach(bar => {
+                const tooltip = bar.querySelector('.tooltip');
+                if (!tooltip) return;
+
+                const name = bar.getAttribute('data-civ') || '—';
+                const period = bar.getAttribute('data-period') || '—';
+                const dynasty = bar.getAttribute('data-dynasty') || '—';
+                const notes = bar.getAttribute('data-notes') || '—';
+
+                tooltip.innerHTML = `
+                    <span class="tooltip-title">${name}</span>
+                    <span class="tooltip-divider"></span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📅 Период:</span>
+                        <span class="tooltip-value">${period}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">👑 Династия:</span>
+                        <span class="tooltip-value">${dynasty}</span>
+                    </span>
+                    <span class="tooltip-row">
+                        <span class="tooltip-label">📝 О периоде:</span>
+                        <span class="tooltip-value">${notes}</span>
+                    </span>
+                `;
+
+                bar.addEventListener('mouseenter', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const tooltipEl = this.querySelector('.tooltip');
+                    if (!tooltipEl) return;
+
+                    const tooltipWidth = tooltipEl.offsetWidth || 350;
+                    let left = rect.right + 15;
+                    let top = rect.top + (rect.height / 2) - 20;
+
+                    if (left + tooltipWidth > window.innerWidth - 20) {
+                        left = rect.left - tooltipWidth - 15;
+                    }
+                    if (top + 150 > window.innerHeight - 20) {
+                        top = window.innerHeight - 170;
+                    }
+                    if (top < 20) {
+                        top = 20;
+                    }
+
+                    tooltipEl.style.left = left + 'px';
+                    tooltipEl.style.top = top + 'px';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
