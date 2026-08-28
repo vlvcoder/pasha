@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>План-факт с накоплением</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js">
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f2f5fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 20px 40px rgba(0, 20, 40, 0.08), 0 8px 20px rgba(0, 0, 0, 0.02);
+            padding: 28px 30px 32px;
+            max-width: 1100px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #e9edf4;
+            padding-bottom: 18px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #0b1c33;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header h1 small {
+            font-weight: 400;
+            font-size: 1rem;
+            color: #3d5775;
+            background: #eef2f8;
+            padding: 2px 16px;
+            border-radius: 40px;
+        }
+
+        .legend-wrap {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #1f3349;
+        }
+
+        .color-box {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+        }
+
+        .color-box.plan {
+            background: #4b7bec;
+        }
+        .color-box.fact {
+            background: #ff6b6b;
+        }
+        .color-box.cum-fact {
+            background: #ffb347;
+        }
+        .color-box.cum-plan {
+            background: #2ecc71;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 460px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 650px) {
+            .card {
+                padding: 20px 14px 24px;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+                flex-wrap: wrap;
+            }
+            .chart-wrapper {
+                height: 380px;
+            }
+            .legend-wrap {
+                gap: 12px;
+            }
+            .legend-item {
+                font-size: 0.8rem;
+            }
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 18px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: #3d5775;
+            border-top: 1px solid #eef2f8;
+            padding-top: 16px;
+        }
+
+        .footer-note span {
+            background: #f4f7fc;
+            padding: 2px 16px;
+            border-radius: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <h1>
+                📊 План / Факт / Накопление
+                <small>янв – май 2026</small>
+            </h1>
+            <div class="legend-wrap">
+                <span class="legend-item"><span class="color-box plan"></span>План</span>
+                <span class="legend-item"><span class="color-box fact"></span>Факт</span>
+                <span class="legend-item"><span class="color-box cum-fact"></span>Накопл. факт</span>
+                <span class="legend-item"><span class="color-box cum-plan"></span>Накопл. план</span>
+            </div>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="quadChart"></canvas>
+        </div>
+
+        <div class="footer-note">
+            <span>📈 Накопление = сумма с начала года</span>
+            <span>⚡ данные за 5 месяцев</span>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const months = ['янв', 'фев', 'мар', 'апр', 'май'];
+            const plan = [544.713, 590.469, 555.431, 521.288, 513.706];
+            const fact = [450.664, 378.954, 372.889, 393.834, 542.129];
+
+            // Накопленный факт
+            let cumFact = 0;
+            const cumulativeFact = fact.map(val => {
+                cumFact += val;
+                return cumFact;
+            });
+
+            // Накопленный план
+            let cumPlan = 0;
+            const cumulativePlan = plan.map(val => {
+                cumPlan += val;
+                return cumPlan;
+            });
+
+            // Помесячный процент выполнения плана
+            const monthlyPercent = fact.map((f, i) => (f / plan[i]) * 100);
+
+            // Накопительный процент выполнения плана
+            const cumulativePercent = cumulativeFact.map((f, i) => (f / cumulativePlan[i]) * 100);
+
+            const planColor = '#4b7bec';
+            const factColor = '#ff6b6b';
+            const cumFactColor = '#ffb347';
+            const cumPlanColor = '#2ecc71';
+
+            const ctx = document.getElementById('quadChart').getContext('2d');
+
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'План (тыс. шт.)',
+                        data: plan,
+                        backgroundColor: planColor,
+                        borderColor: '#2a5fc1',
+                        borderWidth: 1.2,
+                        borderRadius: 4,
+                        barPercentage: 0.25,
+                        categoryPercentage: 0.85,
+                        order: 2,
+                    }, {
+                        label: 'Факт (тыс. шт.)',
+                        data: fact,
+                        backgroundColor: factColor,
+                        borderColor: '#b33b3b',
+                        borderWidth: 1.2,
+                        borderRadius: 4,
+                        barPercentage: 0.25,
+                        categoryPercentage: 0.85,
+                        order: 2,
+                    }, {
+                        label: 'Накопленный факт (тыс. шт.)',
+                        data: cumulativeFact,
+                        backgroundColor: cumFactColor,
+                        borderColor: '#cc8a2b',
+                        borderWidth: 1.2,
+                        borderRadius: 4,
+                        barPercentage: 0.25,
+                        categoryPercentage: 0.85,
+                        order: 2,
+                    }, {
+                        label: 'Накопленный план (тыс. шт.)',
+                        data: cumulativePlan,
+                        backgroundColor: cumPlanColor,
+                        borderColor: '#1f9d5a',
+                        borderWidth: 1.2,
+                        borderRadius: 4,
+                        barPercentage: 0.25,
+                        categoryPercentage: 0.85,
+                        order: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(255,255,255,0.96)',
+                            titleColor: '#0b1c33',
+                            bodyColor: '#1f3349',
+                            borderColor: '#dce3ed',
+                            borderWidth: 1,
+                            cornerRadius: 10,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    let val = context.raw;
+                                    if (typeof val !== 'number') return label;
+                                    return `${label}: ${val.toFixed(1)} тыс. шт.`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                font: { weight: '500', size: 14 },
+                                color: '#1f3349',
+                                padding: 8,
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' тыс.';
+                                },
+                                font: { size: 11 },
+                                color: '#3d5775',
+                            },
+                            grid: {
+                                color: 'rgba(0, 20, 40, 0.06)',
+                                drawTicks: false,
+                            },
+                            title: {
+                                display: true,
+                                text: 'Тыс. штук',
+                                color: '#3d5775',
+                                font: { weight: '400', size: 12 },
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: { top: 50, bottom: 8, left: 5, right: 10 }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                },
+                plugins: [{
+                    id: 'percentLabels',
+                    afterDraw: function(chart) {
+                        const ctx = chart.ctx;
+                        const chartArea = chart.chartArea;
+                        if (!chartArea) return;
+
+                        const metaData = chart.getDatasetMeta(0);
+                        if (!metaData || !metaData.data || metaData.data.length === 0) return;
+
+                        ctx.save();
+
+                        for (let i = 0; i < metaData.data.length; i++) {
+                            const x = metaData.data[i].x;
+                            if (x < chartArea.left || x > chartArea.right) continue;
+
+                            // Получаем Y-координаты вершин всех 4 столбцов
+                            const yPositions = [];
+                            for (let d = 0; d < 4; d++) {
+                                const meta = chart.getDatasetMeta(d);
+                                if (meta && meta.data && meta.data[i]) {
+                                    yPositions.push(meta.data[i].y);
+                                }
+                            }
+                            // Берем минимальный Y (самый высокий столбец в группе)
+                            const topY = Math.min(...yPositions);
+
+                            // Помесячный процент
+                            const monthPct = monthlyPercent[i];
+                            // Накопительный процент
+                            const cumPct = cumulativePercent[i];
+
+                            // Определяем цвет для помесячного процента
+                            let monthColor = monthPct >= 100 ? '#1a7a3a' : '#9e2b2b';
+                            // Цвет для накопительного процента
+                            let cumColor = cumPct >= 100 ? '#1a7a3a' : '#b3741a';
+
+                            // Рисуем подпись с процентами над группой столбцов
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+                            ctx.shadowColor = 'rgba(255,255,255,0.9)';
+                            ctx.shadowBlur = 8;
+
+                            // Первая строка: помесячный процент (более крупный)
+                            ctx.font = '600 13px Inter, system-ui, sans-serif';
+                            ctx.fillStyle = monthColor;
+                            const yOffset1 = 22;
+                            ctx.fillText(monthPct.toFixed(1) + '%', x, topY - yOffset1);
+
+                            // Вторая строка: накопительный процент (мельче, через слеш)
+                            ctx.font = '500 11px Inter, system-ui, sans-serif';
+                            ctx.fillStyle = cumColor;
+                            const yOffset2 = 38;
+                            ctx.fillText('нак. ' + cumPct.toFixed(1) + '%', x, topY - yOffset2);
+                        }
+
+                        ctx.restore();
+                    }
+                }]
+            });
+
+            console.log('📊 Данные для графика:');
+            console.table({
+                'Месяц': months,
+                'План (тыс.)': plan.map(v => v.toFixed(3)),
+                'Факт (тыс.)': fact.map(v => v.toFixed(3)),
+                'Накопленный факт (тыс.)': cumulativeFact.map(v => v.toFixed(3)),
+                'Накопленный план (тыс.)': cumulativePlan.map(v => v.toFixed(3)),
+                '% выполнения': monthlyPercent.map(v => v.toFixed(1) + '%'),
+                'Накопленный %': cumulativePercent.map(v => v.toFixed(1) + '%'),
+            });
+
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    chart.resize();
+                }, 100);
+            });
+
+        })();
+    </script>
+</body>
+</html>
