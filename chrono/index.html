@@ -13,6 +13,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <title>Хронологические диаграммы</title>
     <style>
         * {
@@ -22,14 +28,14 @@
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            font-family: Roboto, system-ui, sans-serif;
             background: #f0ebe3;
-            min-height: 100vh;
+            /* min-height: 100vh; */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 30px 20px;
+            padding-top: 20px;
         }
 
         .container {
@@ -159,6 +165,7 @@
             font-size: 1rem;
             color: #1e2a36;
             letter-spacing: -0.2px;
+            margin-bottom: 8px;
         }
 
         .menu-item .info .desc {
@@ -368,16 +375,17 @@
             <!-- 1. Древний мир (8000–500) -->
             <a href="./chronoOldWorld.html" target="_blank" class="menu-item" data-target="deepseek_html_ancient_world">
                 <span class="icon globe">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    🏛️
+                    <!-- <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
                         <line x1="2" y1="12" x2="22" y2="12" />
                         <path
                             d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                    </svg>
+                    </svg> -->
                 </span>
                 <span class="info">
-                    <span class="label">🏛️ Древний мир</span>
+                    <span class="label">Древний мир</span>
                     <span class="desc">Цивилизации и империи · Шумер, Египет, Рим, Греция</span>
                 </span>
                 <span class="badge">14</span>
@@ -387,16 +395,17 @@
             <!-- 2. Новый мир (Средневековье–Новое время) -->
             <a href="./chronoNewWorld.html" target="_blank" class="menu-item" data-target="deepseek_html_new_world">
                 <span class="icon globe-new">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    🌍
+                    <!-- <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
                         <line x1="2" y1="12" x2="22" y2="12" />
                         <path
                             d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                    </svg>
+                    </svg> -->
                 </span>
                 <span class="info">
-                    <span class="label">🌍 Новый мир</span>
+                    <span class="label">Новый мир</span>
                     <span class="desc">Средневековье и Новое время · империи и государства</span>
                 </span>
                 <span class="badge">15</span>
@@ -417,7 +426,7 @@
                     </svg>
                 </span>
                 <span class="info">
-                    <span class="label">🇬🇧 Англия / Великобритания</span>
+                    <span class="label">Англия / Великобритания</span>
                     <span class="desc">Правители Британии · от англосаксов до Карла III</span>
                 </span>
                 <span class="badge">46</span>
@@ -434,7 +443,7 @@
                     </svg>
                 </span>
                 <span class="info">
-                    <span class="label">🇫🇷 Франция</span>
+                    <span class="label">Франция</span>
                     <span class="desc">Правители Франции · от Карла Великого до Пятой республики</span>
                 </span>
                 <span class="badge">48</span>
@@ -452,7 +461,7 @@
                     </svg>
                 </span>
                 <span class="info">
-                    <span class="label">🇩🇪 Германия</span>
+                    <span class="label">Германия</span>
                     <span class="desc">Правители Германии · от Восточно-Франкского до ФРГ</span>
                 </span>
                 <span class="badge">53</span>
@@ -470,7 +479,7 @@
                     </svg>
                 </span>
                 <span class="info">
-                    <span class="label">🇷🇺 Россия</span>
+                    <span class="label">Россия</span>
                     <span class="desc">Правители России · от Рюрика до наших дней</span>
                 </span>
                 <span class="badge">38</span>
@@ -513,7 +522,7 @@
                     </svg>
                 </span>
                 <span class="info">
-                    <span class="label">🇺🇸 США</span>
+                    <span class="label">США</span>
                     <span class="desc">Президенты США · от Вашингтона до наших дней</span>
                 </span>
                 <span class="badge">47</span>
@@ -527,7 +536,7 @@
             <span class="count">📊 7 диаграмм</span>
             <span class="hint">
                 <span class="dot"></span>
-                кликните по пункту для открытия
+                © Паша, 2026
             </span>
             <span style="color:#8a9aa8;">HTML · CSS · JavaScript</span>
         </div>
