@@ -93,7 +93,12 @@ h2 {
   font-size: 32px;
   font-family: "Comic Sans MS";
   line-height: normal;
-  color: #4470c4;
+  /* color: #4470c4; */
+  color: #3f8b44;
+}
+
+.work-list {
+  column-count: 2;
 }
 
 @media (max-width: 768px) {
@@ -112,6 +117,10 @@ h2 {
 
   .page::before {
     background: linear-gradient(to right, white, white, white, white, transparent, #D8E4FB);
+  }
+
+  .work-list {
+    column-count: 1;
   }
 }
 
@@ -178,8 +187,13 @@ time {
 }
 
 a[href] {
-  color: #0099ef;
+  /* color: #0099ef; */
+  color: #3f8b44;
   text-decoration: none;
+}
+
+a[href]:hover {
+  background-color: rgb(63, 139, 68, 0.2);
 }
 
 .avatar {
@@ -393,8 +407,9 @@ ul {
 .site-footer {
   margin: 0;
   padding: 0;
-  /*min-width: 550px;*/
-  background-color: #4470c4;
+  /* background-color: #4470c4; */
+  /* background-color: #205724; */
+  background-color: #3f8b44;
   color: #ffffff;
   text-align: center;
 
