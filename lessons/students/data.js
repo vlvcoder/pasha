@@ -24,6 +24,14 @@ export const students = [
         score: 4.8,
     },
     {
+        surname: 'Яковлев',
+        name: 'Яков',
+        age: 17,
+        faculty: 'Безопасность телекоммуникационных систем',
+        course: 2,
+        score: 4.0,
+    },
+    {
         surname: 'Андреев',
         name: 'Андрей',
         age: 17,

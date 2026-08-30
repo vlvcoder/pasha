@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Студенты</title>
+    <style>
+        body {
+            background-image: url(./background_light_abstract.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .btn-outline-success {
+            background-color: white;
+        }
+
+        table>thead>tr>th {
+            text-align: center;
+        }
+
+        table>tbody>tr>td,
+        table>tbody>tr>th {
+            vertical-align: middle;
+
+        }
+
+        table>tbody>tr>th {
+            text-align: right;
+        }
+
+        table>tbody>tr>td:nth-child(3) {
+            text-align: right;
+            width: 120px;
+        }
+
+        table>tbody>tr>td:nth-child(5) {
+            text-align: center;
+            width: 100px;
+        }
+
+        table>tbody>tr>td:nth-child(6) {
+            text-align: center;
+            width: 130px;
+        }
+
+        table>tbody>tr>td:nth-child(7) {
+            text-align: center;
+            width: 80px;
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+
+        .btn-remove,
+        .btn-edit {
+            visibility: hidden;
+        }
+
+        table>tbody>tr:hover .btn-remove {
+            visibility: visible;
+        }
+
+        table>tbody>tr:hover .btn-edit {
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Список студентов</h2>
+            <button id="btnNew" type="button" class="btn  btn-outline-success" data-bs-toggle="modal"
+                data-bs-target="#addStudentModal">
+                <svg style="margin-bottom: 3px; margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="16"
+                    height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                    <path
+                        d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                    <path fill-rule="evenodd"
+                        d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5" />
+                </svg> Добавить студента
+            </button>
+        </div>
+        <table id="tableStudents" class="table table-striped table-bordered table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">
+                        <a href="#" class="sortLink" data-field="surname">ФИО</a>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="sort-marker sort-marker-surname text-primary bi bi-arrow-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1" />
+                        </svg>
+                    </th>
+                    <th scope="col">
+                        <a href="#" class="sortLink" data-field="age">Возраст</a>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="sort-marker sort-marker-age text-primary bi bi-arrow-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1" />
+                        </svg>
+                    </th>
+                    <th scope="col">
+                        <a href="#" class="sortLink" data-field="faculty">Факультет</a>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="sort-marker sort-marker-faculty text-primary bi bi-arrow-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1" />
+                        </svg>
+                    </th>
+                    <th scope="col">
+                        <a href="#" class="sortLink" data-field="course">Курс</a>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="sort-marker sort-marker-course text-primary bi bi-arrow-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1" />
+                        </svg>
+                    </th>
+                    <th scope="col">
+                        <a href="#" class="sortLink" data-field="score">Ср. оценка</a>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="sort-marker sort-marker-score text-primary bi bi-arrow-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1" />
+                        </svg>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Модальное окно создания / редактирования -->
+    <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editStudentModalLabel">Редактирование студента</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editStudentForm">
+                        <div class="mb-3">
+                            <label for="editSurname" class="form-label">Фамилия</label>
+                            <input type="text" class="form-control" id="editSurname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editName" class="form-label">Имя</label>
+                            <input type="text" class="form-control" id="editName" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="editAge" class="form-label">Возраст</label>
+                            <input type="number" class="form-control" id="editAge" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFaculty" class="form-label">Факультет</label>
+                            <select class="form-select" id="editFaculty" required>
+                                <option value=""></option>
+                                <option value="Безопасность телекоммуникационных систем">Безопасность
+                                    телекоммуникационных систем</option>
+                                <option value="Информационные системы и технологии">Информационные системы и технологии
+                                </option>
+                                <option value="Оптико-волоконные системы">Оптико-волоконные системы</option>
+                                <option value="Радиотехника">Радиотехника</option>
+                                <option value="Сети и системы связи">Сети и системы связи</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editCourse" class="form-label">Курс</label>
+                                <input type="number" class="form-control" id="editCourse" min="1" max="6" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editScore" class="form-label">Средний балл</label>
+                                <input type="number" class="form-control" id="editScore" step="0.1" min="0" max="5"
+                                    required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" id="saveStudentBtn">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteStudentModalLabel">
+                        <i class="bi bi-exclamation-triangle"></i> Подтверждение удаления
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="bi bi-person-x" style="font-size: 4rem; color: #dc3545;"></i>
+                        <h5 class="mt-3">Вы уверены, что хотите удалить студента?</h5>
+                        <p class="text-muted">
+                            <span id="deleteStudentInfo">Фамилия Имя</span>
+                            <br>
+                            <span id="deleteStudentGroup">группа</span>
+                        </p>
+                        <p class="text-danger small">Это действие невозможно отменить!</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Отмена
+                    </button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="bi bi-trash"></i> Удалить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>
