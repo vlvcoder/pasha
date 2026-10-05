@@ -103,6 +103,33 @@ h2 {
 
 .work-list {
   column-count: 2;
+
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 8px;
+  }
+
+  li::before {
+    background-color: rgb(40, 113, 84);
+    border-radius: 2px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    transform: translateY(-50%);
+    content: " ";
+    transition: 0.3s;
+  }
+
+    li:hover::before {
+      background-color: rgb(153, 192, 63);
+      border-radius: 50%;
+    }
 }
 
 @media (max-width: 768px) {
